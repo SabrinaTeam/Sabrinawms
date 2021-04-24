@@ -122,6 +122,7 @@ namespace WinForm
                 if (sdfExport.ShowDialog() != DialogResult.OK)
                 {
                     return;
+
                 }
                 String filename = sdfExport.FileName;
                 String tableName = "";
