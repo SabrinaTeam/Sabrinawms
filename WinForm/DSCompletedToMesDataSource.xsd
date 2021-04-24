@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DSCompletedToMesDataSource" targetNamespace="http://tempuri.org/DSCompletedToMesDataSource.xsd" xmlns:mstns="http://tempuri.org/DSCompletedToMesDataSource.xsd" xmlns="http://tempuri.org/DSCompletedToMesDataSource.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DSCompletedToMesDataSource" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DSCompletedToMesDataSource" msprop:Generator_UserDSName="DSCompletedToMesDataSource">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="tagNumber" msprop:Generator_ColumnVarNameInTable="columntagNumber" msprop:Generator_ColumnPropNameInRow="tagNumber" msprop:Generator_ColumnPropNameInTable="tagNumberColumn" msprop:Generator_UserColumnName="tagNumber" type="xs:string" minOccurs="0" />
+              <xs:element name="tagScanDateTime" msprop:Generator_ColumnVarNameInTable="columntagScanDateTime" msprop:Generator_ColumnPropNameInRow="tagScanDateTime" msprop:Generator_ColumnPropNameInTable="tagScanDateTimeColumn" msprop:Generator_UserColumnName="tagScanDateTime" type="xs:string" minOccurs="0" />
+              <xs:element name="tagStyle" msprop:Generator_ColumnVarNameInTable="columntagStyle" msprop:Generator_ColumnPropNameInRow="tagStyle" msprop:Generator_ColumnPropNameInTable="tagStyleColumn" msprop:Generator_UserColumnName="tagStyle" type="xs:string" minOccurs="0" />
+              <xs:element name="tagColor" msprop:Generator_ColumnVarNameInTable="columntagColor" msprop:Generator_ColumnPropNameInRow="tagColor" msprop:Generator_ColumnPropNameInTable="tagColorColumn" msprop:Generator_UserColumnName="tagColor" type="xs:string" minOccurs="0" />
+              <xs:element name="tagSize" msprop:Generator_ColumnVarNameInTable="columntagSize" msprop:Generator_ColumnPropNameInRow="tagSize" msprop:Generator_ColumnPropNameInTable="tagSizeColumn" msprop:Generator_UserColumnName="tagSize" type="xs:string" minOccurs="0" />
+              <xs:element name="tagQty" msprop:Generator_ColumnVarNameInTable="columntagQty" msprop:Generator_ColumnPropNameInRow="tagQty" msprop:Generator_ColumnPropNameInTable="tagQtyColumn" msprop:Generator_UserColumnName="tagQty" type="xs:string" minOccurs="0" />
+              <xs:element name="tagOrg" msprop:Generator_ColumnVarNameInTable="columntagOrg" msprop:Generator_ColumnPropNameInRow="tagOrg" msprop:Generator_ColumnPropNameInTable="tagOrgColumn" msprop:Generator_UserColumnName="tagOrg" type="xs:string" minOccurs="0" />
+              <xs:element name="DeptName" msprop:Generator_ColumnVarNameInTable="columnDeptName" msprop:Generator_ColumnPropNameInRow="DeptName" msprop:Generator_ColumnPropNameInTable="DeptNameColumn" msprop:Generator_UserColumnName="DeptName" type="xs:string" minOccurs="0" />
+              <xs:element name="tagScanAccount" msprop:Generator_ColumnVarNameInTable="columntagScanAccount" msprop:Generator_ColumnPropNameInRow="tagScanAccount" msprop:Generator_ColumnPropNameInTable="tagScanAccountColumn" msprop:Generator_UserColumnName="tagScanAccount" type="xs:string" minOccurs="0" />
+              <xs:element name="taglocation" msprop:Generator_ColumnVarNameInTable="columntaglocation" msprop:Generator_ColumnPropNameInRow="taglocation" msprop:Generator_ColumnPropNameInTable="taglocationColumn" msprop:Generator_UserColumnName="taglocation" type="xs:string" minOccurs="0" />
+              <xs:element name="part" msprop:Generator_ColumnVarNameInTable="columnpart" msprop:Generator_ColumnPropNameInRow="part" msprop:Generator_ColumnPropNameInTable="partColumn" msprop:Generator_UserColumnName="part" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

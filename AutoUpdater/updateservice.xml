@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UpdateFileList>
+  <LocalFile path="Debug.zip" url="http://172.16.1.219/AutoUpdater/Debug.zip" lastver="1.0.5.2" size="6668213"  remark="
+    1、修改已扫描数量为 0 程式死机的BUG
+    208-05-30
+    1、优化扫描速度算法
+    2、优化转接订单，内盒算法
+    3、优化外箱条码算法
+
+ "        needRestart="true" />
+</UpdateFileList>
