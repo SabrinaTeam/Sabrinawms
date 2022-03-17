@@ -78,7 +78,27 @@ namespace COMMON
                     IRow row = sheet.CreateRow(count);
                     for (j = 0; j < data.Columns.Count; ++j)
                     {
-                        row.CreateCell(j).SetCellValue(data.Rows[i][j].ToString());
+                      //  row.CreateCell(j).SetCellValue(data.Rows[i][j].ToString());
+                        switch (data.Columns[j].ColumnName.ToString())
+                        {
+                            case "boxqty"://整型  
+                            case "boxSizeQty":
+                                string dd = Convert.ToString(data.Rows[i][j]);
+                                if (dd != "")
+                                {
+                                    row.CreateCell(j).SetCellValue(Convert.ToInt32(dd));
+                                }
+                                else
+                                {
+                                    row.CreateCell(j).SetCellValue(0);
+                                }
+
+                                break;
+                            default://空值处理
+                                row.CreateCell(j).SetCellValue(data.Rows[i][j].ToString());
+                                break;
+                        }
+
                     }
                     ++count;
                 }
@@ -99,16 +119,13 @@ namespace COMMON
         /// <param name="isFirstRowColumn">第一行是否是DataTable的列名</param>
         /// <param name="headno">要跳过的行</param>
         /// <returns>返回的DataTable</returns>
-        public DataTable ExcelToDataTable(string sheetName, int headno)
+        public DataTable ExcelToDataTable(string sheetName ,int headno)
         {
             ISheet sheet = null;
             DataTable data = new DataTable();
             int startRow = 0;
-
             // 计时
             DateTime beforDT = System.DateTime.Now;
-
-         
             try
             {
                 fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
@@ -116,18 +133,12 @@ namespace COMMON
                     workbook = new XSSFWorkbook(fs);
                 else if (fileName.IndexOf(".xls") > 0) // 2003版本
                     workbook = new HSSFWorkbook(fs);
-
                 DateTime afterDT1 = System.DateTime.Now;
                 TimeSpan ts1 = afterDT1.Subtract(beforDT);
               //  MessageBox.Show("DateTime总共花费{0}ms." + Convert.ToString(ts1.TotalMilliseconds));
-
                 if (sheetName != null)
                 {
                     sheet = workbook.GetSheet(sheetName);
-                    //  int i = workbook.NumberOfSheets;////获取个数
-                    //    string sheetname = workbook.GetSheetName(0);//获取名字
-                    //sheet = workbook.GetSheetAt(0); //获取指定的那一个
-                    //  MessageBox.Show(i.ToString());
                     if (sheet == null) //如果没有找到指定的sheetName对应的sheet，则尝试获取第一个sheet
                     {
                         sheet = workbook.GetSheetAt(0);
@@ -137,7 +148,6 @@ namespace COMMON
                 {
                     sheet = workbook.GetSheetAt(0);
                 }
-
                 if (headno != 0)
                 {
                     startRow = sheet.FirstRowNum + headno;//第一行
@@ -174,32 +184,9 @@ namespace COMMON
                         ICell cell = firstRow.GetCell(i);
                         if (cell != null)
                         {
-                            // string cellValue = "";
-                            /**********
-                            //单元格的类型为公式，返回公式的值
-                            if (cell.CellType == CellType.Numeric)
-                            {                                
-                                //是日期型
-                                if (HSSFDateUtil.IsCellDateFormatted(cell))
-                                {
-                                    cellValue = cell.DateCellValue.ToString("yyyy-MM-dd HH:mm:ss");
-                                }
-                                //不是日期型
-                                else
-                                {
-                                    cellValue = Convert.ToString(cell);
-                                }
-                            }
-                            else
-                            {
-                                cellValue = Convert.ToString(cell);
-                            }
-                          
-                            *****/
+                             
                             cellNo = cellNo + 1;
-                              string cellValue = Convert.ToString(cell)+ cellNo;
-
-                            //   string cellValue = cell.StringCellValue;
+                              string cellValue = Convert.ToString(cell)+ cellNo; 
                             if (cellValue != null  )
                             {
                                 DataColumn column = new DataColumn(cellValue );                                
@@ -225,40 +212,50 @@ namespace COMMON
                                 string datastr = "";
                                 /**********/
                                 //单元格的类型为公式，返回公式的值  CellType.Numeric
-                                if (row.GetCell(j).CellType == CellType.Numeric)  
+                                if (row.GetCell(j).CellType == CellType.Numeric  )  
                                 {
                                     //是日期型
                                     if (HSSFDateUtil.IsCellDateFormatted(row.GetCell(j)))
                                     {
                                         datastr = row.GetCell(j).DateCellValue.ToString("yyyy-MM-dd HH:mm:ss");
-                                        dataRow[j] = datastr;
+                                        dataRow[j] = datastr ;
                                     }
                                     else
                                     {
                                         dataRow[j] = row.GetCell(j).NumericCellValue.ToString();
                                     }
+                                }else if (row.GetCell(j).CellType == CellType.Formula)
+                                {
+                                    dataRow[j] = row.GetCell(j).NumericCellValue.ToString();
                                 }
                                 else
                                 {
-                                    dataRow[j] = row.GetCell(j).ToString();
+                                     dataRow[j] = row.GetCell(j).ToString();
                                 }
                                 /**********/
-                                string va = dataRow[j].ToString();
+                               
+                                string va = dataRow[j].ToString( );
+                                System.Type d = dataRow[j].GetType();
                                 while (j == 6 && va.Length <= 2)
                                 {
                                     va = "0" + va;
  
                                 }
-                                 
-                                bool r = IsDateTime(va);
-                                if (r)
+
+                                  bool r = IsDateTime(va);
+                               // int r = va.IndexOf("月");
+
+                                if ( r)
                                 {
+                                    
                                     va = va.Replace(".","-");
                                     va = va.Replace("/", "-");
                                     va = va.Replace("年", "-");
                                     va = va.Replace("月", "-");
                                     va = va.Replace("日", "");
                                     va = va.Replace("\\", "-");
+                                    va = va.Replace("--", "-");
+
                                 }
                                     
                                 if(va.Length >0 &&  va.Substring(va.Length - 1 ,1) == "-")
@@ -294,6 +291,10 @@ namespace COMMON
         public bool IsDateTime(string str)
         {
             bool isDateTime = false;
+               // dd-MM月-yyyy
+              if (Regex.IsMatch(str, "^?((?<day>\\d{1,2}))?-(?<month>\\d{1,2})月?-((?<year>\\d{2,4}))?$"))
+                isDateTime = true;
+
             // yyyy/MM/dd
             if (Regex.IsMatch(str, "^(?<year>\\d{2,4})/(?<month>\\d{1,2})/(?<day>\\d{1,2})$"))
                 isDateTime = true;
@@ -301,54 +302,53 @@ namespace COMMON
             if (Regex.IsMatch(str, "^(?<year>\\d{2,4})\\\\(?<month>\\d{1,2})\\\\(?<day>\\d{1,2})$"))
                 isDateTime = true;
             // yyyy-MM-dd 
-            else if (Regex.IsMatch(str, "^(?<year>\\d{2,4})-(?<month>\\d{1,2})-(?<day>\\d{1,2})$"))
+              if (Regex.IsMatch(str, "^(?<year>\\d{2,4})-(?<month>\\d{1,2})-(?<day>\\d{1,2})$"))
                 isDateTime = true;
             // yyyy.MM.dd 
-            else if (Regex.IsMatch(str, "^(?<year>\\d{2,4})[.](?<month>\\d{1,2})[.](?<day>\\d{1,2})$"))
+              if (Regex.IsMatch(str, "^(?<year>\\d{2,4})[.](?<month>\\d{1,2})[.](?<day>\\d{1,2})$"))
                 isDateTime = true;
             // yyyy年MM月dd
-            else if (Regex.IsMatch(str, "^((?<year>\\d{2,4})年)?(?<month>\\d{1,2})月((?<day>\\d{1,2}))?$"))
+              if (Regex.IsMatch(str, "^((?<year>\\d{2,4})年)?(?<month>\\d{1,2})月((?<day>\\d{1,2}))?$"))
                 isDateTime = true;
             // yyyy年MM月dd日
-            else if (Regex.IsMatch(str, "^((?<year>\\d{2,4})年)?(?<month>\\d{1,2})月((?<day>\\d{1,2})日)?$"))
+              if (Regex.IsMatch(str, "^((?<year>\\d{2,4})年)?(?<month>\\d{1,2})月((?<day>\\d{1,2})日)?$"))
                 isDateTime = true;
             // yyyy年MM月dd日
-            else if (Regex.IsMatch(str, "^((?<year>\\d{2,4})年)?(正|一|二|三|四|五|六|七|八|九|十|十一|十二)月((一|二|三|四|五|六|七|八|九|十){1,3}日)?$"))
+              if (Regex.IsMatch(str, "^((?<year>\\d{2,4})年)?(正|一|二|三|四|五|六|七|八|九|十|十一|十二)月((一|二|三|四|五|六|七|八|九|十){1,3}日)?$"))
                 isDateTime = true;
 
 
             // yyyy年MM月dd日
-            else if (Regex.IsMatch(str, "^(零|〇|一|二|三|四|五|六|七|八|九|十){2,4}年((正|一|二|三|四|五|六|七|八|九|十|十一|十二)月((一|二|三|四|五|六|七|八|九|十){1,3}(日)?)?)?$"))
+              if (Regex.IsMatch(str, "^(零|〇|一|二|三|四|五|六|七|八|九|十){2,4}年((正|一|二|三|四|五|六|七|八|九|十|十一|十二)月((一|二|三|四|五|六|七|八|九|十){1,3}(日)?)?)?$"))
                 isDateTime = true;
             // yyyy年
             //else if (Regex.IsMatch(str, "^(?<year>\\d{2,4})年$"))
             //    isDateTime = true;
 
             // 农历1
-            else if (Regex.IsMatch(str, "^(甲|乙|丙|丁|戊|己|庚|辛|壬|癸)(子|丑|寅|卯|辰|巳|午|未|申|酉|戌|亥)年((正|一|二|三|四|五|六|七|八|九|十|十一|十二)月((一|二|三|四|五|六|七|八|九|十){1,3}(日)?)?)?$"))
+              if (Regex.IsMatch(str, "^(甲|乙|丙|丁|戊|己|庚|辛|壬|癸)(子|丑|寅|卯|辰|巳|午|未|申|酉|戌|亥)年((正|一|二|三|四|五|六|七|八|九|十|十一|十二)月((一|二|三|四|五|六|七|八|九|十){1,3}(日)?)?)?$"))
                 isDateTime = true;
             // 农历2
-            else if (Regex.IsMatch(str, "^((甲|乙|丙|丁|戊|己|庚|辛|壬|癸)(子|丑|寅|卯|辰|巳|午|未|申|酉|戌|亥)年)?(正|一|二|三|四|五|六|七|八|九|十|十一|十二)月初(一|二|三|四|五|六|七|八|九|十)$"))
+              if (Regex.IsMatch(str, "^((甲|乙|丙|丁|戊|己|庚|辛|壬|癸)(子|丑|寅|卯|辰|巳|午|未|申|酉|戌|亥)年)?(正|一|二|三|四|五|六|七|八|九|十|十一|十二)月初(一|二|三|四|五|六|七|八|九|十)$"))
                 isDateTime = true;
 
             // XX时XX分XX秒
-            else if (Regex.IsMatch(str, "^(?<hour>\\d{1,2})(时|点)(?<minute>\\d{1,2})分((?<second>\\d{1,2})秒)?$"))
+              if (Regex.IsMatch(str, "^(?<hour>\\d{1,2})(时|点)(?<minute>\\d{1,2})分((?<second>\\d{1,2})秒)?$"))
                 isDateTime = true;
             // XX时XX分XX秒
-            else if (Regex.IsMatch(str, "^((零|一|二|三|四|五|六|七|八|九|十){1,3})(时|点)((零|一|二|三|四|五|六|七|八|九|十){1,3})分(((零|一|二|三|四|五|六|七|八|九|十){1,3})秒)?$"))
+              if (Regex.IsMatch(str, "^((零|一|二|三|四|五|六|七|八|九|十){1,3})(时|点)((零|一|二|三|四|五|六|七|八|九|十){1,3})分(((零|一|二|三|四|五|六|七|八|九|十){1,3})秒)?$"))
                 isDateTime = true;
             // XX分XX秒
-            else if (Regex.IsMatch(str, "^(?<minute>\\d{1,2})分(?<second>\\d{1,2})秒$"))
+              if (Regex.IsMatch(str, "^(?<minute>\\d{1,2})分(?<second>\\d{1,2})秒$"))
                 isDateTime = true;
             // XX分XX秒
-            else if (Regex.IsMatch(str, "^((零|一|二|三|四|五|六|七|八|九|十){1,3})分((零|一|二|三|四|五|六|七|八|九|十){1,3})秒$"))
+              if (Regex.IsMatch(str, "^((零|一|二|三|四|五|六|七|八|九|十){1,3})分((零|一|二|三|四|五|六|七|八|九|十){1,3})秒$"))
                 isDateTime = true;
 
             // XX时
-            else if (Regex.IsMatch(str, "\\b(?<hour>\\d{1,2})(时|点钟)\\b"))
+              if (Regex.IsMatch(str, "\\b(?<hour>\\d{1,2})(时|点钟)\\b"))
                 isDateTime = true;
-            else
-                isDateTime = false;
+             
 
             return isDateTime;
         }

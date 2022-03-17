@@ -21,7 +21,7 @@ namespace WinForm
     public partial class FrmInvoicePrint : Form
     {
        
-        private MessageQueue queue;
+      //  private MessageQueue queue;
 
         public List<mesEmployee> emps;
         public List<mesOrg> Orgs;
@@ -29,19 +29,19 @@ namespace WinForm
         CompletedToMesManager cmm = new CompletedToMesManager();
         mesOrgManager orgm = new mesOrgManager();
         public string SAAUlr = "http://192.168.4.251:5000/api/process";
-        public string SAATest = "http://192.168.4.251:5001/api/reportPlace";
+        public string SAATest = "http://192.168.4.251:5000/api/reportPlace";
         public string TOPUlr = "http://192.168.7.240:5000/api/process";
-        public string TOPTest = "http://192.168.7.240:5001/api/reportPlace";
-        bool isRead = false;
+        public string TOPTest = "http://192.168.7.240:5000/api/reportPlace";
+        public bool isRead = false;
         public string orgName = "SAA";
-        public string processID = "8";
+        public string processID = "10";
 
         DataTable invoiceDataSource = new DataTable();
 
         ConnectionFactory factory = new ConnectionFactory();
         IConnection connection;
         IModel channel;
-        public string HostName = "172.16.1.219";
+        public string HostName = "192.168.4.243";
         public string UserName = "sabrina";
         public string Password = "sabrina";
         public bool autoRecovery = true;
@@ -91,7 +91,7 @@ namespace WinForm
             ConnectionFactory factory = new ConnectionFactory();
             IConnection connection;
             IModel channel;
-            factory.HostName = "172.16.1.219";
+            factory.HostName = "192.168.4.243";
             factory.UserName = "sabrina";
             factory.Password = "sabrina";
             factory.AutomaticRecoveryEnabled = true;
@@ -143,7 +143,6 @@ namespace WinForm
             memStream.Write(arrBytes, 0, arrBytes.Length);
             memStream.Seek(0, SeekOrigin.Begin);
             Object obj = (Object)binForm.Deserialize(memStream);
-
             return obj;
         }
         private void button3_Click(object sender, EventArgs e)
@@ -181,7 +180,7 @@ namespace WinForm
             string order = this.textBox1.Text;
             bool pushResult = false;
             while (!pushResult)
-            {
+           {
                 pushResult = PushQueues(order);
             }
 
@@ -252,7 +251,7 @@ namespace WinForm
             }
             catch (Exception ex)
             {
-                
+                return boolresult;
                 throw ex;
             }
             return boolresult;

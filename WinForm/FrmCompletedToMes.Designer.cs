@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmCompletedToMes));
             this.butStartReceiv = new System.Windows.Forms.Button();
             this.gbSetting = new System.Windows.Forms.GroupBox();
             this.butStopReceiv = new System.Windows.Forms.Button();
@@ -43,6 +44,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.gbSearch = new System.Windows.Forms.GroupBox();
             this.cbCheckScanDate = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.butPrint = new System.Windows.Forms.Button();
             this.butSearch = new System.Windows.Forms.Button();
@@ -59,6 +61,7 @@
             this.RmeCopyRows = new System.Windows.Forms.ToolStripMenuItem();
             this.RmeExportExcel = new System.Windows.Forms.ToolStripMenuItem();
             this.gbDetail = new System.Windows.Forms.GroupBox();
+            this.axGRPrintViewer1 = new Axgregn6Lib.AxGRPrintViewer();
             this.gbSetting.SuspendLayout();
             this.gbSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -70,6 +73,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvWorkTagScans)).BeginInit();
             this.MenuRight.SuspendLayout();
             this.gbDetail.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.axGRPrintViewer1)).BeginInit();
             this.SuspendLayout();
             // 
             // butStartReceiv
@@ -191,6 +195,7 @@
             // gbSearch
             // 
             this.gbSearch.Controls.Add(this.cbCheckScanDate);
+            this.gbSearch.Controls.Add(this.button1);
             this.gbSearch.Controls.Add(this.label6);
             this.gbSearch.Controls.Add(this.butPrint);
             this.gbSearch.Controls.Add(this.butSearch);
@@ -217,6 +222,16 @@
             this.cbCheckScanDate.Text = "扫描日期";
             this.cbCheckScanDate.UseVisualStyleBackColor = true;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(550, 15);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 36);
+            this.button1.TabIndex = 18;
+            this.button1.Text = "打印";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -228,12 +243,13 @@
             // 
             // butPrint
             // 
-            this.butPrint.Location = new System.Drawing.Point(550, 15);
+            this.butPrint.Location = new System.Drawing.Point(339, 3);
             this.butPrint.Name = "butPrint";
             this.butPrint.Size = new System.Drawing.Size(75, 37);
             this.butPrint.TabIndex = 13;
             this.butPrint.Text = "打印";
             this.butPrint.UseVisualStyleBackColor = true;
+            this.butPrint.Visible = false;
             this.butPrint.Click += new System.EventHandler(this.butPrint_Click);
             // 
             // butSearch
@@ -390,11 +406,22 @@
             this.gbDetail.TabStop = false;
             this.gbDetail.Text = "详细数据";
             // 
+            // axGRPrintViewer1
+            // 
+            this.axGRPrintViewer1.Enabled = true;
+            this.axGRPrintViewer1.Location = new System.Drawing.Point(984, 10);
+            this.axGRPrintViewer1.Name = "axGRPrintViewer1";
+            this.axGRPrintViewer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axGRPrintViewer1.OcxState")));
+            this.axGRPrintViewer1.Size = new System.Drawing.Size(127, 45);
+            this.axGRPrintViewer1.TabIndex = 18;
+            this.axGRPrintViewer1.Visible = false;
+            // 
             // FrmCompletedToMes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1202, 615);
+            this.Controls.Add(this.axGRPrintViewer1);
             this.Controls.Add(this.labOrgID);
             this.Controls.Add(this.gbDetail);
             this.Controls.Add(this.label1);
@@ -424,6 +451,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvWorkTagScans)).EndInit();
             this.MenuRight.ResumeLayout(false);
             this.gbDetail.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.axGRPrintViewer1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -460,5 +488,7 @@
         private System.Windows.Forms.Label msg;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.CheckBox cbCheckScanDate;
+        private System.Windows.Forms.Button button1;
+        private Axgregn6Lib.AxGRPrintViewer axGRPrintViewer1;
     }
 }

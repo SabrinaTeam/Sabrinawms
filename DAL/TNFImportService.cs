@@ -13,20 +13,57 @@ namespace DAL
 
         public DataTable getPODataFromScanService(string startDate, string StopDate)
         {
-            string sql = @" SELECT  id,Barcode,CartonNo,PackQty,Style,Size,Color,MasterPO,StyleDescription,Country FROM U_NGC   WHERE   AddDate BETWEEN ' " + startDate +"' AND ' "+ StopDate+"'";
+            string sql = @" SELECT  id,Barcode,CartonNo,PackQty,Style,Size,Color,( CASE   WHEN LEN(MasterPO) > 0 THEN    MasterPO else  POCut    END  )  MasterPO ,StyleDescription,Country FROM U_NGC   WHERE   AddDate BETWEEN ' " + startDate +"' AND ' "+ StopDate+"'";
             DataTable result = TNF_SqlHelper.ExcuteTable(sql);
             return result;
         }
 
         public DataTable getPODataFromScanService(string PONumber)
         {
-            string sql = @" SELECT  id,Barcode,CartonNo,PackQty,Style,Size,Color,MasterPO,StyleDescription,Country FROM U_NGC   WHERE   MasterPO LIKE '" + PONumber + @"%'";
+            string sql = @"SELECT Id,
+                                   Barcode,
+                                   CartonNo,
+                                   PackQty,
+                                   Style,
+                                   Size,
+                                   Color,
+                                   (CASE
+                                         WHEN LEN(MasterPO) > 0 THEN
+                                            MasterPO
+                                        ELSE
+                                            POCut
+                                    END
+                                   ) MasterPO,
+                                   StyleDescription,
+                                   Country
+                            FROM U_NGC
+                            WHERE MasterPO LIKE   '" + PONumber + @"%'
+                                  OR POCut LIKE  '" + PONumber + @"%'
+                            GROUP BY Id,
+                                     Barcode,
+                                     CartonNo,
+                                     PackQty,
+                                     Style,
+                                     Size,
+                                     Color,
+                                     (CASE
+                                         WHEN LEN(MasterPO) > 0 THEN
+                                              MasterPO
+                                          ELSE
+                                              POCut
+                                      END
+                                     ),
+                                     StyleDescription,
+                                     Country;";
             DataTable result = TNF_SqlHelper.ExcuteTable(sql);
             return result;
         }
         public DataTable getPODataFromScanService( int Id )
         {
-            string sql = @" SELECT  id,Barcode,CartonNo,PackQty,Style,Size,Color,MasterPO,StyleDescription,Country FROM U_NGC   WHERE       ID >  " + Id ;
+            string sql = @" SELECT  id,Barcode,CartonNo,PackQty,Style,Size,Color,
+                            ( CASE   WHEN LEN(MasterPO) > 0 THEN    MasterPO else  POCut    END  )  MasterPO ,
+                            StyleDescription,Country FROM U_NGC   WHERE     
+                            ID >  " + Id ;
             DataTable result = TNF_SqlHelper.ExcuteTable(sql);
             return result;
         }

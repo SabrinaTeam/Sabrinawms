@@ -32,10 +32,12 @@ namespace DAL
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 string kg = dt.Rows[i]["kg"].ToString();
-                if(kg == "")
+                if (kg == "")
                 {
                     kg = "null";
-                } 
+                }
+                /*
+
                 sqlValue = sqlValue +
                            "select  \"" + dt.Rows[i]["TagNumber"].ToString() + "\"  AS TagNumber , \""
                                + dt.Rows[i]["Cust_id"].ToString() + "\"  AS Cust_id,\""
@@ -72,7 +74,27 @@ namespace DAL
                         WHERE
 	                        NOT EXISTS ( SELECT TagNumber FROM inv WHERE inv.TagNumber = q.TagNumber AND q.Location = ""HD"" );
                         ";
-            sqlstr = sqlstr + sqlw;
+            sqlstr = sqlstr + sqlw;    str1.IndexOf("字")
+            
+            */
+                
+
+                sqlValue = sqlValue +
+                          "(  \"" + dt.Rows[i]["TagNumber"].ToString() + "\"   , \""
+                              + dt.Rows[i]["Cust_id"].ToString() + "\"  ,\""
+                              + dt.Rows[i]["Location"].ToString() + "\"  ,\""
+                              + dt.Rows[i]["update_date"].ToString() + "\" ,\""
+                              + dt.Rows[i]["org"].ToString() + "\"  ,\""
+                              + dt.Rows[i]["con_no"].ToString() + "\" ,\""
+                              + dt.Rows[i]["create_pc"].ToString() + "\" ,"
+                              + kg + " ,\""
+                              + dt.Rows[i]["subinv"].ToString() + "\"  ,\""
+                              + dt.Rows[i]["ScanTime"].ToString() + "\" ,\""
+                              + dt.Rows[i]["exeStatus"].ToString() + "\"  ),";
+            }
+            sqlValue = sqlValue.Substring(0, sqlValue.Length - 1);
+            sqlstr = @"INSERT ignore INTO inv ( TagNumber, Cust_id, Location, update_date, org, con_no, create_pc, kg, subinv, ScanTime, exeStatus )  VALUES " + sqlValue +";";
+              
 
             int result = 0; 
             if (MiddleWare == "1")

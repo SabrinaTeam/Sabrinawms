@@ -38,7 +38,7 @@ namespace COMMON
                 using (ExcelHelper excelHelper = new ExcelHelper(file))
                 {
                     DataTable dt = excelHelper.ExcelToDataTable(sheetname, headno);
-                    if (dt.Rows.Count <= 0)
+                    if (dt is null || dt.Rows.Count <= 0)
                     {
                         return null;
                     }
@@ -50,7 +50,7 @@ namespace COMMON
                         {
                             scan[i] = ToModel(dt.Rows[i]);//这里转换过来
                         }
-                        return scan; 
+                        return scan;
                     }
                 }
             }
@@ -62,8 +62,8 @@ namespace COMMON
         }
 
         private Scans ToModel(DataRow row)//建立要导入的文件的model
-        { 
-        Scans scan = new Scans(); 
+        {
+        Scans scan = new Scans();
             if (row.ItemArray.Length > 0)
             {
                 scan.TagNumber = Convert.ToString(row.ItemArray[0].ToString());

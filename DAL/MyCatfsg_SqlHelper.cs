@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
-using Pomelo.Data.MyCat;
 using System.Data;
+using Pomelo.Data.MyCat;
 
 namespace DAL
 {
@@ -42,6 +42,7 @@ namespace DAL
             {
                 conn = OpenConn();
                 var cmd = conn.CreateCommand();
+                cmd.CommandTimeout = 300;
                 cmd.CommandText = sqlstr;
                 cmd.CommandType = CommandType.Text;
                 int result = cmd.ExecuteNonQuery();
@@ -66,7 +67,7 @@ namespace DAL
         public static MyCatConnection OpenConn()
         {
 
-            MyCatConnection conn = new MyCatConnection();
+            MyCatConnection conn = new MyCatConnection(); 
             conn.ConnectionString = MyCatconnStr_fsg;
             conn.Open();
             return conn;
@@ -97,22 +98,39 @@ namespace DAL
 
         public static DataTable ExcuteTable(string sqlstr)
         {
-
             MyCatConnection conn = null;
             try
             {
+
+                /*
+                 * cmd.CommandTimeout = 180;
+                 
+                cmd.CommandText = sql;
+                DataSet dataset = new DataSet();
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                adapter.Fill(dataset);
+                return dataset.Tables[0];
+                */
+
+
+
                 conn = OpenConn();
                 var cmd = conn.CreateCommand();
-                cmd.CommandTimeout = 0;
+                 cmd.CommandTimeout = 180;
                 cmd.CommandText = sqlstr;
                 cmd.CommandType = CommandType.Text;
+                DataSet dataset = new DataSet();
                 MyCatDataAdapter da = new MyCatDataAdapter();
                 da.SelectCommand = cmd;
-                var reader = cmd.ExecuteReader();
-                CloseConn(conn);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-                return dt;
+               // var reader = cmd.ExecuteReader();
+             //   DataTable dt = new DataTable();
+              //  da.Fill(dt);
+              //  CloseConn(conn);
+              da.Fill(dataset);
+              return dataset.Tables[0];
+             //   return dt;
+
+              
             }
             catch (Exception ex)
             {
@@ -174,14 +192,28 @@ namespace DAL
                 cmd.CommandText = sqlstr;
                 cmd.CommandType = CommandType.Text;
                 cmd.Parameters.AddRange(parameters);
+                DataSet dataset = new DataSet();
                 MyCatDataAdapter da = new MyCatDataAdapter();
                 da.SelectCommand = cmd;
-                var reader = cmd.ExecuteReader();
+            //   var reader = cmd.ExecuteReader();
                 // int execute = cmd.ExecuteNonQuery();
-                CloseConn(conn);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-                return dt;
+              //  CloseConn(conn);
+             //   DataTable dt = new DataTable();
+             //   da.Fill(dt);
+             //   return dt;
+
+
+               
+             //   MyCatDataAdapter da = new MyCatDataAdapter();
+             //   da.SelectCommand = cmd;
+                // var reader = cmd.ExecuteReader();
+                //   DataTable dt = new DataTable();
+                //  da.Fill(dt);
+                //  CloseConn(conn);
+                da.Fill(dataset);
+                return dataset.Tables[0];
+
+
             }
             catch (Exception ex)
             {

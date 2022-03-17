@@ -12,7 +12,8 @@ namespace DAL
 {
     public class propertysService
     {
-        public static readonly string MiddleWare = ConfigurationManager.ConnectionStrings["EnableMiddleWare"].ConnectionString;
+       // public static readonly string MiddleWare = ConfigurationManager.ConnectionStrings["EnableMiddleWare"].ConnectionString;
+        
 
         public DataTable getPropertysByPnumber(string org, string propertyIDs)
         {
@@ -36,7 +37,7 @@ namespace DAL
 	                        FAJ.FAJ06 propertyName,
 	                        FAJ.FAJ08 propertyMode,
 	                        FAJ.FAJ93 propertyType,
-	                       TO_CHAR(FAJ.FAJ25,'yyyy-mm-dd hh24:mi:ss')  buyDate,
+	                        TO_CHAR(FAJ.FAJ25,'yyyy-mm-dd hh24:mi:ss')  buyDate,
 	                        FAJ.FAJ20 propertyDept,
 	                        FAJ.FAJ21,
 	                        FAJ.FAJ47 propertyBuyID,
@@ -114,7 +115,8 @@ namespace DAL
            sqlValue = sqlValue.Substring(0, sqlValue.Length - 1);
            sqlstr = @"UPDATE propertys set propertyIsDel = 1 , propertyDelPC = '"+ propertyDelPC  + "' , propertyDelNote='"+ delnote + "',propertyDelDate ='"+ propertyDelDate + "' WHERE propertyID in (" + sqlValue +")";
             int result = 0;
-            
+            result = Mysql_SqlHelper.ExecuteNonQuery(sqlstr);
+            /*
             if (MiddleWare == "1")
             {
                 result = MyCatfsg_SqlHelper.ExecuteNonQuery(sqlstr);
@@ -123,6 +125,7 @@ namespace DAL
             {
                 result = Mysqlfsg_SqlHelper.ExecuteNonQuery(sqlstr);
             }
+            */
             return result;
 
         }
@@ -179,7 +182,9 @@ namespace DAL
                                             )  VALUES " + sqlValue;
 
             int result = 0;
-            
+            result = Mysql_SqlHelper.ExecuteNonQuery(sqlstr);  //MySqlconnStr MySqlconnStr
+            /*
+
             if (MiddleWare == "1")
             {
                 result = MyCatfsg_SqlHelper.ExecuteNonQuery(sqlstr);
@@ -188,6 +193,7 @@ namespace DAL
             {
                 result = Mysqlfsg_SqlHelper.ExecuteNonQuery(sqlstr);
             }
+            */
             return result; 
            
         }
@@ -240,6 +246,8 @@ namespace DAL
             
 
             DataTable dt = new DataTable();
+            dt = Mysql_SqlHelper.ExcuteTable(sql);
+            /*
             if (MiddleWare == "1")
             {
                 dt = MyCatfsg_SqlHelper.ExcuteTable(sql);
@@ -248,6 +256,7 @@ namespace DAL
             {
                 dt = Mysqlfsg_SqlHelper.ExcuteTable(sql);
             }
+            */
             return dt;
 
         }
@@ -269,10 +278,9 @@ namespace DAL
             }
             wherestr = wherestr.Remove(wherestr.Length - 1, 1);
             sql = @"SELECT * from  propertys WHERE   propertyID in (" + wherestr + ")";
-             
-             
-
             DataTable dt = new DataTable();
+            dt = Mysql_SqlHelper.ExcuteTable(sql);
+            /*
             if (MiddleWare == "1")
             {
                 dt = MyCatfsg_SqlHelper.ExcuteTable(sql);
@@ -281,6 +289,7 @@ namespace DAL
             {
                 dt = Mysqlfsg_SqlHelper.ExcuteTable(sql);
             }
+            */
             return dt;
 
         }
@@ -301,7 +310,9 @@ namespace DAL
             }
             sqlValue = sqlValue.Substring(0, sqlValue.Length - 1);
             sqlstr = @"UPDATE propertys set propertyPrintTims = propertyPrintTims+1 ,propertyPrintPC ='"+ propertyPrintPC + "' WHERE propertyID in (" + sqlValue + ")";
-            int result = 0; 
+            int result = 0;
+            result = Mysql_SqlHelper.ExecuteNonQuery(sqlstr);
+            /*
             if (MiddleWare == "1")
             {
                 result = MyCatfsg_SqlHelper.ExecuteNonQuery(sqlstr);
@@ -310,6 +321,7 @@ namespace DAL
             {
                 result = Mysqlfsg_SqlHelper.ExecuteNonQuery(sqlstr);
             }
+            */
             return result;
 
         }

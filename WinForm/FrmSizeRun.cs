@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using org.omg.PortableServer;
 
 namespace WinForm
 {
@@ -41,6 +42,8 @@ namespace WinForm
             this.gbSize.Width = this.gbSearch.Width;
             this.gbPO.Width = this.gbSearch.Width;
             this.gbPO.Height = this.Height - 335;
+            this.txtLogs.Visible = false;
+            
 
         }
 
@@ -55,40 +58,76 @@ namespace WinForm
                 this.Height = 490;
             }
 
-
-
             this.gbSearch.Width = this.Width - 20;
             this.gbSize.Width = this.gbSearch.Width;
             this.gbPO.Width = this.gbSearch.Width;
             this.gbPO.Height = this.Height - 335;
-        }
 
+            this.txtLogs.Left = Convert.ToInt32(this.dgvSizeRun.Width * 0.5);
+            this.txtLogs.Width = Convert.ToInt32(this.dgvSizeRun.Width * 0.5);
+            this.txtLogs.Height = Convert.ToInt32(this.dgvSizeRun.Height) - 10;
+            this.ckLogs.Left = this.txtLogs.Left;
+
+        }
+        public bool isbusy = false;
         private void btSearch_Click(object sender, EventArgs e)
         {
-            this.getByMyno();
+           
+            if (!this.isbusy)
+            {
+                this.getByMyno();
+            }
+          
         }
         public void getByMyno()
         {
             Cursor = Cursors.WaitCursor;
+            this.isbusy = true;
+            this.btSearch.Enabled = false;
             string my_no = this.txtMyNumber.Text.Trim();
             string my_style = this.txtStyle.Text.Trim();
             bool onlyStyle = false;
             if (my_no.Length <= 0 && my_style.Length <=0)
             {
                 Cursor = Cursors.Default;
+                this.isbusy = false;
+                this.btSearch.Enabled = true;
                 return;
             }
-           
+
+            this.txtLogs.Text = "";
+            this.txtLogs.Visible = false;
             TestLinManager tl = new TestLinManager();
             string serverIP = "192.168.0.254";
-           bool testlink = tl.LinServer(serverIP);
-            if (!testlink)
+            string linkServer = "";
+            bool LinkSuccess = false;
+            bool testlink = tl.LinServer(serverIP);
+            if (testlink)
             {
-                MessageBox.Show("连接服务器 "+ serverIP + "失败！请找IT确认网络服务是否OK","失败",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                linkServer = "BESTconnStr"; //BESTconnStr_KM
+                LinkSuccess = true;
+            }          
+            if (!LinkSuccess)
+            {
+                serverIP = "192.168.4.122";
+                testlink = tl.LinServer(serverIP);
+                if (testlink)
+                {
+                    linkServer = "BESTconnStr_KM"; 
+                    LinkSuccess = true;
+                  
+                }
+            }
+            if (!LinkSuccess)
+            {
+                MessageBox.Show("连接服务器 " + serverIP + "失败！请找IT确认网络服务是否OK", "失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Cursor = Cursors.Default;
+                this.isbusy = false;
+                this.btSearch.Enabled = true;
                 return;
             }
-            
+
+
             if (my_no.Length <= 0)
             {
                 my_no = null;
@@ -116,11 +155,18 @@ namespace WinForm
             string[] parameters = { my_no, my_style };
 
             // 查询色组
-            DataTable clr_dt = sizem.getClr_noByMy_no(parameters);
+            DataTable clr_dt = sizem.getClr_noByMy_no(parameters, linkServer);
             if (clr_dt.Rows.Count <= 0)
             {
-                MessageBox.Show("没有数据，请确认自编单号或款式是否正确");
+                this.txtLogs.Visible = true;
+                this.ckLogs.Checked =  true;
+                this.txtLogs.AppendText("没有色组数据，请确认自编单号或款式是否正确 \r\n");
+
+
+            //    MessageBox.Show("没有色组数据，请确认自编单号或款式是否正确");
                 Cursor = Cursors.Default;
+                this.isbusy = false;
+                this.btSearch.Enabled = true;
                 return;
             }
             // 查询size组
@@ -133,11 +179,17 @@ namespace WinForm
             my_nos = my_nos.Substring(0, my_nos.Length-1);
            
 
-            DataTable size_dt = sizem.getSizeByMy_no(my_nos);
+            DataTable size_dt = sizem.getSizeByMy_no(my_nos,linkServer);
             if (size_dt.Rows.Count <= 0)
             {
-                MessageBox.Show("没有数据，请确认自编单或款式号是否正确");
+                this.txtLogs.Visible = true;
+                this.ckLogs.Checked = true;
+                this.txtLogs.AppendText("没有size组数据，请确认自编单或款式号是否正确 \r\n");
+
+               // MessageBox.Show("没有size组数据，请确认自编单或款式号是否正确");
                 Cursor = Cursors.Default;
+                this.isbusy = false;
+                this.btSearch.Enabled = true;
                 return;
             }
             DataTable sizeRunDT = new DataTable();
@@ -187,26 +239,23 @@ namespace WinForm
 
             // 生成表框架
             for (int z = 0; z < size_dt.Rows.Count; z++)
-            {
-                //for (int i = 1; i < size_dt.Columns.Count; i++)
-               // {
-                 //   sizes.Add(size_dt.Rows[z][i].ToString());
-                    //sizeRunDT.Columns.Add(size_dt.Rows[z][i].ToString());
-
-              //  }
-
-              
-
-               
+            { 
 
 
                 //查询sizeRun数量
-                DataTable sizeRunCount_dt = sizem.getSizeRunByMy_no(size_dt.Rows[z]["my_no"].ToString());
+                DataTable sizeRunCount_dt = sizem.getSizeRunByMy_no(size_dt.Rows[z]["my_no"].ToString(),linkServer);
                 if (sizeRunCount_dt.Rows.Count <= 0)
                 {
-                    MessageBox.Show("没有数据，请确认自编单号是否正确");
-                    Cursor = Cursors.Default;
-                    return;
+                    this.txtLogs.Visible = true;
+                    this.ckLogs.Checked = true;
+                    this.txtLogs.AppendText("  没有 " + size_dt.Rows[z]["my_no"].ToString() + " 的 sizeRun 数据,请确认自编单号是否正确...\r\n");
+                   
+                 //   MessageBox.Show("没有 " + size_dt.Rows[z]["my_no"].ToString()+" 的sizeRun数量数据，请确认自编单号是否正确");
+                //    Cursor = Cursors.Default;
+                   // this.isbusy = false;
+                   // this.btSearch.Enabled = true;
+                  //  return;
+                  continue;
 
                 }
 
@@ -299,11 +348,17 @@ namespace WinForm
             if (!onlyStyle)
             {
                 //所有原始资料
-                DataTable allSizerun = sizem.getAllSizeRunByMy_no(my_no);
+                DataTable allSizerun = sizem.getAllSizeRunByMy_no(my_no, linkServer);
                 if (allSizerun.Rows.Count <= 0)
                 {
-                    MessageBox.Show("没有详细数据，请确认自编单号是否正确");
+                    this.txtLogs.Visible = true;
+                    this.ckLogs.Checked = true;
+                    this.txtLogs.AppendText("没有详细数据，请确认自编单号是否正确 \r\n");
+
+                //    MessageBox.Show("没有详细数据，请确认自编单号是否正确");
                     Cursor = Cursors.Default;
+                    this.isbusy = false;
+                    this.btSearch.Enabled = true;
                     return;
                 }
 
@@ -312,6 +367,8 @@ namespace WinForm
               
 
             Cursor = Cursors.Default;
+            this.btSearch.Enabled = true;
+            this.isbusy = false;
         }
 
         private void RmeCopyCells_Click(object sender, EventArgs e)
@@ -485,6 +542,18 @@ namespace WinForm
                     MenuRight.Show(MousePosition.X, MousePosition.Y);
 
                 }
+            }
+        }
+
+        private void ckLogs_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.ckLogs.Checked)
+            {
+                this.txtLogs.Visible = true;
+            }
+            else
+            {
+                this.txtLogs.Visible = false;
             }
         }
     }

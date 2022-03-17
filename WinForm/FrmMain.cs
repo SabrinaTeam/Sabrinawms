@@ -12,7 +12,6 @@ namespace WinForm
     public partial class FrmMain : Form
     {
 
-      
         public FrmMain()
         {
             InitializeComponent();
@@ -41,7 +40,7 @@ namespace WinForm
                 // cancel the closure of the form.
                 Application.Exit();
             }
-          
+
         }
 
         private void MenuCloseAll_Click(object sender, EventArgs e)
@@ -158,7 +157,7 @@ namespace WinForm
             frm.MdiParent = this;
             frm.Show();
             frm.Activate();
- 
+
         }
 
         private void MenuInvoicePrint_Click(object sender, EventArgs e)
@@ -201,6 +200,118 @@ namespace WinForm
             frm.MdiParent = this;
             frm.Show();
             frm.Activate();
+
+        }
+
+        private void MenuFullPO_Click(object sender, EventArgs e)
+        {
+            FrmProductsFullSearch frm = FrmProductsFullSearch.GetSingleton();
+            frm.MdiParent = this;
+            frm.Show();
+            frm.Activate();
+        }
+
+        private void MenuProductSearch_Click(object sender, EventArgs e)
+        {
+            FrmProductSearch frm = FrmProductSearch.GetSingleton();
+            frm.MdiParent = this;
+            frm.Show();
+            frm.Activate();
+        }
+
+        private void menuCFoutput_Click(object sender, EventArgs e)
+        {
+            FrmCFoutput frm = FrmCFoutput.GetSingleton();
+            frm.MdiParent = this;
+            frm.Show();
+            frm.Activate();
+        }
+
+        private void menuHDIn_Click(object sender, EventArgs e)
+        {
+            CompletedToMesLogin frm = CompletedToMesLogin.GetSingleton();
+            frm.MdiParent = this;
+            frm.Show();
+            frm.Activate();
+        }
+
+        private void menu10In_Click(object sender, EventArgs e)
+        {
+            CompletedToMesLogin frm = CompletedToMesLogin.GetSingleton();
+            frm.MdiParent = this;
+            frm.Show();
+            frm.Activate();
+        }
+
+        private void MenuAsicsImport_Click(object sender, EventArgs e)
+        {
+            FrmAsicsImport frm = FrmAsicsImport.GetSingleton();
+            frm.MdiParent = this;
+            frm.Show();
+            frm.Activate();
+        }
+
+
+
+        private void MenuEmployeeManager_Click(object sender, EventArgs e)
+        {
+            FrmEmployee frm = FrmEmployee.GetSingleton();
+            frm.MdiParent = this;
+            frm.Show();
+            frm.Activate();
+        }
+
+        private void MenuScanSearch_Click(object sender, EventArgs e)
+        {
+            FrmScanSearch frm = FrmScanSearch.GetSingleton();
+            frm.MdiParent = this;
+            frm.Show();
+            frm.Activate();
+
+        }
+
+        private void MenuScanMakeComplete_Click(object sender, EventArgs e)
+        {
+            FrmComplete frm = FrmComplete.GetSingleton();
+            frm.MdiParent = this;
+            frm.Show();
+            frm.Activate();
+        }
+
+        private void productionStatusToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ProductionStatus frm = ProductionStatus.GetSingleton();
+            frm.MdiParent = this;
+            frm.Show();
+            frm.Activate();
+        }
+
+        private void ShippingPackages_Click(object sender, EventArgs e)
+        {
+            FrmShippingPackages frm = FrmShippingPackages.GetSingleton();
+            frm.MdiParent = this;
+            frm.Show();
+            frm.Activate();
+        }
+
+        private void productionStatus2ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ProductionStatus2 frm = ProductionStatus2.GetSingleton();
+            frm.MdiParent = this;
+            frm.Show();
+            frm.Activate();
+        }
+
+        private void MenuIE_Click(object sender, EventArgs e)
+        {
+            lEBom frm = lEBom.GetSingleton();
+            frm.MdiParent = this;
+            frm.Show();
+            frm.Activate();
+        }
+
+        private void FrmMain_Load(object sender, EventArgs e)
+        {
 
         }
     }

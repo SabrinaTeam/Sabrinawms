@@ -1,5 +1,5 @@
 ﻿using MODEL;
-
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -122,25 +122,28 @@ namespace DAL
             }
             sqlstr = sqlstr + sqlwhere;
 
-            /*
+            
         OracleParameter[] ps = {
                       new OracleParameter("pName",parameter[0].pkey.ToString()),
                       new OracleParameter("pValue",parameter[0].pvalue.ToString())
                                 };
-             DataTable dt = ERP_SqlHelper.ExcuteTable(sqlstr, ps);
-            */
+           //  DataTable dt = ERP_SqlHelper.ExcuteTable(sqlstr, ps);
+
+            DataTable dt = ERP_SqlHelper.ExcuteTable(sqlstr);
+            /*
+                        DataTable dt = new DataTable();
+                        if (MiddleWare == "1")
+                        {
+                            dt = MyCatfsg_SqlHelper.ExcuteTable(sqlstr);
+                        }
+                        else
+                        {
+                            dt = Mysqlfsg_SqlHelper.ExcuteTable(sqlstr);
+                        }
+                        */
 
 
-            DataTable dt = new DataTable();
-            if (MiddleWare == "1")
-            {
-                dt = MyCatfsg_SqlHelper.ExcuteTable(sqlstr);
-            }
-            else
-            {
-                dt = Mysqlfsg_SqlHelper.ExcuteTable(sqlstr);
-            } 
-            List<MODEL.accessoryOut> lists = null;
+            List < MODEL.accessoryOut> lists = null;
             if (dt.Rows.Count > 0)
             {
                 lists = new List<MODEL.accessoryOut>();
@@ -1373,12 +1376,9 @@ and(size != '' or size is null)  group by od_no,style_id,mas_id,color_no,size--s
 
         public  DataTable getAccessoryhByreceiveNumber(string reno, string renoBatch)
         {
-            //SELECT * from accessoryouth where receiveNumber ='DA2010000001'  and receiveNumberBatch='04'
             string sqlstr = @"SELECT * from accessoryouth where receiveNumber ='" + reno + "' and receiveNumberBatch= '" + renoBatch + "'";
-           
-           
             DataTable dt = new DataTable();
-            if (MiddleWare == "1")
+            if (MiddleWare == "0")
             {
                 dt = MyCatfsg_SqlHelper.ExcuteTable(sqlstr);
             }

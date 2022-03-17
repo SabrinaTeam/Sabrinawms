@@ -1,13 +1,9 @@
 ﻿using MODEL;
-using MySql.Data.MySqlClient;
 using Pomelo.Data.MyCat;
-using System;
+using Pomelo.Data.MySql;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL
 {
@@ -16,16 +12,7 @@ namespace DAL
 		public static readonly string MiddleWare = ConfigurationManager.ConnectionStrings["EnableMiddleWare"].ConnectionString;
 		public DataTable getLocation(string org)
         {
-            string sql = @"SELECT
-	                            tagLocation 
-                            FROM
-	                            mesworktagscans 
-                            WHERE
-	                            tagOrg = 'SAA' 
-	                            AND tagLocation != '' 
-	                            AND tagLocation IS NOT NULL 
-                            GROUP BY
-	                            tagLocation";
+            string sql = @"SELECT	tagLocation FROM	meslocation WHERE	tagOrg = '"+ org + "' ORDER BY	tagLocation";
 
 			DataTable dt = new DataTable();
 		  if (MiddleWare == "1")
@@ -42,49 +29,15 @@ namespace DAL
 
         public DataTable getMesWorktagScans(List<CompletedSearch> parameters)
         {
-            string sql = @"SELECT
-								s.ID,
-								s.tagOrg,
-								d.DeptName,
-								s.tagLine,
-								s.tagLocation,
-								s.tagNumber,
-								s.tagStyle,
-								tagColor,
-								s.tagSize,
-								s.tagQty,
-								s.tagScanAccount,
-								s.tagScanDateTime,
-								s.tagScanPDAUUID,
-							CASE
-									s.isInOrOut 
-									WHEN 0 THEN
-									'IN' ELSE 'OUT' 
-								END AS isInOrOut,
-								s.tagInvoice,
-								s.tagReceiptNumber,
-								s.isPrints 
-							FROM
-								mesworktagscans s
-								LEFT JOIN mesdepts d ON s.tagScanDeptID = d.DeptNumber 
-							WHERE 1 = 1   and
-								if (@tagOrg = 'SAA',tagNumber like 'A%', 0 = 0 ) and
-								if (@tagOrg = 'TOP',tagNumber like 'T%', 0 = 0 ) and
-								if (@tagScanDeptID = '',0 = 0, tagScanDeptID = @tagScanDeptID ) and
-								if (@tagLocation = '',0 = 0, tagLocation = @tagLocation ) and
-								if (@isCheckDate = 'False',0 = 0, tagScanDateTime  BETWEEN @starDate AND  @stopDate) and
-								if (@searchType = '0' , isInOrOut = @searchType ,0 = 0 ) and
-								if (@searchType = '1',  isInOrOut = @searchType ,0 = 0) and
-								if (@searchType = '-1', isDels != @searchType  and  isInOrOut = 0 , 0 = 0 ) and
-								if (@searchType = ''  , 0 = 0, 0 = 0 ) 
-								ORDER BY  Id";
 			string tagOrg = "";
 			string tagScanDeptID = "";
 			string tagLocation = "";
 			string isCheckDate = "";
 			string starDate = "";
 			string stopDate = "";
-			string searchType = ""; 
+			string searchType = "";
+			string style = "";
+			string tagNumber = "";
 
 			foreach (CompletedSearch item in parameters)
 			{
@@ -111,8 +64,56 @@ namespace DAL
 					case "searchType":
 						searchType = item.value;
 						break;
+					case "style":
+						style = "%" + item.value +"%";
+						break;
+					case "tagNumber":
+						tagNumber = "%" + item.value + "%";
+						break;
 				}
 			}
+
+			string sql = @"SELECT
+								s.ID,
+								s.tagOrg,
+								d.DeptName,
+								s.tagLine,
+								s.tagLocation,
+								s.tagNumber,
+								s.tagStyle,
+								tagColor,
+								s.tagSize,
+								s.tagQty,
+								s.tagScanAccount,
+								s.tagScanDateTime,
+								s.tagScanPDAUUID,
+							CASE
+									s.isInOrOut 
+									WHEN 0 THEN
+									'IN' ELSE 'OUT' 
+								END AS isInOrOut,
+								s.tagInvoice,
+								s.tagReceiptNumber,
+								s.isPrints 
+							FROM
+								mesworktagscans s
+								LEFT JOIN mesdepts d ON s.tagScanDeptID = d.DeptNumber 
+							WHERE 1 = 1  and
+								  tagStyle like  '" + style + @"'   and
+								  tagNumber like  '" + tagNumber + @"'  and
+								
+								if (@tagOrg = 'SAA',tagNumber like 'A%', 0 = 0 ) and
+								if (@tagOrg = 'TOP',tagNumber like 'T%', 0 = 0 ) and
+								if (@tagScanDeptID = '',0 = 0, tagScanDeptID = @tagScanDeptID ) and
+								if (@tagLocation = '',0 = 0, tagLocation = @tagLocation ) and
+								
+								if (@isCheckDate = 'False',0 = 0, tagScanDateTime  BETWEEN @starDate AND  @stopDate) and
+								if (@searchType = '0' , isInOrOut = @searchType ,0 = 0 ) and
+								if (@searchType = '1',  isInOrOut = @searchType ,0 = 0) and
+								if (@searchType = '-1', isDels != @searchType  and  isInOrOut = 0 , 0 = 0 ) and
+								if (@searchType = ''  , 0 = 0, 0 = 0 ) 
+								ORDER BY  Id";
+			
 
 			DataTable users = new DataTable();
 			if (MiddleWare == "1")
@@ -126,6 +127,7 @@ namespace DAL
 				new MyCatParameter("starDate", starDate),
 				new MyCatParameter("stopDate", stopDate),
 				new MyCatParameter("searchType", searchType)
+			 
 			};
 				users = MyCatfsg_SqlHelper.ExcuteTable(sql, p);
 			}
@@ -138,7 +140,9 @@ namespace DAL
 				new MySqlParameter("isCheckDate", isCheckDate),
 				new MySqlParameter("starDate", starDate),
 				new MySqlParameter("stopDate", stopDate),
-				new MySqlParameter("searchType", searchType)
+				new MySqlParameter("searchType", searchType),
+				new MySqlParameter("style", style),
+				new MySqlParameter("tagNumber", tagNumber)
 			};
 				users = Mysqlfsg_SqlHelper.ExcuteTable(sql, p);
 			}

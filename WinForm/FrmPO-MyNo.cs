@@ -28,16 +28,22 @@ namespace WinForm
         public FrmPO_MyNo()
         {
             InitializeComponent();
+            this.dgvMyNoumber.DoubleBufferedDataGirdView(true); 
         }
 
         private void butSearch_Click(object sender, EventArgs e)
         {
             string startDate = this.dtpStarDate.Value.ToString("yyyy-MM-dd");
             string stopDate = this.dtpStopDate.Value.AddDays(1).ToString("yyyy-MM-dd");
+            string custName = this.txtCustName.Text.Trim().ToUpper();
+            this.butSearch.Enabled = false;
+            Cursor = Cursors.WaitCursor;
 
-            DataTable PoNumbers = pn.getPoNumbersByODdate(startDate, stopDate);
+            DataTable PoNumbers = pn.getPoNumbersByODdate(startDate, stopDate, custName);
             this.dgvMyNoumber.DataSource = null;
             this.dgvMyNoumber.DataSource = PoNumbers;
+            this.butSearch.Enabled = true;
+            Cursor = Cursors.Default;
         }
 
         private void FrmPO_MyNo_Resize(object sender, EventArgs e)
@@ -143,6 +149,17 @@ namespace WinForm
 
                 }
 
+            }
+        }
+
+        private void dgvMyNoumber_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
+        {
+            var dgv = (DataGridView)sender;
+            if (dgv.RowHeadersVisible)
+            {
+                Rectangle rect = new Rectangle(e.RowBounds.Left, e.RowBounds.Top, dgv.RowHeadersWidth, e.RowBounds.Height);
+                rect.Inflate(-2, -2);
+                TextRenderer.DrawText(e.Graphics, (e.RowIndex + 1).ToString(), e.InheritedRowStyle.Font, rect, e.InheritedRowStyle.ForeColor, TextFormatFlags.Right | TextFormatFlags.VerticalCenter);
             }
         }
     }

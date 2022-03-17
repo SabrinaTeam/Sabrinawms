@@ -620,15 +620,17 @@ namespace WinForm
                         string yymmStr = "";
                         string buyStr = "";
                         DataTable YYMM = ogm.getYYMMFromBestByPo(od_infoDB.Rows[i]["po_no"].ToString());
-                        if (YYMM.Rows.Count > 0)
+                        if (YYMM == null || YYMM.Rows.Count <= 0)
                         {
+                            continue;
+                        }
                             for (int j = 0; j < YYMM.Rows.Count; j++)
                             {
                                 yymmStr = yymmStr + YYMM.Rows[j]["yymm"].ToString() + ',';
                                 buyStr = buyStr + YYMM.Rows[j]["buy_cname"].ToString() + ',';
 
                             }
-                        }
+                       
                         yymmStr = yymmStr.Substring(0, yymmStr.Length - 1);
                         buyStr = buyStr.Substring(0, buyStr.Length - 1);
 
@@ -1231,7 +1233,7 @@ namespace WinForm
                 }
                
             }
-            int size_qty = 0;
+           // int size_qty = 0;
             // 填充数量
             for (int i = 0; i< disDt.Rows.Count; i++)
             {

@@ -10,9 +10,9 @@ namespace BLL
     public class PoNumberManager
     {
         public PoNumberService pn = new PoNumberService();
-        public DataTable  getPoNumbersByODdate(string startDate,string stopDate)
+        public DataTable  getPoNumbersByODdate(string startDate,string stopDate,string custName)
         {
-            return pn.getPoNumbersByODdate(startDate, stopDate);
+            return pn.getPoNumbersByODdate(startDate, stopDate, custName);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿
+using Pomelo.Data.MySql;
 using System;
 using System.Collections.Generic;
 using System.Configuration;

@@ -62,9 +62,13 @@ namespace DAL
 			return result;
 		}
 
-		public DataTable getMesworktagscansByinvoice(string tagInvoice)
+		public DataTable getMesworktagscansByinvoice(string tagInvoice, string location)
 		{
-			string sql = @"
+			string sql = "";
+			if (location == "%")
+            {
+				location = "";
+				 sql = @"
 							SELECT
 									id,
 									isPrints,
@@ -88,9 +92,75 @@ namespace DAL
 								FROM
 									mesworktagscans 
 								WHERE	
-									isInOrOut = 1									
-									and tagInvoice = '" + tagInvoice+ @"'
-										ORDER BY    id";
+									isInOrOut = 1		
+									and tagInvoice like '" + tagInvoice + "%'" + @"
+									and tagLocation = '" + location + "'" + @"
+								ORDER BY    id";
+			}else if(location == "")
+			{
+				sql = @"
+							SELECT
+									id,
+									isPrints,
+									tagOrg,
+									tagScanDeptID,
+									tagLine,
+									tagLocation,
+									tagStyle,
+									tagColor,
+									tagSize,
+									tagQty,
+									tagScanAccount,
+									tagNumber,
+									tagInvoice,
+									tagScanDateTime,
+									tagUploadDateTime,
+									tagScanPDASerial,
+									isUploaded,
+									isSyncMesData,
+									isDels 
+								FROM
+									mesworktagscans 
+								WHERE	
+									isInOrOut = 1		
+									and tagInvoice like '" + tagInvoice + "%'" + @"
+									 
+								ORDER BY    id";
+
+            }
+            else
+            {
+				 
+				sql = @"
+							SELECT
+									id,
+									isPrints,
+									tagOrg,
+									tagScanDeptID,
+									tagLine,
+									tagLocation,
+									tagStyle,
+									tagColor,
+									tagSize,
+									tagQty,
+									tagScanAccount,
+									tagNumber,
+									tagInvoice,
+									tagScanDateTime,
+									tagUploadDateTime,
+									tagScanPDASerial,
+									isUploaded,
+									isSyncMesData,
+									isDels 
+								FROM
+									mesworktagscans 
+								WHERE	
+									isInOrOut = 1		
+									and tagInvoice like '" + tagInvoice + "%'" + @"
+									and tagLocation = '" + location + "'" + @"
+								ORDER BY    id";
+			}
+			
 			 
 			DataTable result = new DataTable();
 
@@ -244,7 +314,7 @@ namespace DAL
 			string wherestr = "";
 			if (isCheckScanDate && receiptNumber.Length > 0)
 			{
-				wherestr = @" s.tagInvoice ='" + receiptNumber + @"'
+				wherestr = @" s.tagInvoice  like  '" + receiptNumber + @"%'
 								 and isInOrOut = 1
 								 and tagScanDateTime BETWEEN '" + starDataTime + @"' and '" + stopDataTime + @"'
 								 and tagOrg = '"+ orgstr + @"'
@@ -262,7 +332,7 @@ namespace DAL
 			}
             if (!isCheckScanDate && receiptNumber.Length > 0)
             {
-				wherestr = @" s.tagInvoice ='"+ receiptNumber + @"'
+				wherestr = @" s.tagInvoice like '" + receiptNumber + @"%'
 								 and isInOrOut = 1";
 			}
 			if (!isCheckScanDate && receiptNumber.Length <= 0)
@@ -331,6 +401,82 @@ namespace DAL
 			else
 			{
 				result = Mysqlfsg_SqlHelper.ExcuteTable(sql);
+			}
+
+			return result;
+		}
+
+
+
+		public DataTable gettagLocations(string taginvoice,bool isAuto)
+		{
+			string sql = "";
+			if (isAuto)
+            {
+				sql = @"SELECT
+							CASE		
+								WHEN
+									tagLocation = '' THEN
+										'%' ELSE tagLocation 
+									END tagLocation
+									FROM
+										mesworktagscans
+									WHERE
+										tagInvoice LIKE '" + taginvoice + @"%' 
+										 
+								GROUP BY
+								tagLocation"; 
+            }
+            else
+            {
+				sql = @"SELECT
+							CASE		
+								WHEN
+									tagLocation = '' THEN
+										'%' ELSE tagLocation 
+									END tagLocation
+									FROM
+										mesworktagscans
+									WHERE
+										tagInvoice LIKE '" + taginvoice + @"%' 
+										 
+								GROUP BY
+								tagLocation";
+				 
+			}
+			 
+			DataTable result = new DataTable();
+
+			if (MiddleWare == "1")
+			{
+				result = MyCatfsg_SqlHelper.ExcuteTable(sql);
+			}
+			else
+			{
+				result = Mysqlfsg_SqlHelper.ExcuteTable(sql);
+			}
+
+			return result;
+		}
+		public int updataIsPrints(string tagInvoice, string location)
+		{
+			string sql = @"
+								UPDATE mesworktagscans 
+								SET isprints = isprints + 1 
+								WHERE
+									tagInvoice   = '" + tagInvoice + "'" + @"
+									AND tagLocation   =   '" + location + @"'
+								 ";
+
+			int result = 0;
+
+			if (MiddleWare == "1")
+			{
+				result = MyCatfsg_SqlHelper.ExecuteNonQuery(sql);
+			}
+			else
+			{
+				result = Mysqlfsg_SqlHelper.ExecuteNonQuery(sql);
 			}
 
 			return result;

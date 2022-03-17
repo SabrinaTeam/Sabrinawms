@@ -1,5 +1,5 @@
-﻿using MySql.Data.MySqlClient;
-using Pomelo.Data.MyCat;
+﻿using Pomelo.Data.MyCat;
+using Pomelo.Data.MySql;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -11,8 +11,7 @@ namespace DAL
 {
    public class Mysqlfsg_SqlHelper
     {
-        // public static readonly string ERPconnStr = ConfigurationManager.ConnectionStrings["ERPconnStr"].ConnectionString;
-        // public static readonly string BESTconnStr = ConfigurationManager.ConnectionStrings["BESTconnStr"].ConnectionString;
+         
         public static readonly string MySqlconnStr_fsg = ConfigurationManager.ConnectionStrings["MySqlconnStr_fsg"].ConnectionString;
 
         public static Object ToDbValue(Object value)

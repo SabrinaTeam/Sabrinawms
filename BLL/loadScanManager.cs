@@ -138,10 +138,12 @@ namespace BLL
                         switch (custNumber)
                         {
                             case "00047":
+                            case "00147":
+                            case "00012":
+                            case "00004":
                                 custid = "NIKE";
                                 serialFrom = tag.Substring(10, 9);
                                 serialFrom = Convert.ToString(Convert.ToInt32(serialFrom));
-
                                 break;
                             case "00006":
                                 custid = "LULU";
@@ -331,11 +333,16 @@ namespace BLL
 
                 row["Cust_id"] = table.Rows[i]["Cust_id"].ToString();
                 location =table.Rows[i]["Location"].ToString().ToUpper();
-                if (location is null || location.Length <=0 ||  location.Length >4)
+
+               
+                  if (location is null || location.Length <=0 ||  location.Length >4)
                 {
-                    result[0] = (i+1).ToString();
-                    result[1] = "-1";
-                    return result;
+                    if (location != "PP" && location != "CH" && location != "GG" && location != "GD")
+                    {
+                        result[0] = (i + 1).ToString();
+                        result[1] = "-1";
+                        return result;
+                    } 
                 }
                 string ScanTime = table.Rows[i]["ScanTime"].ToString();
                 if (ScanTime.Length <= 0)

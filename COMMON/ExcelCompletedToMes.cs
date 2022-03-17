@@ -74,8 +74,10 @@ namespace COMMON
                             {
                                 switch (data.Columns[j].ColumnName.ToString())
                                 {
-                                    case "tagQty"://整型                                  
-                                        string dd = Convert.ToString(data.Rows[i][j]);
+                                    case "tagQty"://整型   
+                                    case "QTY"://整型 
+
+                                string dd = Convert.ToString(data.Rows[i][j]);
                                         if (dd != "")
                                         {
                                             row.CreateCell(j).SetCellValue(Convert.ToInt32(dd));

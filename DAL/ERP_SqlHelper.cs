@@ -13,9 +13,7 @@ namespace DAL
 
     public class ERP_SqlHelper
     {
-        public static readonly string ERPconnStr = ConfigurationManager.ConnectionStrings["ERPconnStr"].ConnectionString;
-        //public static readonly string BESTconnStr = ConfigurationManager.ConnectionStrings["BESTconnStr"].ConnectionString;
-       // public static readonly string MySqlconnStr = ConfigurationManager.ConnectionStrings["MySqlconnStr"].ConnectionString;
+        public static readonly string ERPconnStr = ConfigurationManager.ConnectionStrings["ERPconnStr"].ConnectionString; 
 
         public static Object ToDbValue(Object value)
         {
@@ -45,7 +43,6 @@ namespace DAL
                 conn = OpenConn();
                 var cmd = conn.CreateCommand();
                 cmd.CommandText = sqlstr;
-             //   cmd.Parameters.AddRange( parameters);
                 cmd.CommandType = CommandType.Text;
                 OracleDataAdapter da = new OracleDataAdapter();
                 da.SelectCommand = cmd;

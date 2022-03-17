@@ -15,7 +15,7 @@ namespace BLL
         public TNFImportService TNFImport = new TNFImportService();
         public DataTable getPODataFromScanService(string startDate, string StopDate)
         {
-            DataTable tnfDb = TNFImport.getPODataFromScanService(startDate,StopDate);
+            DataTable tnfDb = TNFImport.getPODataFromScanService(startDate, StopDate);
             DataColumn dc = tnfDb.Columns.Add("Serial");
             if (tnfDb.Rows.Count >0)
             {
@@ -69,22 +69,22 @@ namespace BLL
         }
         public DataTable getPODataFromScanService(string PONumber)
         {
-            DataTable tnfDb =  TNFImport.getPODataFromScanService(PONumber);
-            DataColumn dc = tnfDb.Columns.Add("Serial");
-            if (tnfDb.Rows.Count > 0)
+            DataTable MercuryDb =  TNFImport.getPODataFromScanService(PONumber);
+            DataColumn dc = MercuryDb.Columns.Add("Serial");
+            if (MercuryDb.Rows.Count > 0)
             {
 
                 int serial = 0;
                 string oldStyle = "";
-                for (int i = 0; i < tnfDb.Rows.Count; i++)
+                for (int i = 0; i < MercuryDb.Rows.Count; i++)
                 {
                     //SELECT  id,Barcode,CartonNo,PackQty,Style,Size,Color,MasterPO,StyleDescription,Country
-                    string style = tnfDb.Rows[i]["Style"].ToString();
-                    string Size = tnfDb.Rows[i]["Size"].ToString();
+                    string style = MercuryDb.Rows[i]["Style"].ToString();
+                    string Size = MercuryDb.Rows[i]["Size"].ToString();
                     if (style.Length >= 11)
                     {
-                        tnfDb.Rows[i]["Style"] = style.Substring(3, 5);
-                        tnfDb.Rows[i]["Color"] = style.Substring(8, 3);
+                        MercuryDb.Rows[i]["Style"] = style.Substring(3, 5);
+                        MercuryDb.Rows[i]["Color"] = style.Substring(8, 3);
                     }
 
                     int index = Size.IndexOf("REG");
@@ -94,7 +94,7 @@ namespace BLL
                     }
                     Size = Size.TrimStart(new char[] { '0' });
 
-                    tnfDb.Rows[i]["Size"] = Size;
+                    MercuryDb.Rows[i]["Size"] = Size;
                     if (oldStyle == "")
                     {
                         oldStyle = style;
@@ -107,18 +107,18 @@ namespace BLL
                     if (oldStyle == style)
                     {
                         serial++;
-                        tnfDb.Rows[i]["Serial"] = serial;
+                        MercuryDb.Rows[i]["Serial"] = serial;
                     }
                     else
                     {
                         serial = 1;
-                        tnfDb.Rows[i]["Serial"] = serial;
+                        MercuryDb.Rows[i]["Serial"] = serial;
                         oldStyle = style;
                     }
                 }
             }
             //款式+颜色 = 箱顺序号 style
-            return tnfDb;
+            return MercuryDb;
         }
         public DataTable getPODataFromScanService(int Id)
         {
@@ -484,16 +484,16 @@ namespace BLL
                     for (int i = 0; i < diffDt.Rows.Count; i++)
                     {
                         DataRow dr = addDataDt.NewRow();                     
-                        dr["id"] = "TNF-" + dt.Rows[i]["id"].ToString();
+                        dr["id"] = "TNF-" + diffDt.Rows[i]["id"].ToString();
                         dr["Cust_id"] = "TNF";
-                        dr["Serial_From"] = dt.Rows[i]["CartonNo"].ToString();
-                        dr["Buyer_Item"] = dt.Rows[i]["Style"].ToString();
-                        dr["Item_desc"] = dt.Rows[i]["StyleDescription"].ToString();
-                        dr["color_code"] = dt.Rows[i]["Color"].ToString();
-                        dr["Size1"] = dt.Rows[i]["Size"].ToString();
-                        dr["con_Qty"] = dt.Rows[i]["PackQty"].ToString();
-                        dr["qty"] = dt.Rows[i]["PackQty"].ToString();
-                        dr["pprfno"] = dt.Rows[i]["MasterPO"].ToString(); 
+                        dr["Serial_From"] = diffDt.Rows[i]["CartonNo"].ToString();
+                        dr["Buyer_Item"] = diffDt.Rows[i]["Style"].ToString();
+                        dr["Item_desc"] = diffDt.Rows[i]["StyleDescription"].ToString();
+                        dr["color_code"] = diffDt.Rows[i]["Color"].ToString();
+                        dr["Size1"] = diffDt.Rows[i]["Size"].ToString();
+                        dr["con_Qty"] = diffDt.Rows[i]["PackQty"].ToString();
+                        dr["qty"] = diffDt.Rows[i]["PackQty"].ToString();
+                        dr["pprfno"] = diffDt.Rows[i]["MasterPO"].ToString(); 
                         addDataDt.Rows.Add(dr);
                     }
                 }

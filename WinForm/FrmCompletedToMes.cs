@@ -1,6 +1,6 @@
 ﻿using BLL;
 using DAL;
-using Microsoft.Reporting.WinForms;
+using gregn6Lib;
 using MODEL;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -25,13 +25,19 @@ namespace WinForm
 {
     public partial class FrmCompletedToMes : Form
     {
+
+        public string reportPath = System.Windows.Forms.Application.StartupPath + "\\report.grf";
+        public static string dataconnect = "MYSQL;Database=mycat_fsg;Password=Sabrina123;Port=8066;Server=192.168.4.245;User=root";
+        public bool printing = false;
+        private GridppReport Report = new GridppReport();
+
         private static FrmCompletedToMes frm;
         private CompletedToMesService cms = new CompletedToMesService();
         //1、实例化打印文档
         private PrintDocument pdDocument = new PrintDocument();
         private PrintPreviewDialog m_printPreview = new PrintPreviewDialog();//打印预览UI
         private int value = 0;//
-        private int pageCount = 0;//页数
+       // private int pageCount = 0;//页数
         private PrintDocument m_printDoc = new PrintDocument();
         private float m_pageWidth = 210F;//纸张宽度 mm单位
         private float m_pageHeight = 297F;//纸张高度 mm单位
@@ -41,10 +47,12 @@ namespace WinForm
 
         public DataGridView selectDgv = null;
 
+        private List<string> tagInvoiceList = new List<string>();
+        private List<string> tagLocationList = new List<string>();
 
 
         //   public int intervalTime = 0;
-        private MessageQueue queue;
+       // private MessageQueue queue;
 
         public static DataTable user = new DataTable();
 
@@ -54,14 +62,14 @@ namespace WinForm
         CompletedToMesManager cmm = new CompletedToMesManager();
         mesOrgManager orgm = new mesOrgManager();
         public string SAAUlr = "http://192.168.4.251:5000/api/process";
-        public string SAATest = "http://192.168.4.251:5001/api/reportPlace";
+        public string SAATest = "http://192.168.4.251:5000/api/reportPlace";
         public string TOPUlr = "http://192.168.7.240:5000/api/process";
-        public string TOPTest = "http://192.168.7.240:5001/api/reportPlace";
-       
-        bool isRead = false;
+        public string TOPTest = "http://192.168.7.240:5000/api/reportPlace";
+
+       // public bool isRead = false;
         public string orgName = "";
         public string processID = "";
-        public string  org = "";
+        public string org = "";
 
 
         DataTable invoiceDataSource = new DataTable();
@@ -70,7 +78,7 @@ namespace WinForm
         ConnectionFactory factory = new ConnectionFactory();
         IConnection connection;
         IModel channel;
-        public string HostName = "172.16.1.219";
+        public string HostName = "192.168.4.243";
         public string UserName = "sabrina";
         public string Password = "sabrina";
         public bool autoRecovery = true;
@@ -78,7 +86,7 @@ namespace WinForm
 
         public FrmCompletedToMes()
         {
-            InitializeComponent();          
+            InitializeComponent();
             factory.HostName = this.HostName;
             factory.UserName = this.UserName;
             factory.Password = this.Password;
@@ -94,6 +102,7 @@ namespace WinForm
             pdDocument.BeginPrint += new PrintEventHandler(pdDocument_BeginPrint);
             //订阅 EndPrint 事件,释放资源
             pdDocument.EndPrint += new PrintEventHandler(pdDocument_EndPrint);
+            Report.PrintEnd += isPrintEnd;
 
         }
         public static FrmCompletedToMes GetSingleton(DataTable dt)
@@ -110,7 +119,7 @@ namespace WinForm
             return frm;
         }
 
-       
+
 
         private async void cbProcessName_ClickAsync(object sender, EventArgs e)
         {
@@ -154,7 +163,8 @@ namespace WinForm
             if (this.org == "SAA")
             {
                 this.Orgs = await orgm.getOrgs(SAATest);
-            }else if(this.org == "TOP")
+            }
+            else if (this.org == "TOP")
             {
                 this.Orgs = await orgm.getOrgs(TOPTest);
             }
@@ -163,7 +173,7 @@ namespace WinForm
                 MessageBox.Show("获取厂区失败,请查询是否正常连线服务器");
                 return;
             }
-           
+
             if (this.Orgs.Count <= 0)
             {
                 MessageBox.Show("获取厂区失败,请查询是否正常连线服务器");
@@ -183,7 +193,7 @@ namespace WinForm
             {
                 this.labOrgID.Text = this.Orgs[PlaceNameIndex].ReportPlaceId.ToString();
             }
-        } 
+        }
         private Object ByteArrayToObject(byte[] arrBytes)
         {
             MemoryStream memStream = new MemoryStream();
@@ -194,10 +204,10 @@ namespace WinForm
             return obj;
         }
 
-        public void receivedkibaQueue( )
+        public void receivedkibaQueue()
         {
-            string Org = this.orgName.Substring(0, 3);           
-            string queueName = Org +"-"+ this.processID;
+            string Org = this.orgName.Substring(0, 3);
+            string queueName = Org + "-" + this.processID;
             string exchangeName = Org;
             this.connection = factory.CreateConnection();
 
@@ -212,40 +222,77 @@ namespace WinForm
                 consumer.Received += (model, ea) =>
                 {
                     var body = ea.Body;
-                    string orders = ByteArrayToObject(body).ToString();                  
-                 
-                    addDgvInvoice(orders);
+                    string orders = ByteArrayToObject(body).ToString();
+
+                    //执行复杂的计算任务。
+                    var task1 = new Task(() =>
+                    {
+                        addDgvInvoice(orders);
+                    });
+                    task1.Start();
+                    Task.WaitAll();
+
+                    //addDgvInvoice(orders); 
                     channel.BasicAck(ea.DeliveryTag, true);
                 };
                 channel.BasicConsume(queue: queueName, noAck: false, consumer: consumer);
             }
-        }      
+        }
 
-        private void addDgvInvoice(string Mid)
-        {             
+
+
+
+        public void addDgvInvoice(string Mid)
+        {
             DataTable invoiceData = cmm.getTagInvoiceById(Mid);
             if (invoiceData.Rows.Count <= 0)
             {
                 return;
             }
-            if(this.invoiceDataSource.Rows.Count <= 0)
+            lock (invoiceDataSource)
             {
-                this.invoiceDataSource = invoiceData;
-            }
-            else
-            {
-                foreach (DataRow row in invoiceData.Rows)
+                if (this.invoiceDataSource.Rows.Count <= 0)
                 {
-                     this.invoiceDataSource.ImportRow(row); 
+                    this.invoiceDataSource = invoiceData;                   
+                    SetDgvInvoice(this.invoiceDataSource);
+                    if (cbAutoPrint.Checked)
+                    {
+                        string invoice = invoiceDataSource.Rows[this.invoiceDataSource.Rows.Count - 1]["tagInvoice"].ToString();
+                        getMesworktagscansByinvoice(invoice);
+                    }
+                }
+                else
+                {
+                    // 检测是否有重复收到的
+                    foreach (DataRow row in invoiceData.Rows)
+                    {
+                        bool isDouble = false;
+                        for (int i = 0; i < this.invoiceDataSource.Rows.Count; i++)
+                        {
+                            if (row["tagInvoice"].ToString() == this.invoiceDataSource.Rows[i][0].ToString() &&
+                                row["tagScanDeptID"].ToString() == this.invoiceDataSource.Rows[i][1].ToString() &&
+                                row["Version"].ToString() == this.invoiceDataSource.Rows[i][2].ToString() &&
+                                row["tagScanAccount"].ToString() == this.invoiceDataSource.Rows[i][3].ToString() &&
+                                row["tagScanDateTime"].ToString() == this.invoiceDataSource.Rows[i][4].ToString()
+                                )
+                            {
+                                isDouble = true;
+                            }
+                        }
+                        if (isDouble)
+                        {
+                            break;
+                        }
+                        this.invoiceDataSource.ImportRow(row);
+                        SetDgvInvoice(this.invoiceDataSource);
+                        if (cbAutoPrint.Checked)
+                        {
+                            string invoice = invoiceDataSource.Rows[this.invoiceDataSource.Rows.Count - 1]["tagInvoice"].ToString();
+                            getMesworktagscansByinvoice(invoice);
+                        }
+                    }
                 }
             }
-            SetDgvInvoice(invoiceDataSource);
-            if (cbAutoPrint.Checked)
-            {
-                string invoice = invoiceDataSource.Rows[this.invoiceDataSource.Rows.Count - 1]["tagInvoice"].ToString();
-                getMesworktagscansByinvoice(invoice);
-            }
-           
         }
 
         private void getMesworktagscansByinvoice(string tagInvoice)
@@ -254,32 +301,79 @@ namespace WinForm
             {
                 return;
             }
-
-            DataTable ScanData = cmm.getMesworktagscansByinvoice(tagInvoice);
-            if (ScanData.Rows.Count <= 0)
+            /*获取储位*/
+            List<string> locations = new List<string>();
+            //  gettagLocations 自动打印为0的才打
+            locations = cmm.gettagLocations(tagInvoice, true);
+            if (locations.Count <= 0)
             {
                 return;
             }
-            this.ScanDataDataSource = ScanData;
-            SetScanData(this.ScanDataDataSource);
-            //  print(this.ScanDataDataSource,0);
-            // this.dgvWorkTagScans.DataSource = this.ScanDataDataSource;
-
-            if (this.ScanDataDataSource.Rows.Count <= 0)
+            for (int i = 0; i < locations.Count; i++)
             {
-                return;
+                DataTable ScanData = cmm.getMesworktagscansByinvoice(tagInvoice, locations[i]);
+                string tagLocation = locations[i];
+                if (ScanData.Rows.Count <= 0)
+                {
+                    return;
+                }
+                this.ScanDataDataSource = ScanData;
+                SetScanData(this.ScanDataDataSource);
+
+
+                if (this.ScanDataDataSource.Rows.Count <= 0)
+                {
+                    return;
+                }
+
+                if (!this.cbAutoPrint.Checked)
+                {
+                    return;
+                }
+
+                if (this.ScanDataDataSource.Rows.Count <= 0)
+                {
+                    return;
+                }
+
+                if (this.InvokeRequired)//判断进入该方法的线程是否是单(主)线程，是：再次调用该方法，否：执行else中内容
+                {
+                    try
+                    {
+                        //调用打印程式
+                        if (tagInvoice.Length <= 0)
+                        {
+                            MessageBox.Show("没有出库单号");
+                            return;
+                        }
+
+                        this.Invoke(new MethodInvoker(delegate { printsReport(tagLocation); }));
+                    }
+                    catch
+                    {
+
+                    }
+                }
+                else
+                {
+                    //调用打印程式
+                    if (tagInvoice.Length <= 0)
+                    {
+                        MessageBox.Show("没有出库单号");
+                        return;
+                    }
+                    printsReport(tagLocation);
+                }
+
+                // 更新打印标识
+                //  cmm.updataIsPrints(tagInvoice, locations[i]);
             }
 
-            if (!this.cbAutoPrint.Checked)
-            {
-                return;
-            }
-            /*
-            //调用打印程式
-            
-           
-            */
+
+
+
             //声明一个LocalReport对象并加载一个报表文件
+            /*
             LocalReport report = new LocalReport();
 
             // 设置需要打印的报表的文件名称。
@@ -368,7 +462,118 @@ namespace WinForm
              qtys = "";
             report.Refresh(); 
             ReportClass.Print(report, ScanSourceDataDetail); 
+
+            */
         }
+
+        public void printsReport(string tagLocation)
+        {
+            //调用打印程式            
+            string invoice = this.ScanDataDataSource.Rows[0]["tagInvoice"].ToString().Trim().ToUpper();
+            this.tagInvoiceList.Add(invoice);
+            this.tagLocationList.Add(tagLocation);
+            string part = this.ScanDataDataSource.Rows[0]["tagNumber"].ToString().Trim().ToUpper();
+            if (tagLocation == "%")
+            {
+                tagLocation = "";
+            }
+            string QuerySQL = @"
+								SELECT
+										a.tagOrg,
+										a.tagLine,
+										a.tagLocation,
+										a.tagNumber,
+										a.tagQty,
+										c.Qty,
+										a.tagStyle,
+										a.tagColor,
+										a.tagSize,
+										a.tagInvoice,
+										a.DeptName,
+										a.tagScanAccount 
+									FROM
+										(
+										SELECT
+											s.tagOrg,
+											s.tagLine,
+											s.tagLocation,
+											s.tagNumber,
+											s.tagQty,
+											s.tagStyle,
+											s.tagColor,
+											s.tagSize,
+											s.tagInvoice,
+											d.DeptName,
+											s.tagScanAccount 
+										FROM
+											mesworktagscans s
+											LEFT JOIN mesdepts d ON d.DeptNumber = s.tagScanDeptID 
+										WHERE
+											s.tagInvoice like '" + invoice + @"%' 
+	                                        and s.tagLocation= '" + tagLocation + @"' 
+										ORDER BY
+											s.tagNumber 
+										) a
+										LEFT JOIN (
+										SELECT
+											s.tagOrg,
+											s.tagLine,
+											s.tagLocation,
+											SUM( s.tagQty ) Qty,
+											s.tagStyle,
+											s.tagColor,
+											s.tagSize,
+											s.tagInvoice,
+											d.DeptName,
+											s.tagScanAccount 
+										FROM
+											mesworktagscans s
+											LEFT JOIN mesdepts d ON d.DeptNumber = s.tagScanDeptID 
+										WHERE
+											s.tagInvoice like  '" + invoice + @"%'  
+                                            and s.tagLocation= '" + tagLocation + @"' 
+										GROUP BY
+											s.tagOrg,
+											s.tagLine,
+											s.tagLocation,
+											s.tagStyle,
+											s.tagColor,
+											s.tagSize,
+											s.tagInvoice,
+											d.DeptName,
+											s.tagScanAccount 
+										ORDER BY
+											s.tagNumber 
+										) c ON c.tagInvoice = a.tagInvoice 
+										AND c.tagStyle = a.tagstyle 
+										AND c.tagSize = a.tagsize 
+										AND c.tagColor = a.tagcolor;";
+
+
+
+
+
+            if (!printing)
+            {
+                printing = Report.LoadFromFile(System.Windows.Forms.Application.StartupPath + "\\report.grf");
+            }
+
+            Report.DetailGrid.Recordset.ConnectionString = dataconnect;
+            Report.DetailGrid.Recordset.QuerySQL = QuerySQL;
+            //Report.PrintPreview(true);
+            string p = "";
+            if (part.Length > 11)
+            {
+                p = part.Substring(part.Length - 11, 1);
+            }
+            Report.ParameterByName("tagPart").AsString = p;
+            //  this.axGRPrintViewer1.Report = Report;
+            //   axGRPrintViewer1.Start();
+            Report.Print(false);
+
+            //cmm.updataIsPrints( tagInvoice, tagLocation);
+        }
+
 
         public byte[] bmpToBytes(Bitmap bitmap)
         {
@@ -409,11 +614,12 @@ namespace WinForm
                 this.splitContainer1.SplitterDistance = this.splitContainer1.SplitterDistance - 1;
                 this.splitContainer1.SplitterDistance = this.splitContainer1.SplitterDistance + 1;
                 this.splitContainer1.Refresh();
-                if(this.dgvInvoice.Rows.Count <= 0){
+                if (this.dgvInvoice.Rows.Count <= 0)
+                {
                     return;
                 }
-                this.dgvInvoice.Rows[this.dgvInvoice.Rows.Count - 1].Selected = true;                
-            }           
+                this.dgvInvoice.Rows[this.dgvInvoice.Rows.Count - 1].Selected = true;
+            }
         }
 
         private delegate void SetScanDataCallback(DataTable ScanData);
@@ -463,17 +669,19 @@ namespace WinForm
                 return;
             }
             this.orgName = this.cbOrg.SelectedItem.ToString();
-            this.processID =  this.labProcessID.Text;
+            this.processID = this.labProcessID.Text;
             if (this.processID.Length <= 0)
             {
                 return;
             }
             this.butStartReceiv.Enabled = false;
             this.butStopReceiv.Enabled = true;
-            ThreadStart childref = new ThreadStart(receivedkibaQueue);           
+            ThreadStart childref = new ThreadStart(receivedkibaQueue);
             Thread childThread = new Thread(childref);
+            //childThread.SetApartmentState(ApartmentState.STA);
             childThread.IsBackground = true;
             childThread.Start();
+
         }
 
         private void butStopReceiv_Click(object sender, EventArgs e)
@@ -512,11 +720,11 @@ namespace WinForm
 
         private void RmeCopyCells_Click(object sender, EventArgs e)
         {
-            if (selectDgv  != null)
+            if (selectDgv != null)
             {
                 Clipboard.SetDataObject(selectDgv.CurrentCell.Value.ToString());
             }
-           
+
         }
 
         private void RmeCopyRows_Click(object sender, EventArgs e)
@@ -525,18 +733,18 @@ namespace WinForm
             {
                 Clipboard.SetDataObject(selectDgv.GetClipboardContent());
             }
-           
+
         }
 
         private void RmeExportExcel_Click(object sender, EventArgs e)
         {
-           if(this.selectDgv != null)
+            if (this.selectDgv != null)
             {
                 ImproExcel(this.selectDgv);
             }
-           
+
         }
-        public void ImproExcel( DataGridView selectDgv)
+        public void ImproExcel(DataGridView selectDgv)
         {
 
             SaveFileDialog sdfExport = new SaveFileDialog();
@@ -551,7 +759,7 @@ namespace WinForm
             NPOIExcelCompletedToMes NPOIexcel = new NPOIExcelCompletedToMes();
             DataTable tabl = new DataTable();
             tabl = GetDgvToTable(this.selectDgv);
-            if(selectDgv == this.dgvInvoice)
+            if (selectDgv == this.dgvInvoice)
             {
                 tableName = "dgvInvoiceTable";
             }
@@ -559,7 +767,7 @@ namespace WinForm
             {
                 tableName = "dgvOutgoingTable";
             }
-                   
+
             NPOIexcel.ExcelWrite(filename, tabl, tableName);//excelhelper写出
             if (MessageBox.Show("导出成功，文件保存在" + filename.ToString() + ",是否打开此文件？", "提示", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
@@ -598,15 +806,15 @@ namespace WinForm
 
         private void FrmCompletedToMes_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (this.connection !=null &&  this.connection.IsOpen)
+            if (this.connection != null && this.connection.IsOpen)
             {
                 this.connection.Close();
             }
-         
+
             this.butStartReceiv.Enabled = true;
             this.butStopReceiv.Enabled = false;
 
-           
+
         }
         public int hiedcolumnindex = -1; //是否选中外面
         private void dgvWorkTagScans_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
@@ -653,20 +861,20 @@ namespace WinForm
         }
 
         private void butPrint_Click(object sender, EventArgs e)
-        { 
+        {
             if (this.ScanDataDataSource.Rows.Count <= 0)
             {
                 return;
-            } 
+            }
             string invoice = this.ScanDataDataSource.Rows[0]["tagInvoice"].ToString().Trim().ToUpper();
-            Bitmap QRCode = QRCodeHelper.GenQRCode(invoice, 120, 120); 
-            FrmCompletedToMesPrint frm = FrmCompletedToMesPrint.GetSingleton(invoice, QRCode); 
+            Bitmap QRCode = QRCodeHelper.GenQRCode(invoice, 120, 120);
+            FrmCompletedToMesPrint frm = FrmCompletedToMesPrint.GetSingleton(invoice, QRCode);
             frm.Show();
-            frm.Activate(); 
+            frm.Activate();
 
         }
 
-       
+
 
 
         /// <summary>
@@ -674,11 +882,11 @@ namespace WinForm
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="aoutPrint"> 0 自动打印   1 手动打印</param>
-        private void print(DataTable dt,int aoutPrint)
-        {            
+        private void print(DataTable dt, int aoutPrint)
+        {
             if (aoutPrint == 1)
             {
-                
+
                 try
                 {
 
@@ -704,6 +912,7 @@ namespace WinForm
                         }
                         catch (Win32Exception wx)
                         {
+                            Console.WriteLine(wx.ToString());
                             return;
                             // MessageBox.Show("已取消打印作业");
                         }
@@ -719,7 +928,7 @@ namespace WinForm
                     pdDocument.Dispose();
                 }
             }
-            else if(aoutPrint == 0)
+            else if (aoutPrint == 0)
             {
 
                 if (dt == null || dt.Rows.Count <= 0)
@@ -730,7 +939,7 @@ namespace WinForm
                 {
                     PrintDialog printDialog1 = new PrintDialog();
                     printDialog1.UseEXDialog = false;
-                    printDialog1.Document = pdDocument;                     
+                    printDialog1.Document = pdDocument;
                     m_printPreview.Document = pdDocument;
                 }
                 catch (InvalidPrinterException ex)
@@ -760,8 +969,8 @@ namespace WinForm
             msg.Visible = true;
             progressBar1.Visible = true;
             msg.Text = "正在加载送货清单内容，请稍等...";
-          //  this.barcode = "F20040E2728B2B9F-0820210306-0054";
-          //  Bitmap QRCode = QRCodeHelper.GenQRCode("F20040E2728B2B9F-0820210306-0054", 120, 120);
+            //  this.barcode = "F20040E2728B2B9F-0820210306-0054";
+            //  Bitmap QRCode = QRCodeHelper.GenQRCode("F20040E2728B2B9F-0820210306-0054", 120, 120);
 
             this.barcode = this.ScanDataDataSource.Rows[0]["tagInvoice"].ToString().Trim().ToUpper();
             Bitmap QRCode = QRCodeHelper.GenQRCode(this.barcode, 120, 120);
@@ -839,8 +1048,8 @@ namespace WinForm
             // 送票单号
             left = Convert.ToInt32(40 / 25.4 * 100);//左距离
             top = Convert.ToInt32(28 / 25.4 * 100);//顶距离
-            e.Graphics.DrawString("送票单号:"+ barcode, new Font("黑体", 15), Brushes.Black, left, top);//号码
-            
+            e.Graphics.DrawString("送票单号:" + barcode, new Font("黑体", 15), Brushes.Black, left, top);//号码
+
             // 扫描时间 tagScanDateTime
             left = Convert.ToInt32(40 / 25.4 * 100);//左距离
             top = Convert.ToInt32(20 / 25.4 * 100);//顶距离
@@ -888,32 +1097,32 @@ namespace WinForm
             while (linesPrinted < barcode.Length)
             {
                 //其它条码格式
-                    //繪製要打印的頁面
-                    //创建文本信息
-                    
-                    // y += 55;
-                    linesPrinted++;
-                    value = Convert.ToInt32(Convert.ToDouble(linesPrinted) / barcode.Length * 100);
-                    progressBar1.Value = value;
-                    msg.Text = "生成条码" + value + " %";
-                    Application.DoEvents();
-                    // msg.Text = "";
-                    //progressBar1.Value = 0;
-                    // pictureBox1.Image = null;                   
-                }
-                //判斷超過一頁時，允許進行多頁打印
-                if (barcode.Length > linesPrinted)
-                {
-                    //允許多頁打印
-                    e.HasMorePages = true;
-                    /*
-                     * PrintPageEventArgs類的HaeMorePages屬性為True時，通知控件器，必須再次調用OnPrintPage()方法，打印一個頁面。
-                     * PrintLoopI()有一個用於每個要打印的頁面的序例。如果HasMorePages是False，PrintLoop()就會停止。
-                     */
-                    return;
-                }
-             
-            
+                //繪製要打印的頁面
+                //创建文本信息
+
+                // y += 55;
+                linesPrinted++;
+                value = Convert.ToInt32(Convert.ToDouble(linesPrinted) / barcode.Length * 100);
+                progressBar1.Value = value;
+                msg.Text = "生成条码" + value + " %";
+                Application.DoEvents();
+                // msg.Text = "";
+                //progressBar1.Value = 0;
+                // pictureBox1.Image = null;                   
+            }
+            //判斷超過一頁時，允許進行多頁打印
+            if (barcode.Length > linesPrinted)
+            {
+                //允許多頁打印
+                e.HasMorePages = true;
+                /*
+                 * PrintPageEventArgs類的HaeMorePages屬性為True時，通知控件器，必須再次調用OnPrintPage()方法，打印一個頁面。
+                 * PrintLoopI()有一個用於每個要打印的頁面的序例。如果HasMorePages是False，PrintLoop()就會停止。
+                 */
+                return;
+            }
+
+
             msg.Text = "条码生成完成";
             msg.Visible = false;
             progressBar1.Visible = false;
@@ -930,11 +1139,11 @@ namespace WinForm
         private void pdDocument_EndPrint(object sender, PrintEventArgs e)
         {
             //變量Lines占用和引用的字符串數組，現在釋放
-          //  custompo = null;
-       //     cutno = null;
-        //    boxno = null;
-         //   barcode = null;
-         //   boxnostr = null;
+            //  custompo = null;
+            //     cutno = null;
+            //    boxno = null;
+            //   barcode = null;
+            //   boxnostr = null;
         }
 
         private bool styleIsExist(List<string> lists, string tag)
@@ -944,9 +1153,9 @@ namespace WinForm
                 return false;
             }
             bool result = true;
-           for(int i = 0; i < lists.Count; i++)
+            for (int i = 0; i < lists.Count; i++)
             {
-                if(lists[i] == tag)
+                if (lists[i] == tag)
                 {
                     result = true;
                     break;
@@ -971,7 +1180,7 @@ namespace WinForm
 
         private void butSearch_Click(object sender, EventArgs e)
         {
-           if (this.cbOrg.Items.Count <= 0)
+            if (this.cbOrg.Items.Count <= 0)
             {
                 MessageBox.Show("请先选择厂区与制程");
                 return;
@@ -984,37 +1193,50 @@ namespace WinForm
             string org = orgstrs[0];
             string deptId = this.labProcessID.Text.ToString();
             DataTable dt = new DataTable();
-            if ( !this.cbCheckScanDate.Checked  && receiptNumber.Length <= 0)
+            if (!this.cbCheckScanDate.Checked && receiptNumber.Length <= 0)
             {
                 MessageBox.Show("请输入至少1个查询条件");
                 return;
             }
-            else if (this.cbCheckScanDate.Checked )
+            else if (this.cbCheckScanDate.Checked)
             {
                 dt = cms.getMesworktagscansSearch(starDataTime, stopDataTime, receiptNumber, true, org, deptId);
             }
             else
             {
-                 dt = cms.getMesworktagscansSearch(starDataTime, stopDataTime, receiptNumber, false, org, deptId);
+                dt = cms.getMesworktagscansSearch(starDataTime, stopDataTime, receiptNumber, false, org, deptId);
             }
             this.dgvInvoice.DataSource = dt;
             this.dgvInvoice.Refresh();
-
-
         }
 
-        
+
 
         private void dgvInvoice_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             string tagInvoice = "";
+            string l = "";
             if (e.RowIndex < 0)
             {
                 return;
             }
+            if (this.dgvInvoice.Columns.Count == 9)
+            {
+                tagInvoice = this.dgvInvoice["tagInvoice", e.RowIndex].Value.ToString();
+                l = this.dgvInvoice["tagLocation", e.RowIndex].Value.ToString();
+            }
+            else
+            {
+                tagInvoice = this.dgvInvoice["tagInvoice", e.RowIndex].Value.ToString() + "-";  //
+
+            }
             //   this.splitContainer1.Panel2Collapsed = true;
-            tagInvoice = this.dgvInvoice["tagInvoice", e.RowIndex].Value.ToString();
-            DataTable ScanData = cmm.getMesworktagscansByinvoice(tagInvoice);
+
+            /*获取储位*/
+            List<string> locations = new List<string>();
+            locations = cmm.gettagLocations(tagInvoice, false);
+
+            DataTable ScanData = cmm.getMesworktagscansByinvoice(tagInvoice, l);
             if (ScanData.Rows.Count <= 0)
             {
                 this.ScanDataDataSource = null;
@@ -1026,19 +1248,21 @@ namespace WinForm
             SetScanData(this.ScanDataDataSource);
         }
 
+
+
         private async void FrmCompletedToMes_LoadAsync(object sender, EventArgs e)
         {
-             
+
             if (user.Rows.Count <= 0)
             {
                 return;
-            }   
-            
+            }
+
             string LonginUserName = user.Rows[0]["UserName"].ToString();
-           
+
             if (LonginUserName.IndexOf("SAA") != -1)
             {
-                 this.org = "SAA";
+                this.org = "SAA";
             }
             if (LonginUserName.IndexOf("TOP") != -1)
             {
@@ -1046,23 +1270,23 @@ namespace WinForm
             }
 
             int LonginDeptID = Convert.ToInt32(user.Rows[0]["deptID"]);
-            int orgId =Convert.ToInt32( user.Rows[0]["marsk"]);
+            int orgId = Convert.ToInt32(user.Rows[0]["marsk"]);
             string LonginDeptName = user.Rows[0]["DeptName"].ToString();
-           bool isorg =  await getOrgAsync(orgId);
+            bool isorg = await getOrgAsync(orgId);
             if (isorg)
             {
                 await getProductsAsync(LonginDeptID);
             }
-            
+
         }
 
-        public async  Task<bool>  getOrgAsync( int orgId)
+        public async Task<bool> getOrgAsync(int orgId)
         {
             int orgIndex = -1;
             string logingOrg = "";
             if (this.org == "SAA")
             {
-                logingOrg =SAATest;
+                logingOrg = SAATest;
             }
             else if (this.org == "TOP")
             {
@@ -1082,14 +1306,14 @@ namespace WinForm
             }
             this.cbOrg.Items.Clear();
             for (int i = 0; i < this.Orgs.Count; i++)  // ReportPlaceId = 2
-            { 
+            {
                 this.cbOrg.Items.Add(Orgs[i].ReportPlaceName);
-                if(Orgs[i].ReportPlaceId == orgId  || Orgs[i].ReportPlaceName.IndexOf(this.org) != -1)
+                if (Orgs[i].ReportPlaceId == orgId || Orgs[i].ReportPlaceName.IndexOf(this.org) != -1)
                 {
                     orgIndex = i;
                 }
             }
-            if(orgIndex != -1)
+            if (orgIndex != -1)
             {
                 this.cbOrg.SelectedIndex = orgIndex;
                 this.cbOrg.Enabled = false;
@@ -1098,9 +1322,9 @@ namespace WinForm
             else
             {
                 MessageBox.Show("厂区选择失败");
-             //   this.Orgs = await orgm.getOrgs(logingOrg);
+                //   this.Orgs = await orgm.getOrgs(logingOrg);
                 return false;
-            } 
+            }
         }
 
         public async Task getProductsAsync(int deptID)
@@ -1113,7 +1337,7 @@ namespace WinForm
             string Org = this.cbOrg.SelectedItem.ToString();
             if (Org.IndexOf("SAA") != -1)
             {
-                this.emps = await empm.GetAllProducts(this.SAAUlr); 
+                this.emps = await empm.GetAllProducts(this.SAAUlr);
             }
             else
             {
@@ -1171,5 +1395,56 @@ namespace WinForm
 
             }
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (this.ScanDataDataSource.Rows.Count <= 0)
+            {
+                return;
+            }
+
+            List<string> tagLines = new List<string>();
+            string tagLine = "";
+            string lines = "";
+            foreach (DataRow dr      in  this.ScanDataDataSource.Rows)
+            {
+                tagLine = dr["tagLine"].ToString();
+                if (!styleIsExist(tagLines,tagLine))
+                {
+                    tagLines.Add(tagLine);
+                }
+            }
+
+            foreach (string line in tagLines)
+            {
+                lines = lines + "," + line;
+            }
+
+            lines = lines.Substring(1, lines.Length - 1);
+            
+            string invoice = this.ScanDataDataSource.Rows[0]["tagInvoice"].ToString().Trim().ToUpper();
+            string part = this.ScanDataDataSource.Rows[0]["tagNumber"].ToString().Trim().ToUpper();
+            string location = this.ScanDataDataSource.Rows[0]["tagLocation"].ToString().Trim().ToUpper();
+          
+            FrmAccessOryPrintGrid frm = FrmAccessOryPrintGrid.GetSingleton(invoice, part, location, lines);
+            frm.Show();
+            frm.Activate();
+
+        }
+        public void isPrintEnd()
+        {
+            //  this.tagInvoiceList.Add(invoice);
+            // this.tagLocationList.Add(tagLocation);
+            if (this.tagInvoiceList.Count > 0)
+            {
+                for (int i = 0; i < this.tagInvoiceList.Count; i++)
+                {
+                    cmm.updataIsPrints(this.tagInvoiceList[i], this.tagInvoiceList[i]);
+                }
+
+            }
+
+        }
     }
 }
+

@@ -358,6 +358,7 @@ namespace WinForm
             UpdateUIDelegate(barstr);
             this.btnLoadExcel.Enabled = true;
             this.btnUpload.Enabled = true;
+            changHeaderText();
 
 
         }
@@ -395,13 +396,16 @@ namespace WinForm
             {
                 MessageBox.Show("EXCEL内容有误，请查证后再上传...", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+           
+            
         }
 
         public void changHeaderText()
         {
             this.dgvExcels.Columns["tagNumber"].HeaderText = "外箱条码号";
-            this.dgvExcels.Columns["ScanTime"].DefaultCellStyle.Format = "yyyy-MM-dd hh:mm:ss";
+           
             this.dgvExcels.Columns["ScanTime"].HeaderText = "扫描时间";
+            this.dgvExcels.Columns["ScanTime"].DefaultCellStyle.Format = "yyyy-MM-dd";
             this.dgvExcels.Columns["Kg"].HeaderText = "重量";
             this.dgvExcels.Columns["Subinv"].HeaderText = "仓库代码";
             this.dgvExcels.Columns["Con_no"].HeaderText = "外箱号";

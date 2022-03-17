@@ -30,12 +30,12 @@
         {
             this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txtSelect = new System.Windows.Forms.TextBox();
             this.cbType = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.labDeptMsg = new System.Windows.Forms.Label();
             this.labOrgMsg = new System.Windows.Forms.Label();
             this.butSearch = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
             this.dtpStopDate = new System.Windows.Forms.DateTimePicker();
             this.dtpStarDate = new System.Windows.Forms.DateTimePicker();
             this.cbLocation = new System.Windows.Forms.ComboBox();
@@ -53,6 +53,10 @@
             this.RmeCopyCells = new System.Windows.Forms.ToolStripMenuItem();
             this.RmeCopyRows = new System.Windows.Forms.ToolStripMenuItem();
             this.RmeExportExcel = new System.Windows.Forms.ToolStripMenuItem();
+            this.txtStyle = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.txtTagNumber = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -61,12 +65,16 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.txtTagNumber);
+            this.groupBox1.Controls.Add(this.txtStyle);
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.txtSelect);
             this.groupBox1.Controls.Add(this.cbType);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.labDeptMsg);
             this.groupBox1.Controls.Add(this.labOrgMsg);
             this.groupBox1.Controls.Add(this.butSearch);
-            this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.dtpStopDate);
             this.groupBox1.Controls.Add(this.dtpStarDate);
             this.groupBox1.Controls.Add(this.cbLocation);
@@ -85,6 +93,14 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "查询条件";
             // 
+            // txtSelect
+            // 
+            this.txtSelect.Location = new System.Drawing.Point(294, 13);
+            this.txtSelect.Name = "txtSelect";
+            this.txtSelect.Size = new System.Drawing.Size(86, 21);
+            this.txtSelect.TabIndex = 19;
+            this.txtSelect.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
             // cbType
             // 
             this.cbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -94,7 +110,7 @@
             "OUT",
             "ALL",
             "库存"});
-            this.cbType.Location = new System.Drawing.Point(463, 34);
+            this.cbType.Location = new System.Drawing.Point(385, 36);
             this.cbType.Name = "cbType";
             this.cbType.Size = new System.Drawing.Size(62, 20);
             this.cbType.TabIndex = 18;
@@ -102,7 +118,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(471, 14);
+            this.label7.Location = new System.Drawing.Point(389, 17);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(29, 12);
             this.label7.TabIndex = 17;
@@ -112,7 +128,7 @@
             // 
             this.labDeptMsg.AutoSize = true;
             this.labDeptMsg.ForeColor = System.Drawing.Color.Red;
-            this.labDeptMsg.Location = new System.Drawing.Point(203, 17);
+            this.labDeptMsg.Location = new System.Drawing.Point(177, 17);
             this.labDeptMsg.Name = "labDeptMsg";
             this.labDeptMsg.Size = new System.Drawing.Size(0, 12);
             this.labDeptMsg.TabIndex = 15;
@@ -136,19 +152,10 @@
             this.butSearch.UseVisualStyleBackColor = true;
             this.butSearch.Click += new System.EventHandler(this.butSearch_Click);
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(795, 39);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(11, 12);
-            this.label6.TabIndex = 12;
-            this.label6.Text = "-";
-            // 
             // dtpStopDate
             // 
             this.dtpStopDate.CustomFormat = "yyyy-MM-dd";
-            this.dtpStopDate.Location = new System.Drawing.Point(813, 35);
+            this.dtpStopDate.Location = new System.Drawing.Point(813, 41);
             this.dtpStopDate.Name = "dtpStopDate";
             this.dtpStopDate.Size = new System.Drawing.Size(111, 21);
             this.dtpStopDate.TabIndex = 11;
@@ -156,7 +163,7 @@
             // dtpStarDate
             // 
             this.dtpStarDate.CustomFormat = "yyyy-MM-dd";
-            this.dtpStarDate.Location = new System.Drawing.Point(678, 35);
+            this.dtpStarDate.Location = new System.Drawing.Point(813, 19);
             this.dtpStarDate.Name = "dtpStarDate";
             this.dtpStarDate.Size = new System.Drawing.Size(111, 21);
             this.dtpStarDate.TabIndex = 10;
@@ -165,7 +172,7 @@
             // 
             this.cbLocation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbLocation.FormattingEnabled = true;
-            this.cbLocation.Location = new System.Drawing.Point(322, 35);
+            this.cbLocation.Location = new System.Drawing.Point(261, 36);
             this.cbLocation.Name = "cbLocation";
             this.cbLocation.Size = new System.Drawing.Size(121, 20);
             this.cbLocation.TabIndex = 9;
@@ -174,7 +181,7 @@
             // cbCheackedDate
             // 
             this.cbCheackedDate.AutoSize = true;
-            this.cbCheackedDate.Location = new System.Drawing.Point(619, 16);
+            this.cbCheackedDate.Location = new System.Drawing.Point(754, 8);
             this.cbCheackedDate.Name = "cbCheackedDate";
             this.cbCheackedDate.Size = new System.Drawing.Size(72, 16);
             this.cbCheackedDate.TabIndex = 8;
@@ -186,7 +193,7 @@
             // 
             this.cbDept.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDept.FormattingEnabled = true;
-            this.cbDept.Location = new System.Drawing.Point(161, 35);
+            this.cbDept.Location = new System.Drawing.Point(135, 36);
             this.cbDept.Name = "cbDept";
             this.cbDept.Size = new System.Drawing.Size(121, 20);
             this.cbDept.TabIndex = 7;
@@ -197,7 +204,7 @@
             // 
             this.cbOrg.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbOrg.FormattingEnabled = true;
-            this.cbOrg.Location = new System.Drawing.Point(9, 35);
+            this.cbOrg.Location = new System.Drawing.Point(9, 36);
             this.cbOrg.Name = "cbOrg";
             this.cbOrg.Size = new System.Drawing.Size(121, 20);
             this.cbOrg.TabIndex = 6;
@@ -207,7 +214,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(842, 17);
+            this.label5.Location = new System.Drawing.Point(755, 46);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(53, 12);
             this.label5.TabIndex = 4;
@@ -216,7 +223,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(617, 38);
+            this.label4.Location = new System.Drawing.Point(756, 28);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(53, 12);
             this.label4.TabIndex = 3;
@@ -225,7 +232,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(330, 17);
+            this.label3.Location = new System.Drawing.Point(261, 17);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(29, 12);
             this.label3.TabIndex = 2;
@@ -234,7 +241,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(168, 17);
+            this.label2.Location = new System.Drawing.Point(138, 17);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(29, 12);
             this.label2.TabIndex = 1;
@@ -243,7 +250,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(18, 17);
+            this.label1.Location = new System.Drawing.Point(12, 17);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(29, 12);
             this.label1.TabIndex = 0;
@@ -281,13 +288,13 @@
             this.RmeCopyRows,
             this.RmeExportExcel});
             this.MenuRight.Name = "contextMenuStrip1";
-            this.MenuRight.Size = new System.Drawing.Size(144, 70);
+            this.MenuRight.Size = new System.Drawing.Size(141, 70);
             // 
             // RmeCopyCells
             // 
             this.RmeCopyCells.Image = global::WinForm.Properties.Resources.icons8_复制_64;
             this.RmeCopyCells.Name = "RmeCopyCells";
-            this.RmeCopyCells.Size = new System.Drawing.Size(143, 22);
+            this.RmeCopyCells.Size = new System.Drawing.Size(140, 22);
             this.RmeCopyCells.Text = "CopyCells";
             this.RmeCopyCells.Click += new System.EventHandler(this.RmeCopyCells_Click);
             // 
@@ -295,7 +302,7 @@
             // 
             this.RmeCopyRows.Image = global::WinForm.Properties.Resources.icons8_复制_48;
             this.RmeCopyRows.Name = "RmeCopyRows";
-            this.RmeCopyRows.Size = new System.Drawing.Size(143, 22);
+            this.RmeCopyRows.Size = new System.Drawing.Size(140, 22);
             this.RmeCopyRows.Text = "CopyRows";
             this.RmeCopyRows.Click += new System.EventHandler(this.RmeCopyRows_Click);
             // 
@@ -303,9 +310,41 @@
             // 
             this.RmeExportExcel.Image = global::WinForm.Properties.Resources.Excel_32px_1185986_easyicon_net;
             this.RmeExportExcel.Name = "RmeExportExcel";
-            this.RmeExportExcel.Size = new System.Drawing.Size(143, 22);
+            this.RmeExportExcel.Size = new System.Drawing.Size(140, 22);
             this.RmeExportExcel.Text = "ExportExcel";
             this.RmeExportExcel.Click += new System.EventHandler(this.RmeExportExcel_Click);
+            // 
+            // txtStyle
+            // 
+            this.txtStyle.Location = new System.Drawing.Point(454, 35);
+            this.txtStyle.Name = "txtStyle";
+            this.txtStyle.Size = new System.Drawing.Size(98, 21);
+            this.txtStyle.TabIndex = 21;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(454, 19);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(29, 12);
+            this.label8.TabIndex = 20;
+            this.label8.Text = "款式";
+            // 
+            // txtTagNumber
+            // 
+            this.txtTagNumber.Location = new System.Drawing.Point(560, 36);
+            this.txtTagNumber.Name = "txtTagNumber";
+            this.txtTagNumber.Size = new System.Drawing.Size(189, 21);
+            this.txtTagNumber.TabIndex = 22;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(561, 20);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(53, 12);
+            this.label6.TabIndex = 23;
+            this.label6.Text = "工票号码";
             // 
             // FrmCompletedSearch
             // 
@@ -332,7 +371,6 @@
 
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button butSearch;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.DateTimePicker dtpStopDate;
         private System.Windows.Forms.DateTimePicker dtpStarDate;
         private System.Windows.Forms.ComboBox cbLocation;
@@ -354,5 +392,10 @@
         private System.Windows.Forms.ToolStripMenuItem RmeCopyCells;
         private System.Windows.Forms.ToolStripMenuItem RmeCopyRows;
         private System.Windows.Forms.ToolStripMenuItem RmeExportExcel;
+        private System.Windows.Forms.TextBox txtSelect;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox txtTagNumber;
+        private System.Windows.Forms.TextBox txtStyle;
+        private System.Windows.Forms.Label label8;
     }
 }

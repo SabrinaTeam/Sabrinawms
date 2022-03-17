@@ -37,17 +37,28 @@
             this.MenuSizeRun = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuNumber = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuMesEmployee = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuScanMakeComplete = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuPC = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuIE = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuFP = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuPropertyNumber = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuPDAManager = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuProductSearch = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuHR = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuExcelImport = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuEmployeeManager = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuAgoProcess = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuCompletedToMes = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuCompletedSearch = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuCompletedSyncMes = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuInvoiceSendTest = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuMain = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuAccessory = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuAccessoryOut = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuHD = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuScanSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuProduct = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuReceipt = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuOutgoing = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,14 +66,20 @@
             this.MenuPOTrading = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuPONikeConnect = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuTNFImport = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuAsicsImport = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuTNFScan = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuDelScan = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuFullPO = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuPI = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuCFoutput = new System.Windows.Forms.ToolStripMenuItem();
+            this.productionStatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ShippingPackages = new System.Windows.Forms.ToolStripMenuItem();
+            this.productionStatus2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuWindow = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuCloseAll = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.MenuCompletedSyncMes = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -71,11 +88,15 @@
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuSys,
             this.MenuPP,
+            this.MenuPC,
             this.MenuFP,
+            this.MenuHR,
             this.MenuAgoProcess,
             this.MenuMain,
             this.MenuAccessory,
+            this.MenuHD,
             this.MenuProduct,
+            this.MenuPI,
             this.MenuWindow});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.MdiWindowListItem = this.MenuWindow;
@@ -104,7 +125,8 @@
             this.MenuPP.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuSizeRun,
             this.MenuNumber,
-            this.MenuMesEmployee});
+            this.MenuMesEmployee,
+            this.MenuScanMakeComplete});
             this.MenuPP.Name = "MenuPP";
             this.MenuPP.Size = new System.Drawing.Size(82, 20);
             this.MenuPP.Text = "生产计划(&P)";
@@ -112,29 +134,52 @@
             // MenuSizeRun
             // 
             this.MenuSizeRun.Name = "MenuSizeRun";
-            this.MenuSizeRun.Size = new System.Drawing.Size(180, 22);
+            this.MenuSizeRun.Size = new System.Drawing.Size(171, 22);
             this.MenuSizeRun.Text = "SizeRun(&R)";
             this.MenuSizeRun.Click += new System.EventHandler(this.MenuSizeRun_Click);
             // 
             // MenuNumber
             // 
             this.MenuNumber.Name = "MenuNumber";
-            this.MenuNumber.Size = new System.Drawing.Size(180, 22);
+            this.MenuNumber.Size = new System.Drawing.Size(171, 22);
             this.MenuNumber.Text = "PO&MyNumber(&P)";
             this.MenuNumber.Click += new System.EventHandler(this.MenuNumber_Click);
             // 
             // MenuMesEmployee
             // 
             this.MenuMesEmployee.Name = "MenuMesEmployee";
-            this.MenuMesEmployee.Size = new System.Drawing.Size(180, 22);
+            this.MenuMesEmployee.Size = new System.Drawing.Size(171, 22);
             this.MenuMesEmployee.Text = "Mes用户管理(&U)";
             this.MenuMesEmployee.Click += new System.EventHandler(this.MenuMesEmployee_Click);
+            // 
+            // MenuScanMakeComplete
+            // 
+            this.MenuScanMakeComplete.Name = "MenuScanMakeComplete";
+            this.MenuScanMakeComplete.Size = new System.Drawing.Size(171, 22);
+            this.MenuScanMakeComplete.Text = "报工详情(&C)";
+            this.MenuScanMakeComplete.Click += new System.EventHandler(this.MenuScanMakeComplete_Click);
+            // 
+            // MenuPC
+            // 
+            this.MenuPC.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuIE});
+            this.MenuPC.Name = "MenuPC";
+            this.MenuPC.Size = new System.Drawing.Size(83, 20);
+            this.MenuPC.Text = "生控中心(&C)";
+            // 
+            // MenuIE
+            // 
+            this.MenuIE.Name = "MenuIE";
+            this.MenuIE.Size = new System.Drawing.Size(133, 22);
+            this.MenuIE.Text = "工段工程(&I)";
+            this.MenuIE.Click += new System.EventHandler(this.MenuIE_Click);
             // 
             // MenuFP
             // 
             this.MenuFP.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuPropertyNumber,
-            this.MenuPDAManager});
+            this.MenuPDAManager,
+            this.MenuProductSearch});
             this.MenuFP.Name = "MenuFP";
             this.MenuFP.Size = new System.Drawing.Size(81, 20);
             this.MenuFP.Text = "厂务规划(&F)";
@@ -152,6 +197,42 @@
             this.MenuPDAManager.Size = new System.Drawing.Size(138, 22);
             this.MenuPDAManager.Text = "PDA管理(&A)";
             this.MenuPDAManager.Click += new System.EventHandler(this.pDA管理ToolStripMenuItem_Click);
+            // 
+            // MenuProductSearch
+            // 
+            this.MenuProductSearch.Name = "MenuProductSearch";
+            this.MenuProductSearch.Size = new System.Drawing.Size(138, 22);
+            this.MenuProductSearch.Text = "成品查询";
+            this.MenuProductSearch.Click += new System.EventHandler(this.MenuProductSearch_Click);
+            // 
+            // MenuHR
+            // 
+            this.MenuHR.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuExcelImport,
+            this.toolStripMenuItem4,
+            this.MenuEmployeeManager});
+            this.MenuHR.Name = "MenuHR";
+            this.MenuHR.Size = new System.Drawing.Size(84, 20);
+            this.MenuHR.Text = "雇员管理(&H)";
+            // 
+            // MenuExcelImport
+            // 
+            this.MenuExcelImport.Enabled = false;
+            this.MenuExcelImport.Name = "MenuExcelImport";
+            this.MenuExcelImport.Size = new System.Drawing.Size(127, 22);
+            this.MenuExcelImport.Text = "Excel导入";
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(124, 6);
+            // 
+            // MenuEmployeeManager
+            // 
+            this.MenuEmployeeManager.Name = "MenuEmployeeManager";
+            this.MenuEmployeeManager.Size = new System.Drawing.Size(127, 22);
+            this.MenuEmployeeManager.Text = "员工管理";
+            this.MenuEmployeeManager.Click += new System.EventHandler(this.MenuEmployeeManager_Click);
             // 
             // MenuAgoProcess
             // 
@@ -178,6 +259,13 @@
             this.MenuCompletedSearch.Size = new System.Drawing.Size(190, 22);
             this.MenuCompletedSearch.Text = "报工查询(&S)";
             this.MenuCompletedSearch.Click += new System.EventHandler(this.MenuCompletedSearch_Click);
+            // 
+            // MenuCompletedSyncMes
+            // 
+            this.MenuCompletedSyncMes.Name = "MenuCompletedSyncMes";
+            this.MenuCompletedSyncMes.Size = new System.Drawing.Size(190, 22);
+            this.MenuCompletedSyncMes.Text = "同步失败查询(&N)";
+            this.MenuCompletedSyncMes.Click += new System.EventHandler(this.MenuCompletedSyncMes_Click);
             // 
             // toolStripMenuItem3
             // 
@@ -213,6 +301,21 @@
             this.MenuAccessoryOut.Text = "辅料发料(&O)";
             this.MenuAccessoryOut.Click += new System.EventHandler(this.MenuAccessoryOut_Click);
             // 
+            // MenuHD
+            // 
+            this.MenuHD.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuScanSearch});
+            this.MenuHD.Name = "MenuHD";
+            this.MenuHD.Size = new System.Drawing.Size(84, 20);
+            this.MenuHD.Text = "后道查询(&H)";
+            // 
+            // MenuScanSearch
+            // 
+            this.MenuScanSearch.Name = "MenuScanSearch";
+            this.MenuScanSearch.Size = new System.Drawing.Size(122, 22);
+            this.MenuScanSearch.Text = "扫描查询";
+            this.MenuScanSearch.Click += new System.EventHandler(this.MenuScanSearch_Click);
+            // 
             // MenuProduct
             // 
             this.MenuProduct.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -222,9 +325,11 @@
             this.MenuPOTrading,
             this.MenuPONikeConnect,
             this.MenuTNFImport,
+            this.MenuAsicsImport,
             this.toolStripMenuItem2,
             this.MenuTNFScan,
-            this.MenuDelScan});
+            this.MenuDelScan,
+            this.MenuFullPO});
             this.MenuProduct.Name = "MenuProduct";
             this.MenuProduct.Size = new System.Drawing.Size(59, 20);
             this.MenuProduct.Text = "成品(&C)";
@@ -269,8 +374,15 @@
             // 
             this.MenuTNFImport.Name = "MenuTNFImport";
             this.MenuTNFImport.Size = new System.Drawing.Size(239, 22);
-            this.MenuTNFImport.Text = "TNF 订单条码资料导入(&T)";
+            this.MenuTNFImport.Text = "TNF NIKE 资料导入(&T)";
             this.MenuTNFImport.Click += new System.EventHandler(this.MenuTNFImport_Click);
+            // 
+            // MenuAsicsImport
+            // 
+            this.MenuAsicsImport.Name = "MenuAsicsImport";
+            this.MenuAsicsImport.Size = new System.Drawing.Size(239, 22);
+            this.MenuAsicsImport.Text = "ASICS 订单条码资料导入(&A)";
+            this.MenuAsicsImport.Click += new System.EventHandler(this.MenuAsicsImport_Click);
             // 
             // toolStripMenuItem2
             // 
@@ -290,6 +402,52 @@
             this.MenuDelScan.Size = new System.Drawing.Size(239, 22);
             this.MenuDelScan.Text = "删除条码";
             this.MenuDelScan.Click += new System.EventHandler(this.MenuDelScan_Click);
+            // 
+            // MenuFullPO
+            // 
+            this.MenuFullPO.Name = "MenuFullPO";
+            this.MenuFullPO.Size = new System.Drawing.Size(239, 22);
+            this.MenuFullPO.Text = "满库查询";
+            this.MenuFullPO.Click += new System.EventHandler(this.MenuFullPO_Click);
+            // 
+            // MenuPI
+            // 
+            this.MenuPI.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuCFoutput,
+            this.productionStatusToolStripMenuItem,
+            this.ShippingPackages,
+            this.productionStatus2ToolStripMenuItem});
+            this.MenuPI.Name = "MenuPI";
+            this.MenuPI.Size = new System.Drawing.Size(40, 20);
+            this.MenuPI.Text = "PI(&I)";
+            // 
+            // menuCFoutput
+            // 
+            this.menuCFoutput.Name = "menuCFoutput";
+            this.menuCFoutput.Size = new System.Drawing.Size(183, 22);
+            this.menuCFoutput.Text = "产量报表";
+            this.menuCFoutput.Click += new System.EventHandler(this.menuCFoutput_Click);
+            // 
+            // productionStatusToolStripMenuItem
+            // 
+            this.productionStatusToolStripMenuItem.Name = "productionStatusToolStripMenuItem";
+            this.productionStatusToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.productionStatusToolStripMenuItem.Text = "Production  Status";
+            this.productionStatusToolStripMenuItem.Click += new System.EventHandler(this.productionStatusToolStripMenuItem_Click);
+            // 
+            // ShippingPackages
+            // 
+            this.ShippingPackages.Name = "ShippingPackages";
+            this.ShippingPackages.Size = new System.Drawing.Size(183, 22);
+            this.ShippingPackages.Text = "Shipping Packages";
+            this.ShippingPackages.Click += new System.EventHandler(this.ShippingPackages_Click);
+            // 
+            // productionStatus2ToolStripMenuItem
+            // 
+            this.productionStatus2ToolStripMenuItem.Name = "productionStatus2ToolStripMenuItem";
+            this.productionStatus2ToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.productionStatus2ToolStripMenuItem.Text = "Production  Status2";
+            this.productionStatus2ToolStripMenuItem.Click += new System.EventHandler(this.productionStatus2ToolStripMenuItem_Click);
             // 
             // MenuWindow
             // 
@@ -318,13 +476,6 @@
             this.notifyIcon1.Text = "Sabrina 仓库管理助手";
             this.notifyIcon1.Visible = true;
             // 
-            // MenuCompletedSyncMes
-            // 
-            this.MenuCompletedSyncMes.Name = "MenuCompletedSyncMes";
-            this.MenuCompletedSyncMes.Size = new System.Drawing.Size(190, 22);
-            this.MenuCompletedSyncMes.Text = "同步失败查询(&N)";
-            this.MenuCompletedSyncMes.Click += new System.EventHandler(this.MenuCompletedSyncMes_Click);
-            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -338,6 +489,7 @@
             this.Text = "仓库管理助手";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMain_FormClosing);
+            this.Load += new System.EventHandler(this.FrmMain_Load);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.ResumeLayout(false);
@@ -380,6 +532,23 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem MenuDelScan;
         private System.Windows.Forms.ToolStripMenuItem MenuCompletedSyncMes;
+        private System.Windows.Forms.ToolStripMenuItem MenuFullPO;
+        private System.Windows.Forms.ToolStripMenuItem MenuProductSearch;
+        private System.Windows.Forms.ToolStripMenuItem MenuPI;
+        private System.Windows.Forms.ToolStripMenuItem menuCFoutput;
+        private System.Windows.Forms.ToolStripMenuItem MenuAsicsImport;
+        private System.Windows.Forms.ToolStripMenuItem MenuHR;
+        private System.Windows.Forms.ToolStripMenuItem MenuExcelImport;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem MenuEmployeeManager;
+        private System.Windows.Forms.ToolStripMenuItem MenuHD;
+        private System.Windows.Forms.ToolStripMenuItem MenuScanSearch;
+        private System.Windows.Forms.ToolStripMenuItem MenuScanMakeComplete;
+        private System.Windows.Forms.ToolStripMenuItem productionStatusToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ShippingPackages;
+        private System.Windows.Forms.ToolStripMenuItem productionStatus2ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem MenuPC;
+        private System.Windows.Forms.ToolStripMenuItem MenuIE;
     }
 }
 

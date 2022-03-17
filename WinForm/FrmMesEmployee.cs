@@ -20,9 +20,9 @@ namespace WinForm
         public List<mesEmployee> emps;
         public List<mesOrg> Orgs;
         public string SAAUlr = "http://192.168.4.251:5000/api/process";
-        public string SAATest = "http://192.168.4.251:5001/api/reportPlace";
+        public string SAATest = "http://192.168.4.251:5000/api/reportPlace";
         public string TOPUlr = "http://192.168.7.240:5000/api/process";
-        public string TOPTest = "http://192.168.7.240:5001/api/reportPlace";
+        public string TOPTest = "http://192.168.7.240:5000/api/reportPlace";
         public FrmMesEmployee()
         {
             InitializeComponent();

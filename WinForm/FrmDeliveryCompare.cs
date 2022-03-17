@@ -396,9 +396,9 @@ namespace WinForm
                     }
                 }
                 this.dgvCompareResult.Refresh();
-                changdgvExcelsHeaderText();                
-                changdgvLocalHostDBHeaderText();               
-                changdgvCompareResultHeaderText();
+              //  changdgvExcelsHeaderText();                
+               // changdgvLocalHostDBHeaderText();               
+              //  changdgvCompareResultHeaderText();
                 Cursor = Cursors.Default;
                 this.dgvExcels.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.ColorTranslator.FromHtml("#D3D3D3");
                 this.dgvLocalHostDB.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.ColorTranslator.FromHtml("#D3D3D3");
@@ -723,9 +723,9 @@ namespace WinForm
             barstr.step = 0;
             barstr.maxstep = 100;
             UpdateUIDelegate(barstr);
-            changdgvExcelsHeaderText();
-            changdgvLocalHostDBHeaderText();
-            changdgvCompareResultHeaderText();
+          //  changdgvExcelsHeaderText();
+          //  changdgvLocalHostDBHeaderText();
+          //  changdgvCompareResultHeaderText();
             this.dgvCompareResult.DataSource = "";
             this.dgvCompareResult.DataSource = this.dtnoEques;
             this.dgvCompareResult.EnableHeadersVisualStyles = false;

@@ -676,6 +676,7 @@ namespace WinForm
                     }
                     catch (Win32Exception wx)
                     {
+                        Console.WriteLine(wx.ToString());
                         return;
                         // MessageBox.Show("已取消打印作业");
                     }

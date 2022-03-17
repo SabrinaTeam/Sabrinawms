@@ -21,13 +21,16 @@ namespace WinForm
         public List<mesOrg> Orgs;
         public List<mesEmployee> emps;
         public string SAAUlr = "http://192.168.4.251:5000/api/process";
-        public string SAATest = "http://192.168.4.251:5001/api/reportPlace";
+        public string SAATest = "http://192.168.4.251:5000/api/reportPlace";
         public string TOPUlr = "http://192.168.7.240:5000/api/process";
-        public string TOPTest = "http://192.168.7.240:5001/api/reportPlace";
+        public string TOPTest = "http://192.168.7.240:5000/api/reportPlace";
         public string org = "";
+        public DataTable locationDT = new DataTable();
+         
         public FrmCompletedSearch()
         {  
             InitializeComponent();
+            this.locationDT.Columns.Add("Location");
             this.dataGridView1.DoubleBufferedDataGirdView(true);
         }
         public static FrmCompletedSearch GetSingleton()
@@ -58,23 +61,30 @@ namespace WinForm
                 return;
             }
             string dept = this.labDeptMsg.Text.Trim();
+            string location = "";
+            string searchType = "ALL";
 
-            if (this.cbLocation.Items.Count <= 0 || this.cbLocation.SelectedIndex <= -1)
+            if (this.cbLocation.Items.Count > 0 || this.cbLocation.SelectedIndex != -1)
             {
-                MessageBox.Show("请选择储位");
+                location = this.cbLocation.SelectedItem.ToString();
+              //  MessageBox.Show("请选择储位");
+               // return;
+            }
+            if (this.cbType.SelectedIndex  != -1 )
+            {
+              //  MessageBox.Show("请选择查询类别");
+                searchType = this.cbType.SelectedItem.ToString();
                 return;
             }
-            if (this.cbType.SelectedIndex  <= -1)
-            {
-                MessageBox.Show("请选择查询类别");
-                return;
-            }
 
-            string location = this.cbLocation.SelectedItem.ToString();
+            
             string starDate = this.dtpStarDate.Value.ToString("yyyy-MM-dd");
             string stopDate = this.dtpStopDate.Value.AddDays(1).ToString("yyyy-MM-dd");
             string isCheckDate = this.cbCheackedDate.Checked.ToString();
-            string searchType = this.cbType.SelectedItem.ToString();
+           // string searchType = this.cbType.SelectedItem.ToString();
+
+            string txtStyle = this.txtStyle.Text.Trim();
+            string txtTagNumber = this.txtTagNumber.Text.Trim();
 
 
 
@@ -103,6 +113,16 @@ namespace WinForm
             g.key = "isCheckDate";
             g.value = isCheckDate;
             cs.Add(g);
+
+            CompletedSearch t = new CompletedSearch();
+            t.key = "style";
+            t.value = txtStyle;
+            cs.Add(t);
+            CompletedSearch n = new CompletedSearch();
+            n.key = "tagNumber";
+            n.value = txtTagNumber;
+            cs.Add(n);
+
             CompletedSearch h = new CompletedSearch();
             h.key = "searchType";
 
@@ -131,14 +151,18 @@ namespace WinForm
             {
                 h.value = "-1";
                 cs.Add(h);
-            } 
+            }
+            Cursor = Cursors.WaitCursor;
+
             DataTable dt = csm.getMesWorktagScans(cs);
             if (dt.Rows.Count <= 0)
             {
                 MessageBox.Show("没有数据");
+                Cursor = Cursors.Default;
                 return;
             }
             this.dataGridView1.DataSource = dt;
+            Cursor = Cursors.Default;
         }
 
         private void cbCheackedDate_Click(object sender, EventArgs e)
@@ -229,18 +253,27 @@ namespace WinForm
             {
                 return;
             }
+            if(this.cbLocation.Items.Count > 0)
+            {
+                return;
+            }
             string org = this.cbOrg.SelectedItem.ToString();
             this.cbLocation.Items.Clear();
             List<string> locations = csm.getLocation(org);
+            this.locationDT.Clear();
             if (locations.Count > 0)
             {
                 this.cbLocation.Items.Clear();
+                this.cbLocation.Items.Add(""); 
                 foreach (string location in locations)
                 {
                     this.cbLocation.Items.Add(location);
+                    DataRow dr = this.locationDT.NewRow();
+                    dr["Location"] = location;
+                    this.locationDT.Rows.Add(dr);
                 }
             }
-            this.cbLocation.Items.Add("");
+           
         }
 
         private void dataGridView1_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
@@ -357,6 +390,51 @@ namespace WinForm
                 }
 
             }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            List<string> locations = new List<string>(); ;
+             
+            if (this.cbOrg.Items.Count <= 0)
+            {
+                return;
+            }
+
+            if (this.cbLocation.Items.Count <= 0)
+            {
+                locations = csm.getLocation(org);
+                if (locations.Count > 0)
+                {
+                    this.cbLocation.Items.Clear();
+                    this.cbLocation.Items.Add("");
+                    foreach (string location in locations)
+                    {
+                        DataRow dr = this.locationDT.NewRow();
+                        dr["Location"] = location;
+                        this.locationDT.Rows.Add(dr);
+                    }
+                }
+            } 
+            
+
+            if (this.locationDT.Rows.Count <= 0)
+            {
+                return;
+            }
+
+            string select = this.txtSelect.Text.Trim().ToUpper();
+            DataRow[] drs  = this.locationDT.Select("Location like '%"+ select  + "%'");           
+            this.cbLocation.Items.Clear(); 
+            this.cbLocation.Items.Add("");
+            foreach (DataRow t in drs)
+            {
+                this.cbLocation.Items.Add(t["Location"].ToString());
+            }
+            this.cbLocation.DroppedDown = true;
+            Cursor.Current = Cursors.Default;
+            //.DroppedDown
+
         }
     }
 }
