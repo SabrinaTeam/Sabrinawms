@@ -13,18 +13,19 @@ namespace DAL
 
         public  DataTable getAllMachineTypes()
         {
-            string sql = @"SELECT  
+            string sql = @"SELECT  ID,
                                    machineClass,
                                    MachineName,
-                                   machineNameEN,
-                                   machinesMark,
+                                   machineTypeShortName,
+                                   machinesMarckKhmer,
+                                   imagestr,
                                    CreateDate,
                                    Creator,
                                    modify,
                                    modifor,
                                    ismachinesStatus
                             FROM machinetypes
-                            ORDER BY ismachinesStatus,                                    
+                            ORDER BY ismachinesStatus,
                                      machineClass; ";
 
 
@@ -55,10 +56,12 @@ namespace DAL
         public void dataToMachines(DataRow dr, MODEL.Machines list)
         {
 
+            list.id = Convert.ToInt32(IEBOM_SqlHelper.FromDbValue(dr["ID"])); // 机器类别ID
             list.machineClass = Convert.ToString(IEBOM_SqlHelper.FromDbValue(dr["machineClass"])); // 机器类别
             list.machineName = Convert.ToString(IEBOM_SqlHelper.FromDbValue(dr["MachineName"])); // 机器类别名称
-            list.machineNameEN = Convert.ToString(IEBOM_SqlHelper.FromDbValue(dr["machineNameEN"]));   // 机器类别名称英文
-            list.MachinesMark = Convert.ToString(IEBOM_SqlHelper.FromDbValue(dr["machinesMark"]));  // 机器备注
+            list.machineTypeShortName = Convert.ToString(IEBOM_SqlHelper.FromDbValue(dr["machineTypeShortName"]));   // 机器类别名称英文
+            list.machinesMarckKhmer = Convert.ToString(IEBOM_SqlHelper.FromDbValue(dr["machinesMarckKhmer"]));  // 机器备注
+            list.imagestr = Convert.ToString(IEBOM_SqlHelper.FromDbValue(dr["imagestr"]));  // 机器图片
             list.isMachinesStatus = Convert.ToInt32(IEBOM_SqlHelper.FromDbValue(dr["isMachinesStatus"])); // 机器类别状态
             list.CreateDate = Convert.ToDateTime(IEBOM_SqlHelper.FromDbValue(dr["CreateDate"])); // 创建时间
             list.Creator = Convert.ToString(IEBOM_SqlHelper.FromDbValue(dr["Creator"]));  // 创建者
@@ -76,8 +79,9 @@ namespace DAL
             //  newDt.Columns.Add(new DataColumn("machineID", typeof(int))); //
             newDt.Columns.Add(new DataColumn("machineClass", typeof(string))); //机器类别
             newDt.Columns.Add(new DataColumn("MachineName", typeof(string))); //机器类别名称
-            newDt.Columns.Add(new DataColumn("machineNameEN", typeof(string)));//机器类别名称英文
-            newDt.Columns.Add(new DataColumn("machinesMark", typeof(string)));//机器备注
+            newDt.Columns.Add(new DataColumn("machineTypeShortName", typeof(string)));//机器类别名称英文
+            newDt.Columns.Add(new DataColumn("machinesMarckKhmer", typeof(string)));//机器备注
+            newDt.Columns.Add(new DataColumn("imagestr", typeof(byte[])));//机器图片
             newDt.Columns.Add(new DataColumn("isMachinesStatus", typeof(int)));//机器类别状态
             newDt.Columns.Add(new DataColumn("CreateDate", typeof(DateTime)));// 创建时间
             newDt.Columns.Add(new DataColumn("Creator", typeof(string)));// 创建者
@@ -90,8 +94,9 @@ namespace DAL
                 DataRow dr = newDt.NewRow();
                 dr["machineClass"] = machineDT.Rows[i]["machineClass"];
                 dr["MachineName"] = machineDT.Rows[i]["MachineName"];
-                dr["machineNameEN"] = machineDT.Rows[i]["machineNameEN"];
-                dr["machinesMark"] = machineDT.Rows[i]["machinesMark"];
+                dr["machineTypeShortName"] = machineDT.Rows[i]["machineTypeShortName"];
+                dr["machinesMarckKhmer"] = machineDT.Rows[i]["machinesMarckKhmer"];
+                dr["imagestr"] = machineDT.Rows[i]["imagestr"];
 
                 dr["isMachinesStatus"] = machineDT.Rows[i]["ismachinesStatus"];
                 dr["CreateDate"] = machineDT.Rows[i]["CreateDate"];

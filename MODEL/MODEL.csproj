@@ -227,11 +227,14 @@
     <Compile Include="CompletedSearch.cs" />
     <Compile Include="delivertb.cs" />
     <Compile Include="groupColorPO.cs" />
+    <Compile Include="IEBom.cs" />
+    <Compile Include="LuluSingleScanPacklist.cs" />
     <Compile Include="Machines.cs" />
     <Compile Include="mesDept.cs" />
     <Compile Include="mesEmployee.cs" />
     <Compile Include="meshMesERPCompelete.cs" />
     <Compile Include="mesOrg.cs" />
+    <Compile Include="NewStyleColor.cs" />
     <Compile Include="nikeConnect.cs" />
     <Compile Include="outGoing.cs" />
     <Compile Include="parameter.cs" />

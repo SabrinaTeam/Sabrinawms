@@ -104,7 +104,7 @@ namespace DAL
             }
             string sqlValue = "";
             string sqlstr = "";
-            string propertyDelPC = Dns.GetHostName();
+            string propertyDelPC = Dns.GetHostName().ToUpper();
             string propertyDelDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             for (int i = 0; i < propertyIDs.Count; i++)
             {
@@ -303,7 +303,7 @@ namespace DAL
             }
             string sqlValue = "";
             string sqlstr = "";
-            string propertyPrintPC = Dns.GetHostName();
+            string propertyPrintPC = Dns.GetHostName().ToUpper();
             for (int i = 0; i < pId.Length; i++)
             {
                 sqlValue = sqlValue + "'" + pId[i].ToString() + "',";

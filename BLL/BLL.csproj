@@ -60,6 +60,15 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ADRcpLib">
+      <HintPath>D:\OneDrive\桌面\MM_C#\dll\x64\ADRcpLib.dll</HintPath>
+    </Reference>
+    <Reference Include="ADSioLib">
+      <HintPath>D:\OneDrive\桌面\MM_C#\dll\x64\ADSioLib.dll</HintPath>
+    </Reference>
+    <Reference Include="ADUtilsLib">
+      <HintPath>D:\OneDrive\桌面\MM_C#\dll\x64\ADUtilsLib.dll</HintPath>
+    </Reference>
     <Reference Include="bcmail-jdk15-1.44, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\WinForm\packages\Pdfbox.1.1.1\lib\bcmail-jdk15-1.44.dll</HintPath>
     </Reference>
@@ -237,7 +246,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="accessoryOutManager.cs" />
+    <Compile Include="AlarmManager.cs" />
     <Compile Include="AsicsImportManager.cs" />
+    <Compile Include="BoxsScanManager.cs" />
     <Compile Include="CFoutputManager.cs" />
     <Compile Include="CompeleteManager.cs" />
     <Compile Include="CompketedSyncMesDataManager.cs" />
@@ -247,9 +258,14 @@
     <Compile Include="deliveryCompareManager.cs" />
     <Compile Include="DelScanHURLEYManager.cs" />
     <Compile Include="EmployeeManager.cs" />
+    <Compile Include="FrmNewStyleSearchManager.cs" />
+    <Compile Include="FrmRFIDLuluImportManager.cs" />
+    <Compile Include="FrmRFIDNikeImportManager.cs" />
+    <Compile Include="FrmRFIDScanSearchManager.cs" />
     <Compile Include="FrmScanSerachManager.cs" />
     <Compile Include="IEBomManager.cs" />
     <Compile Include="loadScanManager.cs" />
+    <Compile Include="LuluSingleScanManager.cs" />
     <Compile Include="MachinesTableManager.cs" />
     <Compile Include="mesEmployeeManager.cs" />
     <Compile Include="mesOrgManager.cs" />
@@ -268,6 +284,7 @@
     <Compile Include="sizeRunManager.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="StyleLearningCurveManager.cs" />
+    <Compile Include="SystemPubb.cs" />
     <Compile Include="TestLinManager.cs" />
     <Compile Include="TNFImportManager.cs" />
     <Compile Include="tradingComanyPOManager.cs" />

@@ -29,12 +29,13 @@
         private void InitializeComponent()
         {
             this.gbMachinesTable = new System.Windows.Forms.GroupBox();
+            this.dgvMachinesTable = new System.Windows.Forms.DataGridView();
             this.butStatusNormal = new System.Windows.Forms.Button();
             this.butStatusScrap = new System.Windows.Forms.Button();
             this.butStatusRepair = new System.Windows.Forms.Button();
             this.txtMachineTypeName = new System.Windows.Forms.TextBox();
-            this.txtMachineTypeNameEN = new System.Windows.Forms.TextBox();
-            this.txtMachinesMarck = new System.Windows.Forms.TextBox();
+            this.txtMachineTypeShortName = new System.Windows.Forms.TextBox();
+            this.txtMachinesMarckKhmer = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -45,10 +46,12 @@
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvMachinesTable = new System.Windows.Forms.DataGridView();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.gbMachinesTable.SuspendLayout();
-            this.gbMemu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMachinesTable)).BeginInit();
+            this.gbMemu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // gbMachinesTable
@@ -60,6 +63,21 @@
             this.gbMachinesTable.TabIndex = 1;
             this.gbMachinesTable.TabStop = false;
             this.gbMachinesTable.Text = "机器表";
+            // 
+            // dgvMachinesTable
+            // 
+            this.dgvMachinesTable.AllowUserToAddRows = false;
+            this.dgvMachinesTable.AllowUserToDeleteRows = false;
+            this.dgvMachinesTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvMachinesTable.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvMachinesTable.Location = new System.Drawing.Point(3, 18);
+            this.dgvMachinesTable.Name = "dgvMachinesTable";
+            this.dgvMachinesTable.RowTemplate.Height = 24;
+            this.dgvMachinesTable.Size = new System.Drawing.Size(1196, 581);
+            this.dgvMachinesTable.TabIndex = 14;
+            this.dgvMachinesTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMachinesTable_CellClick);
+            this.dgvMachinesTable.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvMachinesTable_CellFormatting);
+            this.dgvMachinesTable.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dgvMachinesTable_RowPostPaint);
             // 
             // butStatusNormal
             // 
@@ -101,20 +119,20 @@
             this.txtMachineTypeName.Size = new System.Drawing.Size(183, 22);
             this.txtMachineTypeName.TabIndex = 2;
             // 
-            // txtMachineTypeNameEN
+            // txtMachineTypeShortName
             // 
-            this.txtMachineTypeNameEN.Location = new System.Drawing.Point(398, 23);
-            this.txtMachineTypeNameEN.Name = "txtMachineTypeNameEN";
-            this.txtMachineTypeNameEN.Size = new System.Drawing.Size(288, 22);
-            this.txtMachineTypeNameEN.TabIndex = 3;
-            this.txtMachineTypeNameEN.TextChanged += new System.EventHandler(this.txtMachineTypeNameEN_TextChanged);
+            this.txtMachineTypeShortName.Location = new System.Drawing.Point(360, 21);
+            this.txtMachineTypeShortName.Name = "txtMachineTypeShortName";
+            this.txtMachineTypeShortName.Size = new System.Drawing.Size(144, 22);
+            this.txtMachineTypeShortName.TabIndex = 3;
+            this.txtMachineTypeShortName.TextChanged += new System.EventHandler(this.txtMachineTypeNameEN_TextChanged);
             // 
-            // txtMachinesMarck
+            // txtMachinesMarckKhmer
             // 
-            this.txtMachinesMarck.Location = new System.Drawing.Point(88, 53);
-            this.txtMachinesMarck.Name = "txtMachinesMarck";
-            this.txtMachinesMarck.Size = new System.Drawing.Size(598, 22);
-            this.txtMachinesMarck.TabIndex = 4;
+            this.txtMachinesMarckKhmer.Location = new System.Drawing.Point(125, 53);
+            this.txtMachinesMarckKhmer.Name = "txtMachinesMarckKhmer";
+            this.txtMachinesMarckKhmer.Size = new System.Drawing.Size(379, 22);
+            this.txtMachinesMarckKhmer.TabIndex = 4;
             // 
             // label1
             // 
@@ -131,18 +149,18 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(277, 28);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(125, 12);
+            this.label2.Size = new System.Drawing.Size(77, 12);
             this.label2.TabIndex = 6;
-            this.label2.Text = "机器类别名称（英文）";
+            this.label2.Text = "机器类别代号";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(10, 58);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(71, 12);
+            this.label3.Size = new System.Drawing.Size(109, 12);
             this.label3.TabIndex = 7;
-            this.label3.Text = "机  器  备  注";
+            this.label3.Text = "机器类别名称(柬文)";
             // 
             // butAddMachines
             // 
@@ -166,17 +184,19 @@
             // 
             // gbMemu
             // 
+            this.gbMemu.Controls.Add(this.label4);
+            this.gbMemu.Controls.Add(this.pictureBox1);
             this.gbMemu.Controls.Add(this.butConfirm);
             this.gbMemu.Controls.Add(this.butStatusNormal);
             this.gbMemu.Controls.Add(this.butDeleteMachineType);
             this.gbMemu.Controls.Add(this.butStatusScrap);
             this.gbMemu.Controls.Add(this.butStatusRepair);
-            this.gbMemu.Controls.Add(this.txtMachineTypeNameEN);
+            this.gbMemu.Controls.Add(this.txtMachineTypeShortName);
             this.gbMemu.Controls.Add(this.butAddMachines);
             this.gbMemu.Controls.Add(this.label3);
             this.gbMemu.Controls.Add(this.label2);
             this.gbMemu.Controls.Add(this.label1);
-            this.gbMemu.Controls.Add(this.txtMachinesMarck);
+            this.gbMemu.Controls.Add(this.txtMachinesMarckKhmer);
             this.gbMemu.Controls.Add(this.txtMachineTypeName);
             this.gbMemu.Location = new System.Drawing.Point(5, 4);
             this.gbMemu.Name = "gbMemu";
@@ -213,19 +233,23 @@
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.Width = 300;
             // 
-            // dgvMachinesTable
+            // pictureBox1
             // 
-            this.dgvMachinesTable.AllowUserToAddRows = false;
-            this.dgvMachinesTable.AllowUserToDeleteRows = false;
-            this.dgvMachinesTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvMachinesTable.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvMachinesTable.Location = new System.Drawing.Point(3, 18);
-            this.dgvMachinesTable.Name = "dgvMachinesTable";
-            this.dgvMachinesTable.RowTemplate.Height = 24;
-            this.dgvMachinesTable.Size = new System.Drawing.Size(1196, 581);
-            this.dgvMachinesTable.TabIndex = 14;
-            this.dgvMachinesTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMachinesTable_CellClick);
-            this.dgvMachinesTable.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dgvMachinesTable_RowPostPaint);
+            this.pictureBox1.Location = new System.Drawing.Point(522, 20);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(111, 61);
+            this.pictureBox1.TabIndex = 15;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(523, 7);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(29, 12);
+            this.label4.TabIndex = 16;
+            this.label4.Text = "图片";
             // 
             // FrmMachineTypeTable
             // 
@@ -239,9 +263,10 @@
             this.Load += new System.EventHandler(this.FrmMachineTypeTable_Load);
             this.SizeChanged += new System.EventHandler(this.FrmMachineTypeTable_SizeChanged);
             this.gbMachinesTable.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMachinesTable)).EndInit();
             this.gbMemu.ResumeLayout(false);
             this.gbMemu.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvMachinesTable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -249,8 +274,8 @@
         #endregion
         private System.Windows.Forms.GroupBox gbMachinesTable;
         private System.Windows.Forms.TextBox txtMachineTypeName;
-        private System.Windows.Forms.TextBox txtMachineTypeNameEN;
-        private System.Windows.Forms.TextBox txtMachinesMarck;
+        private System.Windows.Forms.TextBox txtMachineTypeShortName;
+        private System.Windows.Forms.TextBox txtMachinesMarckKhmer;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
@@ -265,5 +290,7 @@
         private System.Windows.Forms.Button butStatusRepair;
         private System.Windows.Forms.Button butStatusScrap;
         private System.Windows.Forms.DataGridView dgvMachinesTable;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label label4;
     }
 }

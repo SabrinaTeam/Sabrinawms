@@ -30,16 +30,16 @@ namespace DAL
                     cModulusNames(row, c);
                     lists.Add(c);
                 }
-            }            
+            }
             return lists;
-            
+
         }
         public void cModulusNames(DataRow dr, StyleLearingCurve list)
         {
             list.id = Convert.ToInt32(IEBOM_SqlHelper.FromDbValue(dr["id"]));
             list.modulusName = Convert.ToString(IEBOM_SqlHelper.FromDbValue(dr["modulusName"]));
             list.isNewStyle = Convert.ToBoolean(IEBOM_SqlHelper.FromDbValue(dr["isNewStyle"]));
-            list.remark = Convert.ToString(IEBOM_SqlHelper.FromDbValue(dr["Remark"]));           
+            list.remark = Convert.ToString(IEBOM_SqlHelper.FromDbValue(dr["Remark"]));
         }
 
         public string saveLearningCurve(DataTable newDt)
@@ -96,14 +96,14 @@ namespace DAL
         public int delStandardModulusByCurveNameID(int CurveNameID)
         {
             string sql = @"UPDATE dbo.StandardModulus SET isDel = 1 WHERE CureNamesID =@CurveNameID";
-           
+
 
             SqlParameter[] ps =
                {
                 new SqlParameter("CurveNameID", CurveNameID)
               };
             int result = IEBOM_SqlHelper.ExecuteNonQuery(sql, ps);
-             
+
             return result;
 
         }

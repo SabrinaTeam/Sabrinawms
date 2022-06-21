@@ -60,6 +60,15 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ADRcpLib">
+      <HintPath>D:\OneDrive\桌面\MM_C#\dll\x64\ADRcpLib.dll</HintPath>
+    </Reference>
+    <Reference Include="ADSioLib">
+      <HintPath>D:\OneDrive\桌面\MM_C#\dll\x64\ADSioLib.dll</HintPath>
+    </Reference>
+    <Reference Include="ADUtilsLib">
+      <HintPath>D:\OneDrive\桌面\MM_C#\dll\x64\ADUtilsLib.dll</HintPath>
+    </Reference>
     <Reference Include="bcmail-jdk15-1.44, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\WinForm\packages\Pdfbox.1.1.1\lib\bcmail-jdk15-1.44.dll</HintPath>
     </Reference>
@@ -227,8 +236,13 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="UHFReader18CSharp">
+      <HintPath>..\lib\UHFReader18CSharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BoxRFIDCOM.cs" />
+    <Compile Include="AsadDuooSystemPub.cs" />
     <Compile Include="AsicsExcelHelper.cs" />
     <Compile Include="CalendarCell.cs" />
     <Compile Include="CalendarColumn.cs" />
@@ -249,6 +263,7 @@
     <Compile Include="ShippingPackagesHelper.cs" />
     <Compile Include="ShippingPackgeExcelHelper.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="WyuanRFIDReaderHelper.cs" />
     <Compile Include="xiaomingCommom.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

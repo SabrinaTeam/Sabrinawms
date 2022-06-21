@@ -44,7 +44,7 @@ namespace BLL
                     String AID = Convert.ToString(gtnPOS[i].id);
                     String APO = Convert.ToString(gtnPOS[i].PO);
                     String AGTN_PO = Convert.ToString(gtnPOS[i].GTN_PO);
-                    String Acreate_pc = Dns.GetHostName().ToString();
+                    String Acreate_pc = Dns.GetHostName().ToString().ToUpper();
                     String Aupdate_date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"); 
                     
                     String fCreate_Date = Convert.ToString(gtnPOS[i].fCreate_Date);
@@ -105,7 +105,7 @@ namespace BLL
                 DataRow erow = gtnPODT.NewRow();
                 erow["PO"] = table.Rows[i]["PONumber"].ToString() ;
                 erow["GTN_PO"] = table.Rows[i]["TradingCompanyPO"].ToString();
-                erow["create_pc"] = Dns.GetHostName().ToString();
+                erow["create_pc"] = Dns.GetHostName().ToString().ToUpper();
                 erow["update_date"] = DateTime.Now.ToString("yyyy-MM-dd");
                 gtnPODT.Rows.Add(erow);
             }

@@ -18,7 +18,7 @@ namespace WinForm
         private static FrmSizeRun frm;
         public sizeRunManager sizem = new sizeRunManager();
         public DataGridView dgv = null;
-       
+
         public FrmSizeRun()
         {
             InitializeComponent();
@@ -40,10 +40,13 @@ namespace WinForm
             this.WindowState = FormWindowState.Maximized;
             this.gbSearch.Width = this.Width - 20;
             this.gbSize.Width = this.gbSearch.Width;
-            this.gbPO.Width = this.gbSearch.Width;
-            this.gbPO.Height = this.Height - 335;
-            this.txtLogs.Visible = false;
-            
+         //   this.gbPO.Width = this.gbSearch.Width;
+            //this.gbPO.Height = this.Height - 335;
+           // this.txtLogs.Visible = false;
+            this.gbLogs.Visible = false;
+            this.ckLogs.Left = this.gbSize.Width - this.ckLogs.Width -20 ;
+            this.getCustAbbr();
+
 
         }
 
@@ -59,25 +62,19 @@ namespace WinForm
             }
 
             this.gbSearch.Width = this.Width - 20;
-            this.gbSize.Width = this.gbSearch.Width;
-            this.gbPO.Width = this.gbSearch.Width;
-            this.gbPO.Height = this.Height - 335;
-
-            this.txtLogs.Left = Convert.ToInt32(this.dgvSizeRun.Width * 0.5);
-            this.txtLogs.Width = Convert.ToInt32(this.dgvSizeRun.Width * 0.5);
-            this.txtLogs.Height = Convert.ToInt32(this.dgvSizeRun.Height) - 10;
-            this.ckLogs.Left = this.txtLogs.Left;
-
+            this.gbSize.Width = this.gbSearch.Width  ;
+            this.gbSize.Height = this.Height - this.gbSearch.Height - 50;
+            this.gbLogs.Height = this.gbSize.Height;
         }
         public bool isbusy = false;
         private void btSearch_Click(object sender, EventArgs e)
         {
-           
+
             if (!this.isbusy)
             {
                 this.getByMyno();
             }
-          
+
         }
         public void getByMyno()
         {
@@ -85,9 +82,11 @@ namespace WinForm
             this.isbusy = true;
             this.btSearch.Enabled = false;
             string my_no = this.txtMyNumber.Text.Trim();
+            string yymm = this.txtYYMM.Text.Trim();
             string my_style = this.txtStyle.Text.Trim();
+            string cust_abbr = this.txtcust_abbr.Text.Trim();
             bool onlyStyle = false;
-            if (my_no.Length <= 0 && my_style.Length <=0)
+            if (my_no.Length <= 0 && my_style.Length <=0 && yymm.Length <= 0)
             {
                 Cursor = Cursors.Default;
                 this.isbusy = false;
@@ -106,16 +105,16 @@ namespace WinForm
             {
                 linkServer = "BESTconnStr"; //BESTconnStr_KM
                 LinkSuccess = true;
-            }          
+            }
             if (!LinkSuccess)
             {
                 serverIP = "192.168.4.122";
                 testlink = tl.LinServer(serverIP);
                 if (testlink)
                 {
-                    linkServer = "BESTconnStr_KM"; 
+                    linkServer = "BESTconnStr_KM";
                     LinkSuccess = true;
-                  
+
                 }
             }
             if (!LinkSuccess)
@@ -131,28 +130,37 @@ namespace WinForm
             if (my_no.Length <= 0)
             {
                 my_no = null;
-                
+
+            }
+            if (yymm.Length <= 0)
+            {
+                yymm = null;
+
             }
             if (my_style.Length <= 0)
             {
                 my_style = null;
             }
-            if(my_no == null &&  my_style != null)
+            if (cust_abbr.Length <= 0)
             {
-                this.gbPO.Visible = false;
+                cust_abbr = null;
+            }
+            if (my_no == null &&  my_style != null)
+            {
+               // this.gbPO.Visible = false;
                 onlyStyle = true;
                 this.gbSize.Height =  this.Height-150;
 
             }
             else
             {
-                this.gbPO.Visible = true;
+               // this.gbPO.Visible = true;
                 onlyStyle = false;
-                this.gbSize.Height = this.Height - this.gbPO.Height - 150;
+               // this.gbSize.Height = this.Height - this.gbPO.Height - 150;
             }
 
 
-            string[] parameters = { my_no, my_style };
+            string[] parameters = { my_no, yymm, my_style, cust_abbr };
 
             // 查询色组
             DataTable clr_dt = sizem.getClr_noByMy_no(parameters, linkServer);
@@ -171,13 +179,14 @@ namespace WinForm
             }
             // 查询size组
             string my_nos = "";
-         
+            string myno = "";
             foreach (DataRow dr in clr_dt.Rows)
             {
-                my_nos = my_nos + "'" + dr["my_no"].ToString() + "\',";
+                myno = dr["my_no"].ToString().Replace("'","''");
+                   my_nos = my_nos + "'" + myno + "',";
             }
             my_nos = my_nos.Substring(0, my_nos.Length-1);
-           
+
 
             DataTable size_dt = sizem.getSizeByMy_no(my_nos,linkServer);
             if (size_dt.Rows.Count <= 0)
@@ -211,7 +220,7 @@ namespace WinForm
                     sizes.RemoveAt(i);
                     i--;
                 }
-               
+
 
             }
             foreach(string s in sizes)
@@ -226,7 +235,7 @@ namespace WinForm
             sizeRunDT.Columns["cust_id"].SetOrdinal(2);
             sizeRunDT.Columns.Add("clr_no");
             sizeRunDT.Columns["clr_no"].SetOrdinal(3);
-            // 生成表SizeRun框架           
+            // 生成表SizeRun框架
             for (int i = 0; i < clr_dt.Rows.Count; i++)
             {
                 DataRow dr = sizeRunDT.NewRow();//定义一个新行
@@ -239,7 +248,7 @@ namespace WinForm
 
             // 生成表框架
             for (int z = 0; z < size_dt.Rows.Count; z++)
-            { 
+            {
 
 
                 //查询sizeRun数量
@@ -249,7 +258,7 @@ namespace WinForm
                     this.txtLogs.Visible = true;
                     this.ckLogs.Checked = true;
                     this.txtLogs.AppendText("  没有 " + size_dt.Rows[z]["my_no"].ToString() + " 的 sizeRun 数据,请确认自编单号是否正确...\r\n");
-                   
+
                  //   MessageBox.Show("没有 " + size_dt.Rows[z]["my_no"].ToString()+" 的sizeRun数量数据，请确认自编单号是否正确");
                 //    Cursor = Cursors.Default;
                    // this.isbusy = false;
@@ -337,7 +346,7 @@ namespace WinForm
                     sizeRunDT.Rows[sizeRunDT.Rows.Count - 1][i] = rowCount.ToString();
                 }
 
-            
+
                 this.dgvSizeRun.DataSource = sizeRunDT;
                 // 禁用排序
                 for (int i = 0; i < this.dgvSizeRun.Columns.Count; i++)
@@ -364,16 +373,71 @@ namespace WinForm
 
                 this.dgvSizeRunAll.DataSource = allSizerun;
             }
-              
+
 
             Cursor = Cursors.Default;
             this.btSearch.Enabled = true;
             this.isbusy = false;
         }
+        public void getCustAbbr()
+        {
+            TestLinManager tl = new TestLinManager();
+            string serverIP = "192.168.0.254";
+            string linkServer = "";
+            bool LinkSuccess = false;
+            bool testlink = tl.LinServer(serverIP);
+            if (testlink)
+            {
+                linkServer = "BESTconnStr"; //BESTconnStr_KM
+                LinkSuccess = true;
+            }
+            if (!LinkSuccess)
+            {
+                serverIP = "192.168.4.122";
+                testlink = tl.LinServer(serverIP);
+                if (testlink)
+                {
+                    linkServer = "BESTconnStr_KM";
+                    LinkSuccess = true;
+
+                }
+            }
+            if (!LinkSuccess)
+            {
+                MessageBox.Show("连接服务器 " + serverIP + "失败！请找IT确认网络服务是否OK", "失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Cursor = Cursors.Default;
+                this.isbusy = false;
+                this.btSearch.Enabled = true;
+                return;
+            }
+           DataTable Cust_Abbr =  sizem.getCustAbbr(  linkServer);
+
+            List<string> strList = new List<string>();
+            if (Cust_Abbr != null && Cust_Abbr.Rows.Count >0)
+            {
+                
+               // this.cbcust_abbr.Items.Clear();
+                foreach (DataRow dr in Cust_Abbr.Rows)
+                {
+                //    this.cbcust_abbr.Items.Add(dr["cust_abbr"].ToString());
+                    strList.Add(dr["cust_abbr"].ToString());
+                }
+                
+             //   string[] source = strList.ToArray();
+                var source = new AutoCompleteStringCollection();
+                source.AddRange(strList.ToArray());
+
+                this.txtcust_abbr.AutoCompleteCustomSource = source;
+                this.txtcust_abbr.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                this.txtcust_abbr.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            }
+
+        }
+
 
         private void RmeCopyCells_Click(object sender, EventArgs e)
         {
-            
+
 
               if (this.dgv  == null)
              {
@@ -396,7 +460,7 @@ namespace WinForm
             }
 
             this.tomenuRight(dgv,e);
-           
+
         }
 
         private void dgvSizeRun_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
@@ -416,7 +480,7 @@ namespace WinForm
             {
                 return;
             }
-          
+
             Clipboard.SetDataObject(this.dgv.GetClipboardContent());
         }
 
@@ -426,7 +490,7 @@ namespace WinForm
             {
                 return;
             }
-          
+
             ImproExcel(this.dgv);
         }
         public void ImproExcel(DataGridView dgv)
@@ -549,16 +613,30 @@ namespace WinForm
         {
             if (this.ckLogs.Checked)
             {
-                this.txtLogs.Visible = true;
+                this.gbSize.Width = this.Width - this.gbLogs.Width - 30;
+                this.gbLogs.Left = this.gbSize.Width + 10;
+                this.gbLogs.Top = this.gbSize.Top ;
+                this.gbLogs.Visible = true;
             }
             else
             {
-                this.txtLogs.Visible = false;
+                this.gbSize.Width = this.gbSearch.Width;
+                this.gbLogs.Visible = false;
             }
+        }
+
+        private void gbSize_Resize(object sender, EventArgs e)
+        {
+            this.ckLogs.Left = this.gbSize.Width - this.ckLogs.Width - 20;
+        }
+
+        private void gbLogs_Resize(object sender, EventArgs e)
+        {
+            this.txtLogs.Width = this.gbLogs.Width - 20;
+            this.txtLogs.Height = this.gbLogs.Height - 40;
         }
     }
 }
 
 
 
- 

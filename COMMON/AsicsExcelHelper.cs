@@ -337,11 +337,12 @@ namespace COMMON
                             {
                                 Serial_From = Serial_From.Substring(0, Serial_From.Length - 3);
                                 con_no = Serial_From.Substring(Serial_From.Length - 4, 4);
-                                con_no = Convert.ToString(Convert.ToInt32(con_no));
+                                con_no = con_no.TrimStart('0');
+                               // con_no = Convert.ToString(Convert.ToInt32(con_no));
 
                                 conNumber = Serial_From.Substring(Serial_From.Length - 4, 4);
-                                conNumber = Convert.ToString(Convert.ToInt32(conNumber));
-                                
+                                //conNumber = Convert.ToString(Convert.ToInt32(conNumber));
+                                conNumber = conNumber.TrimStart('0');
                             }
 
 
@@ -446,7 +447,7 @@ namespace COMMON
                                     con_ppr_dataRow["con_to"] = conNumber;
                                     con_ppr_dataRow["org"] = "SAA";
                                     con_ppr_dataRow["Cust_id"] = "ASICS";
-                                    con_ppr_dataRow["create_pc"] = Dns.GetHostName();
+                                    con_ppr_dataRow["create_pc"] = Dns.GetHostName().ToUpper();
                                     con_ppr_dataRow["update_date"] = DateTime.Now.ToString("yyyy-MM-dd");
                                     con_ppr_dataRow["country_code"] = "";
                                     con_ppr_dataRow["Pkg_Code"] = "";
@@ -554,7 +555,7 @@ namespace COMMON
                                                 Fcon_ppr_dataRow["con_to"] = conNumber;
                                                 Fcon_ppr_dataRow["org"] = "SAA";
                                                 Fcon_ppr_dataRow["Cust_id"] = "ASICS";
-                                                Fcon_ppr_dataRow["create_pc"] = Dns.GetHostName();
+                                                Fcon_ppr_dataRow["create_pc"] = Dns.GetHostName().ToUpper();
                                                 Fcon_ppr_dataRow["update_date"] = DateTime.Now.ToString("yyyy-MM-dd");
                                                 Fcon_ppr_dataRow["country_code"] = "";
                                                 Fcon_ppr_dataRow["Pkg_Code"] = "";
@@ -597,7 +598,7 @@ namespace COMMON
                                                 Fcon_ppr_dataRow["con_to"] = conNumber;
                                                 Fcon_ppr_dataRow["org"] = "SAA";
                                                 Fcon_ppr_dataRow["Cust_id"] = "ASICS";
-                                                Fcon_ppr_dataRow["create_pc"] = Dns.GetHostName();
+                                                Fcon_ppr_dataRow["create_pc"] = Dns.GetHostName().ToUpper();
                                                 Fcon_ppr_dataRow["update_date"] = DateTime.Now.ToString("yyyy-MM-dd");
                                                 Fcon_ppr_dataRow["country_code"] = "";
                                                 Fcon_ppr_dataRow["Pkg_Code"] = "";

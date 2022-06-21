@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace BLL
 {
-    
+
     public class TNFImportManagers
     {
         public TNFImportService TNFImport = new TNFImportService();
@@ -23,7 +23,7 @@ namespace BLL
                 int serial = 0;
                 string  oldStyle ="";
                 for (int i = 0; i < tnfDb.Rows.Count; i++)
-                {                   
+                {
                     //SELECT  id,Barcode,CartonNo,PackQty,Style,Size,Color,MasterPO,StyleDescription,Country
                     string style = tnfDb.Rows[i]["Style"].ToString();
                     string Size = tnfDb.Rows[i]["Size"].ToString();
@@ -32,14 +32,14 @@ namespace BLL
                         tnfDb.Rows[i]["Style"] = style.Substring(3, 5);
                         tnfDb.Rows[i]["Color"] = style.Substring(8, 3);
                     }
-                 
+
                     int index =Size.IndexOf("REG");
                     if(index >= 0)
                     {
                         Size = Size.Remove(index, 3).Trim();
                     }
                     Size = Size.TrimStart(new char[] { '0' });
-                    
+
                     tnfDb.Rows[i]["Size"] = Size;
                     if(oldStyle == "")
                     {
@@ -48,8 +48,8 @@ namespace BLL
                      //   tnfDb.Rows[i]["Serial"] = serial;
                       //  continue;
                     }
-                    
-                    
+
+
                     if(oldStyle == style)
                     {
                             serial++;
@@ -60,7 +60,7 @@ namespace BLL
                         serial =1;
                         tnfDb.Rows[i]["Serial"] = serial;
                         oldStyle = style;
-                    } 
+                    }
                 }
             }
             //款式+颜色 = 箱顺序号 style
@@ -187,8 +187,8 @@ namespace BLL
             {
                 TNFImport.upTnfMaxId(maxId);
             }
-            
-            
+
+
             foreach (DataRow row in dt.Rows)
             {
                 ids = ids + "'TNF-" + row["id"].ToString()+"',";
@@ -197,7 +197,7 @@ namespace BLL
             {
                 return 0;
             }
-           
+
             ids = ids.Substring(0, ids.Length - 1);
             DataTable result = TNFImport.getTnfDataFromFsgByConpprIds(ids);
             DataTable upDataDt = new DataTable();
@@ -223,8 +223,8 @@ namespace BLL
             upDataDt.Columns.Add("con_H", typeof(double));
             upDataDt.Columns.Add("b_Volume", typeof(double));
             upDataDt.Columns.Add("PO", typeof(string));
-            upDataDt.Columns.Add("MAIN_LINE", typeof(string)); 
-            
+            upDataDt.Columns.Add("MAIN_LINE", typeof(string));
+
 
             DataTable addDataDt = new DataTable();
             addDataDt.Columns.Add("id", typeof(string));
@@ -264,9 +264,9 @@ namespace BLL
                     dr["org"] = "SAA";
                     dr["PPrfNo"] = dt.Rows[i]["MasterPO"].ToString();
                     dr["count1"] = 1;
-                    dr["create_pc"] = Dns.GetHostName();
+                    dr["create_pc"] = Dns.GetHostName().ToUpper();
                     dr["update_date"] = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                    dr["con_no"] = Convert.ToInt32( dt.Rows[i]["Serial"]); 
+                    dr["con_no"] = Convert.ToInt32( dt.Rows[i]["Serial"]);
                     dr["country_code"] = null;
                     dr["con_to"] = Convert.ToInt32(dt.Rows[i]["Serial"]);
                     dr["Pkg_Code"] = dt.Rows[i]["Country"].ToString();
@@ -293,7 +293,7 @@ namespace BLL
                         // 相同ID部分 更新
                         if (result.Rows[j]["id"].ToString() == "TNF-" + dt.Rows[i]["id"].ToString())
                         {
-                            // id,Barcode,CartonNo,PackQty,Style,Size,Color,MasterPO,StyleDescription 
+                            // id,Barcode,CartonNo,PackQty,Style,Size,Color,MasterPO,StyleDescription
                             DataRow dr = upDataDt.NewRow();
                             dr["id"] = "TNF-" + dt.Rows[i]["id"].ToString();
                             dr["Cust_id"] = "TNF";
@@ -302,7 +302,7 @@ namespace BLL
                             dr["org"] = "SAA";
                             dr["PPrfNo"] = dt.Rows[i]["MasterPO"].ToString();
                             dr["count1"] = 1;
-                            dr["create_pc"] = Dns.GetHostName();
+                            dr["create_pc"] = Dns.GetHostName().ToUpper();
                             dr["update_date"] = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                             dr["con_no"] = Convert.ToInt32(dt.Rows[i]["Serial"]);
                             dr["country_code"] = null;
@@ -349,7 +349,7 @@ namespace BLL
                         dr["org"] = "SAA";
                         dr["PPrfNo"] = diffDt.Rows[i]["MasterPO"].ToString();
                         dr["count1"] = 1;
-                        dr["create_pc"] = Dns.GetHostName();
+                        dr["create_pc"] = Dns.GetHostName().ToUpper();
                         dr["update_date"] = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                         dr["con_no"] = Convert.ToInt32(dt.Rows[i]["Serial"]);
                         dr["country_code"] = null;
@@ -367,7 +367,7 @@ namespace BLL
                         dr["MAIN_LINE"] = null;
                         addDataDt.Rows.Add(dr);
                     }
-                } 
+                }
             }
             int ups = 0;
             int insets = 0;
@@ -393,7 +393,7 @@ namespace BLL
                 return 0;
             }
 
-            // SELECT  id,Cust_id,Serial_From,Buyer_Item,Item_desc,color_code,Size1,con_Qty,qty,pprfno from con_detail  WHERE PPrfNo ='79795851196' 
+            // SELECT  id,Cust_id,Serial_From,Buyer_Item,Item_desc,color_code,Size1,con_Qty,qty,pprfno from con_detail  WHERE PPrfNo ='79795851196'
             ids = ids.Substring(0, ids.Length - 1);
             DataTable result = TNFImport.getTnfDataFromFsgByConDetailIds(ids);
             DataTable upDataDt = new DataTable();
@@ -406,7 +406,7 @@ namespace BLL
             upDataDt.Columns.Add("Size1", typeof(string));
             upDataDt.Columns.Add("con_Qty", typeof(string));
             upDataDt.Columns.Add("qty", typeof(int));
-            upDataDt.Columns.Add("pprfno", typeof(string)); 
+            upDataDt.Columns.Add("pprfno", typeof(string));
 
 
             DataTable addDataDt = new DataTable();
@@ -431,7 +431,7 @@ namespace BLL
                     dr["Cust_id"] = "TNF";
                     dr["Serial_From"] = dt.Rows[i]["CartonNo"].ToString();
                     dr["Buyer_Item"] = dt.Rows[i]["Style"].ToString();
-                    dr["Item_desc"] = dt.Rows[i]["StyleDescription"].ToString(); 
+                    dr["Item_desc"] = dt.Rows[i]["StyleDescription"].ToString();
                     dr["color_code"] = dt.Rows[i]["Color"].ToString();
                     dr["Size1"] = dt.Rows[i]["Size"].ToString();
                     dr["con_Qty"] = dt.Rows[i]["PackQty"].ToString();
@@ -461,7 +461,7 @@ namespace BLL
                             dr["con_Qty"] = dt.Rows[i]["PackQty"].ToString();
                             dr["qty"] = dt.Rows[i]["PackQty"].ToString();
                             dr["pprfno"] = dt.Rows[i]["MasterPO"].ToString();
-                            upDataDt.Rows.Add(dr); 
+                            upDataDt.Rows.Add(dr);
                         }
                     }
                 }
@@ -483,7 +483,7 @@ namespace BLL
                 {
                     for (int i = 0; i < diffDt.Rows.Count; i++)
                     {
-                        DataRow dr = addDataDt.NewRow();                     
+                        DataRow dr = addDataDt.NewRow();
                         dr["id"] = "TNF-" + diffDt.Rows[i]["id"].ToString();
                         dr["Cust_id"] = "TNF";
                         dr["Serial_From"] = diffDt.Rows[i]["CartonNo"].ToString();
@@ -493,7 +493,7 @@ namespace BLL
                         dr["Size1"] = diffDt.Rows[i]["Size"].ToString();
                         dr["con_Qty"] = diffDt.Rows[i]["PackQty"].ToString();
                         dr["qty"] = diffDt.Rows[i]["PackQty"].ToString();
-                        dr["pprfno"] = diffDt.Rows[i]["MasterPO"].ToString(); 
+                        dr["pprfno"] = diffDt.Rows[i]["MasterPO"].ToString();
                         addDataDt.Rows.Add(dr);
                     }
                 }

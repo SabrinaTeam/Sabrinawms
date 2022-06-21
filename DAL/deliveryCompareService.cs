@@ -55,7 +55,7 @@ namespace DAL
 						UPDATE delivertb 
 								SET isDel = 1 
 								WHERE
-									Create_Pc = '" + Dns.GetHostName() +@"' 
+									Create_Pc = '" + Dns.GetHostName().ToUpper() + @"' 
 									AND isDel =0 ";
 			if (MiddleWare == "1")
 			{
@@ -88,7 +88,7 @@ namespace DAL
                                + dt.Rows[i]["colorId"].ToString().Trim() + "\",\""
                                + dt.Rows[i]["sizeName"].ToString().Trim() + "\",\""
                                + qtys + "\",\""
-                               + Dns.GetHostName() + "\",\""
+                               + Dns.GetHostName().ToUpper() + "\",\""
                                + 0 + "\",\""
                                + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "\" ),";
             }

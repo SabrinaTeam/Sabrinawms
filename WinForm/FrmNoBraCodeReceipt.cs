@@ -153,7 +153,7 @@ namespace WinForm
                 string markstr = Convert.ToString(dgvReceiData.Rows[i].Cells[13].Value);
                  
                 string receiInDatestr = DateTime.Now.ToString("yyyy-MM-dd");
-                string receiInPcNamestr = Dns.GetHostName().ToString();
+                string receiInPcNamestr = Dns.GetHostName().ToString().ToUpper();
                
 
                 if (orgstr.Length <= 0)
@@ -797,7 +797,7 @@ namespace WinForm
             string newReceiEmp = this.txtNewReceiEmp.Text.Trim();
 
             string newInDate = DateTime.Now.ToString("yyyy-MM-dd");
-            string newInPcName = Dns.GetHostName().ToString();
+            string newInPcName = Dns.GetHostName().ToString().ToUpper();
             string newMark = this.txtMark.Text.Trim();
 
             DataRow row = this.newReceiDT.NewRow();

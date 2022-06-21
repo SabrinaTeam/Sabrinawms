@@ -314,5 +314,77 @@ namespace WinForm
         {
 
         }
+
+        private void MenuLuluRfidImport_Click(object sender, EventArgs e)
+        {
+            FrmRFIDNikeImport frm = FrmRFIDNikeImport.GetSingleton();
+            frm.MdiParent = this;
+            frm.Show();
+            frm.Activate();
+        }
+
+        private void MenuNikeRfidImport_Click(object sender, EventArgs e)
+        {
+            FrmRFIDLuluImport frm = FrmRFIDLuluImport.GetSingleton();
+            frm.MdiParent = this;
+            frm.Show();
+            frm.Activate();
+        }
+
+        private void MenuSingleScan_Click(object sender, EventArgs e)
+        {
+            FrmLuluSingleScan frm = FrmLuluSingleScan.GetSingleton();
+            frm.MdiParent = this;
+            frm.Show();
+            frm.Activate();
+        }
+
+        private void MenuBoxScan_Click(object sender, EventArgs e)
+        {
+            FrmRFIDBoxScan frm = FrmRFIDBoxScan.GetSingleton();
+            frm.MdiParent = this;
+            frm.Show();
+            frm.Activate();
+        }
+
+        private void MenuScanLog_Click(object sender, EventArgs e)
+        {
+            FrmRFIDScanSearch frm = FrmRFIDScanSearch.GetSingleton();
+            frm.MdiParent = this;
+            frm.Show();
+            frm.Activate();
+        }
+
+        private void MenuIESearch_Click(object sender, EventArgs e)
+        {
+            FrmlEBomSearch frm = FrmlEBomSearch.GetSingleton();
+            frm.MdiParent = this;
+            frm.Show();
+            frm.Activate();
+        }
+
+        private void MenuNewStyleSearch_Click(object sender, EventArgs e)
+        {
+            FrmNewStyleSearch frm = FrmNewStyleSearch.GetSingleton();
+            frm.MdiParent = this;
+            frm.Show();
+            frm.Activate();
+        }
+
+        private void MenuHardwareTest_Click(object sender, EventArgs e)
+        {
+            FrmHardwareTest frm = FrmHardwareTest.GetSingleton();
+            frm.MdiParent = this;
+            frm.Show();
+            frm.Activate();
+        }
+
+        private void MenuRFIDReader2_Click(object sender, EventArgs e)
+        {
+            FrmAsanRfidRead frm = FrmAsanRfidRead.GetSingleton();
+            frm.MdiParent = this;
+            frm.Show();
+            frm.Activate();
+        }
     }
 }

@@ -2,7 +2,9 @@
 using MODEL;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using ReaderB;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,8 +22,9 @@ namespace WinForm
 {
     public partial class FrmInvoicePrint : Form
     {
-       
-      //  private MessageQueue queue;
+
+
+        //  private MessageQueue queue;
 
         public List<mesEmployee> emps;
         public List<mesOrg> Orgs;
@@ -46,6 +49,10 @@ namespace WinForm
         public string Password = "sabrina";
         public bool autoRecovery = true;
         private static FrmInvoicePrint frm;
+        public AlarmManager am = new AlarmManager();
+
+        
+
         public FrmInvoicePrint()
         {
             factory.HostName = this.HostName;
@@ -53,7 +60,7 @@ namespace WinForm
             factory.Password = this.Password;
             factory.AutomaticRecoveryEnabled = this.autoRecovery;
             factory.RequestedHeartbeat = 10;
-            
+
 
             InitializeComponent();
         }
@@ -70,7 +77,7 @@ namespace WinForm
         {
 
         }
-       
+
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -118,7 +125,7 @@ namespace WinForm
                 };
 
                 channel.BasicConsume(queue: queueName, noAck: false, consumer: consumer);
-            } 
+            }
 
 
         }
@@ -185,7 +192,7 @@ namespace WinForm
             }
 
         }
-         
+
         public bool PushQueues(string order)
         {
             //  ConnectionFactory factory = new ConnectionFactory();
@@ -256,5 +263,119 @@ namespace WinForm
             }
             return boolresult;
         }
+
+        
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+
+            am.openportall();
+            Thread.Sleep(50);
+
+            //     this.am.closeportall();
+            //     this.am.openport2();
+            //  Thread.Sleep(300);
+            //    this.am.closeport2();
+            //    Thread.Sleep(50);
+
+
+
+            return;
+            }
+ 
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            am.openport1();
+            Thread.Sleep(60);
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            am.closeport1();
+            Thread.Sleep(60);
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            am.openport2();
+            Thread.Sleep(60);
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            am.closeport2();
+            Thread.Sleep(60);
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            am.openport3();
+            Thread.Sleep(60);
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            am.closeport3();
+            Thread.Sleep(60);
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            am.openport4();
+            Thread.Sleep(60);
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            am.closeport4();
+            Thread.Sleep(60);
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            am.closeportall();
+            Thread.Sleep(50);
+
+            //     this.am.closeportall();
+            //     this.am.openport2();
+            //  Thread.Sleep(300);
+            //    this.am.closeport2();
+            //    Thread.Sleep(50);
+
+
+
+            return;
+        }
+
+
+ 
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+
+            if (am.OpenAlarm())
+            {
+                am.openportall();
+                Thread.Sleep(1000);
+                am.closeportall();
+                this.groupBox1.Enabled = true;
+            }
+            else
+            {
+                MessageBox.Show("Com通信失败，请检查线路");
+            }
+
+        }
+
+        private void FrmInvoicePrint_Load(object sender, EventArgs e)
+        {
+            groupBox1.Enabled = false;
+ 
+
+        }
+
+  
     }
 }

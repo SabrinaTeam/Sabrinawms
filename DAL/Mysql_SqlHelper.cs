@@ -1,5 +1,5 @@
 ﻿
-using Pomelo.Data.MySql;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -13,7 +13,7 @@ namespace DAL
     {
         // public static readonly string ERPconnStr = ConfigurationManager.ConnectionStrings["ERPconnStr"].ConnectionString;
         // public static readonly string BESTconnStr = ConfigurationManager.ConnectionStrings["BESTconnStr"].ConnectionString;
-        public static readonly string MySqlconnStr = ConfigurationManager.ConnectionStrings["MySqlconnStr"].ConnectionString;
+        public static readonly string MySqlconnStr = ConfigurationManager.ConnectionStrings["MySqlconnStr_fsg"].ConnectionString;
 
         public static Object ToDbValue(Object value)
         {
@@ -37,13 +37,13 @@ namespace DAL
         public static int ExecuteNonQuery(string sqlstr)
         {
 
-           MySqlConnection conn = null; 
+           MySqlConnection conn = null;
             try
             {
                 conn = OpenConn();
                 var cmd = conn.CreateCommand();
                 cmd.CommandText = sqlstr;
-                cmd.CommandType = CommandType.Text; 
+                cmd.CommandType = CommandType.Text;
                 int result = cmd.ExecuteNonQuery();
 
                 CloseConn(conn);
@@ -51,14 +51,14 @@ namespace DAL
             }
             catch (Exception ex)
             {
-                //  Console.WriteLine(ex.Message);               
+                //  Console.WriteLine(ex.Message);
                 return -1;
             }
             finally
             {
                 CloseConn(conn);
             }
-           
+
         }
         public static MySqlConnection OpenConn()
         {
@@ -104,12 +104,12 @@ namespace DAL
                 CloseConn(conn);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
-                
+
                 return dt;
             }
             catch (Exception ex)
             {
-                //  Console.WriteLine(ex.Message);   
+                //  Console.WriteLine(ex.Message);
                 DataTable dt = new DataTable();
                 return dt;
             }
@@ -120,6 +120,39 @@ namespace DAL
 
         }
 
-       
+        public static DataTable ExcuteTable(string sqlstr, params MySqlParameter[] ps)
+        {
+
+            MySqlConnection conn = null;
+            try
+            {
+                conn = OpenConn();
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = sqlstr;
+                cmd.Parameters.AddRange(ps);
+                cmd.CommandType = CommandType.Text;
+                MySqlDataAdapter da = new MySqlDataAdapter();
+                da.SelectCommand = cmd;
+                var reader = cmd.ExecuteReader();
+                CloseConn(conn);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                //  Console.WriteLine(ex.Message);
+                DataTable dt = new DataTable();
+                return dt;
+            }
+            finally
+            {
+                CloseConn(conn);
+            }
+
+        }
+
+
     }
 }

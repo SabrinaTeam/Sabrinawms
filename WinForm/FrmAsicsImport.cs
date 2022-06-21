@@ -400,7 +400,7 @@ namespace WinForm
                             if (barcodestr[index] == "STYLE:")
                             {
                                 //混码装
-                                if (barcodestr[index + 2] == "MIXED") 
+                                if (barcodestr[index + 2] == "MIXED")
                                 {
                                     string PO = barcodestr[index + 4].ToString().Substring(4, barcodestr[index + 4].ToString().Length - 4).Trim();
                                     string PPrfNo = PO + "-2";
@@ -411,8 +411,10 @@ namespace WinForm
                                     string con_net = "0.00";
                                     string con_Gross = "0.00";
                                     string count1 = "1";
-                                    string con_no = (index + 1).ToString();
-                                    string con_to = (index + 1).ToString();
+                                    string con_no = Convert.ToInt32( Serial_From.Substring(Serial_From.Length-4, 4)).ToString();
+                                    string con_to = con_no.ToString();
+                                    // string con_no = (index + 1).ToString();
+                                    // string con_to = (index + 1).ToString();
                                     string org = "SAA";
                                     string Cust_id = "ASICS";
                                     string create_pc = Dns.GetHostName().ToString().ToUpper();
@@ -479,7 +481,7 @@ namespace WinForm
                                     }
                                 }
                                 //单码装
-                                else if (barcodestr[index + 5] == "QUANTITY:") 
+                                else if (barcodestr[index + 5] == "QUANTITY:")
                                 {
                                     string PO = barcodestr[index + 9].ToString().Trim();
                                     string PPrfNo = PO + "-2";
@@ -490,8 +492,10 @@ namespace WinForm
                                     string con_net = "0.00";
                                     string con_Gross = "0.00";
                                     string count1 = "1";
-                                    string con_no = (index + 1).ToString();
-                                    string con_to = (index + 1).ToString();
+                                    string con_no = Convert.ToInt32(Serial_From.Substring(Serial_From.Length - 4, 4)).ToString();
+                                    string con_to = con_no.ToString();
+                                    // string con_no = (index + 1).ToString();
+                                    // string con_to = (index + 1).ToString();
                                     string org = "SAA";
                                     string Cust_id = "ASICS";
                                     string create_pc = Dns.GetHostName().ToString().ToUpper();
@@ -566,8 +570,10 @@ namespace WinForm
                                     string con_net = "0.00";
                                     string con_Gross = "0.00";
                                     string count1 = "1";
-                                    string con_no = (index + 1).ToString();
-                                    string con_to = (index + 1).ToString();
+                                    string con_no = Convert.ToInt32(Serial_From.Substring(Serial_From.Length - 4, 4)).ToString();
+                                    string con_to = con_no.ToString();
+                                    // string con_no = (index + 1).ToString();
+                                    // string con_to = (index + 1).ToString();
                                     string org = "SAA";
                                     string Cust_id = "ASICS";
                                     string create_pc = Dns.GetHostName().ToString().ToUpper();
@@ -640,8 +646,10 @@ namespace WinForm
                                     string con_net = "0.00";
                                     string con_Gross = "0.00";
                                     string count1 = "1";
-                                    string con_no = (index + 1).ToString();
-                                    string con_to = (index + 1).ToString();
+                                    string con_no = Convert.ToInt32(Serial_From.Substring(Serial_From.Length - 4, 4)).ToString();
+                                    string con_to = con_no.ToString();
+                                    // string con_no = (index + 1).ToString();
+                                    // string con_to = (index + 1).ToString();
                                     string org = "SAA";
                                     string Cust_id = "ASICS";
                                     string create_pc = Dns.GetHostName().ToString().ToUpper();
@@ -708,11 +716,11 @@ namespace WinForm
                                         con_detail_data.Rows.Add(con_detail_dataRow);
                                     }
                                 }
-  
+
                             }
-                            
+
                         }
-                        
+
                     }
                 }
             }
@@ -776,7 +784,7 @@ namespace WinForm
             }
             resultInSetRow = resultInSetRow + asicsIM.uploadCon_detailToMysql(this.con_detail_data);
             //   string foldName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + Dns.GetHostName() + "_ASICS(" + this.files.Count.ToString() + ")";
-            string foldName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + Dns.GetHostName() + "_ASICS(" + this.files.Count.ToString() + ")";
+            string foldName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + Dns.GetHostName().ToUpper() + "_ASICS(" + this.files.Count.ToString() + ")";
             if (!Directory.Exists(srcFolderPath + foldName))
             {
                 Directory.CreateDirectory(srcFolderPath + foldName);

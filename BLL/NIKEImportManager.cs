@@ -22,7 +22,7 @@ namespace BLL
             {
                  MercuryDb = NikeImport.getDateFromScanService(org, PONumber, main_line);
             }
-           
+
             /*****************con_pprDB**********************/
 
             DataTable con_pprDB = new DataTable();
@@ -241,7 +241,7 @@ namespace BLL
             /******************************************************/
             string size = "";
             string Pkg_Code = "";
-            string qtys = "";  
+            string qtys = "";
             string lastsize = "";
             string lastPkg_Code = "";
             string lastqtys = "";
@@ -307,7 +307,7 @@ namespace BLL
                     {
                         DataRow dr = PO_MIANLINE_DB.NewRow();
                         dr["id"] = c;
-                        
+
                           dr["po"] = MercuryDb.Rows[i - 1]["EBELN"].ToString();
                        // dr["po"] = MercuryDb.Rows[i - 1]["PO_REF"].ToString();
                         dr["main_line"] = MercuryDb.Rows[i - 1]["EBELP"].ToString();
@@ -315,7 +315,7 @@ namespace BLL
                         PO_MIANLINE_DB.Rows.Add(dr);
                         //MercuryDb.Rows[0]["EBELN"].ToString() + MercuryDb.Rows[0]["EBELP"].ToString() ==  MercuryDb.Rows[MercuryDb.Rows.Count-1]["EBELN"].ToString() + MercuryDb.Rows[MercuryDb.Rows.Count - 1]["EBELP"].ToString()
                     }
-                   // else if (  MercuryDb.Rows[0]["PO_REF"].ToString() + MercuryDb.Rows[0]["EBELP"].ToString() ==  
+                   // else if (  MercuryDb.Rows[0]["PO_REF"].ToString() + MercuryDb.Rows[0]["EBELP"].ToString() ==
                      //          MercuryDb.Rows[MercuryDb.Rows.Count-1]["PO_REF"].ToString() + MercuryDb.Rows[MercuryDb.Rows.Count - 1]["EBELP"].ToString())
 
                       else if (MercuryDb.Rows[0]["EBELN"].ToString() + MercuryDb.Rows[0]["EBELP"].ToString() ==
@@ -334,7 +334,7 @@ namespace BLL
 
                 DataRow drc = CON_TODB.NewRow();
                 drc["id"] = c;
-                drc["con_to"] = MercuryDb.Rows[MercuryDb.Rows.Count -1]["VENUM"].ToString();             
+                drc["con_to"] = MercuryDb.Rows[MercuryDb.Rows.Count -1]["VENUM"].ToString();
                 CON_TODB.Rows.Add(drc);
                 int conrow = 0;
 
@@ -350,7 +350,7 @@ namespace BLL
                 {
                     return null;
                 }
-                
+
                  //string Mdbpo = MercuryDb.Rows[MercuryDb.Rows.Count - 1]["PO_REF"].ToString();
                  string Mdbpo = MercuryDb.Rows[MercuryDb.Rows.Count - 1]["EBELN"].ToString();
                 string Mdbmain_line = MercuryDb.Rows[MercuryDb.Rows.Count - 1]["EBELP"].ToString();
@@ -363,19 +363,19 @@ namespace BLL
                     dr["main_line"] = Mdbmain_line;
                     c++;
                     PO_MIANLINE_DB.Rows.Add(dr);
-                } 
+                }
 
                 /********************************************/
                 for (int i = 0; i < MercuryDb.Rows.Count; i++)
                 {
-                  
+
 
                     int count =  MercuryDb.Select("EBELN = " + MercuryDb.Rows[i]["EBELN"].ToString() +
-                       " and  EBELP = " + MercuryDb.Rows[i]["EBELP"].ToString() + 
+                       " and  EBELP = " + MercuryDb.Rows[i]["EBELP"].ToString() +
                        " and  ETENR = " + MercuryDb.Rows[i]["ETENR"].ToString()).Length;
                   //  int count = MercuryDb.Select("PO_REF = " + MercuryDb.Rows[i]["PO_REF"].ToString() + " and  EBELP = " + MercuryDb.Rows[i]["EBELP"].ToString() + " and  ETENR = " + MercuryDb.Rows[i]["ETENR"].ToString()).Length;
 
-                    DataRow dr = con_pprDB.NewRow(); 
+                    DataRow dr = con_pprDB.NewRow();
 
                     dr["id"] = "NIKE-" + MercuryDb.Rows[i]["VENUM"].ToString() +
                         // MercuryDb.Rows[i]["ETENR"].ToString() +
@@ -389,7 +389,7 @@ namespace BLL
                     dr["org"] = org;
                     dr["PPrfNo"] = MercuryDb.Rows[i]["PPrfNo"].ToString();
                     dr["count1"] = count;
-                    dr["create_pc"] = Dns.GetHostName().ToString();
+                    dr["create_pc"] = Dns.GetHostName().ToString().ToUpper();
                     dr["update_date"] = System.DateTime.Now.ToString("yyyy-MM-dd");
                     dr["con_no"] = MercuryDb.Rows[i]["VENUM"].ToString();
                     dr["country_code"] = MercuryDb.Rows[i]["EAN11"].ToString();
@@ -399,12 +399,12 @@ namespace BLL
                         size = MercuryDb.Rows[i]["J_3ASIZE"].ToString();
                         Pkg_Code = MercuryDb.Rows[i]["Pkg_Code"].ToString();
                         qtys = MercuryDb.Rows[i]["FFS_CRTN_QTY"].ToString();
-                     
+
 
                         lastsize = MercuryDb.Rows[i-1]["J_3ASIZE"].ToString();
                         lastPkg_Code = MercuryDb.Rows[i-1]["Pkg_Code"].ToString();
                         lastqtys = MercuryDb.Rows[i - 1]["FFS_CRTN_QTY"].ToString();
-                      
+
 
                         if ((size + Pkg_Code + qtys  ) != (lastsize + lastPkg_Code + lastqtys ))
                         {
@@ -416,13 +416,13 @@ namespace BLL
                     {
                         dr["con_to"] = CON_TODB.Rows[conrow]["con_to"].ToString();
                         conrow++;
-                    } 
-                 
+                    }
+
                     dr["Pkg_Code"] = MercuryDb.Rows[i]["Pkg_Code"].ToString();
                     dr["Scan_ID"] = MercuryDb.Rows[i]["EXIDV"].ToString();
-                    dr["Net_Net"] = MercuryDb.Rows[i]["BRGEW"].ToString();
+                    dr["Net_Net"] = "0";
                     dr["con_net"] = MercuryDb.Rows[i]["NTGEW"].ToString();
-                    dr["con_Gross"] = ""; 
+                    dr["con_Gross"] = MercuryDb.Rows[i]["BRGEW"].ToString();
                     string con_L = MercuryDb.Rows[i]["FFS_LENGTH_OUTER"].ToString()  ;
                     if (con_L.Length <= 0)
                     {
@@ -446,19 +446,19 @@ namespace BLL
                     dr["con_H"] = Convert.ToDouble(con_H) /100;
 
                     dr["b_Volume"] = Convert.ToDouble(con_L) * Convert.ToDouble(con_W) * Convert.ToDouble(con_H) / 1000000;
-                     
+
                     dr["PO"] = MercuryDb.Rows[i]["EBELN"].ToString();
                     dr["MAIN_LINE"] = MercuryDb.Rows[i]["EBELP"].ToString();
                     con_pprDB.Rows.Add(dr);
 
 
-                    DataRow cdr = con_detailDB.NewRow(); 
+                    DataRow cdr = con_detailDB.NewRow();
                     cdr["id"] = "NIKE-" + MercuryDb.Rows[i]["VENUM"].ToString() +
                        // MercuryDb.Rows[i]["ETENR"].ToString() +
                        MercuryDb.Rows[i]["EBELN"].ToString().Substring(0, 2) +
                        MercuryDb.Rows[i]["PPrfNo"].ToString().Substring(MercuryDb.Rows[i]["PPrfNo"].ToString().Length - 4, 4);
 
-                    
+
                     cdr["Cust_id"] = "NIKE" ;
                     cdr["org"] = org;
                     cdr["Serial_From"] = MercuryDb.Rows[i]["VENUM"].ToString();
@@ -800,7 +800,7 @@ namespace BLL
                         //MercuryDb.Rows[0]["EBELN"].ToString() + MercuryDb.Rows[0]["EBELP"].ToString() ==  MercuryDb.Rows[MercuryDb.Rows.Count-1]["EBELN"].ToString() + MercuryDb.Rows[MercuryDb.Rows.Count - 1]["EBELP"].ToString()
                     }
                     /*
-                     else if (MercuryDb.Rows[0]["PO_REF"].ToString() + MercuryDb.Rows[0]["EBELP"].ToString() == 
+                     else if (MercuryDb.Rows[0]["PO_REF"].ToString() + MercuryDb.Rows[0]["EBELP"].ToString() ==
                          MercuryDb.Rows[MercuryDb.Rows.Count - 1]["PO_REF"].ToString() + MercuryDb.Rows[MercuryDb.Rows.Count - 1]["EBELP"].ToString())
                     */
 
@@ -876,7 +876,7 @@ namespace BLL
                     dr["org"] = org;
                     dr["PPrfNo"] = MercuryDb.Rows[i]["PPrfNo"].ToString();
                     dr["count1"] = count;
-                    dr["create_pc"] = Dns.GetHostName().ToString();
+                    dr["create_pc"] = Dns.GetHostName().ToString().ToUpper();
                     dr["update_date"] = System.DateTime.Now.ToString("yyyy-MM-dd");
                     dr["con_no"] = MercuryDb.Rows[i]["VENUM"].ToString();
                     dr["country_code"] = MercuryDb.Rows[i]["EAN11"].ToString();
@@ -907,9 +907,9 @@ namespace BLL
 
                     dr["Pkg_Code"] = MercuryDb.Rows[i]["Pkg_Code"].ToString();
                     dr["Scan_ID"] = MercuryDb.Rows[i]["EXIDV"].ToString();
-                    dr["Net_Net"] = MercuryDb.Rows[i]["BRGEW"].ToString();
+                    dr["Net_Net"] = "0";
                     dr["con_net"] = MercuryDb.Rows[i]["NTGEW"].ToString();
-                    dr["con_Gross"] = "";
+                    dr["con_Gross"] = MercuryDb.Rows[i]["BRGEW"].ToString();
                     //  buyer.Guid = (Guid)SqlHelper.FromDbValue(dr["Guid"]);
 
                     dr["con_L"] = Convert.ToDouble(MercuryDb.Rows[i]["FFS_LENGTH_OUTER"].ToString()) / 100;
@@ -971,15 +971,15 @@ namespace BLL
                     ids = ids + "'" + row["id"].ToString() + "',";
                 }
 
-               
+
             }
             if (ids.Length >0)
             {
                 ids = ids.Substring(0, ids.Length - 1);
             }
 
-            // SELECT  id,Cust_id,Serial_From,Buyer_Item,Item_desc,color_code,Size1,con_Qty,qty,pprfno from con_detail  WHERE PPrfNo ='79795851196' 
-           
+            // SELECT  id,Cust_id,Serial_From,Buyer_Item,Item_desc,color_code,Size1,con_Qty,qty,pprfno from con_detail  WHERE PPrfNo ='79795851196'
+
             DataTable result = NikeImport.getNikeDataFromFsgByConDetailIds(ids);
             DataTable upDataDt = new DataTable();
             upDataDt.Columns.Add("id", typeof(string));
@@ -1108,7 +1108,7 @@ namespace BLL
             string ids = "";
             foreach (DataRow row in dt.Rows)
             {
-                
+
                 string id = row["id"].ToString();
                 if (id.Length > 0)
                 {
@@ -1119,7 +1119,7 @@ namespace BLL
             {
                 ids = ids.Substring(0, ids.Length - 1);
             }
-           
+
            // ids = ids.Substring(0, ids.Length - 1);
             DataTable result = NikeImport.getNikeDataFromFsgByConpprIds(ids);  // 已有的箱号
             DataTable upDataDt = new DataTable();
@@ -1219,7 +1219,7 @@ namespace BLL
                         // 相同ID部分 更新
                         if (result.Rows[j]["id"].ToString() ==   dt.Rows[i]["id"].ToString())
                         {
-                            // id,Barcode,CartonNo,PackQty,Style,Size,Color,MasterPO,StyleDescription 
+                            // id,Barcode,CartonNo,PackQty,Style,Size,Color,MasterPO,StyleDescription
                             DataRow dr = upDataDt.NewRow();
                             dr["id"] = dt.Rows[i]["id"].ToString();
                             dr["Cust_id"] = dt.Rows[i]["Cust_id"].ToString();
@@ -1329,7 +1329,7 @@ namespace BLL
 
             if (upDataDt.Rows.Count > 0)
             {
-                DataView myDataView = new DataView(upDataDt); 
+                DataView myDataView = new DataView(upDataDt);
                DataTable newUpDataDt = myDataView.ToTable(true, strComuns);
                 ups = NikeImport.UpdataNikeDataToFsgConppr(newUpDataDt);
                 //ups = NikeImport.UpdataNikeDataToFsgConppr(upDataDt);

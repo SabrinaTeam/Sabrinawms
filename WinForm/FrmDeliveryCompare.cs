@@ -476,7 +476,7 @@ namespace WinForm
             }
 
             //查询刚导入的EXCEL 
-            string createPC = Dns.GetHostName().ToString();
+            string createPC = Dns.GetHostName().ToString().ToUpper();
             this.dtFromWriteExcel = dcm.getFromWriteExcel(createPC, this.starTime, this.stopTime);
             if (this.dtFromWriteExcel.Rows.Count <= 0)
             {

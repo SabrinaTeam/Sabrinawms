@@ -232,7 +232,7 @@ namespace WinForm
                     task1.Start();
                     Task.WaitAll();
 
-                    //addDgvInvoice(orders); 
+                    //addDgvInvoice(orders);
                     channel.BasicAck(ea.DeliveryTag, true);
                 };
                 channel.BasicConsume(queue: queueName, noAck: false, consumer: consumer);
@@ -253,7 +253,7 @@ namespace WinForm
             {
                 if (this.invoiceDataSource.Rows.Count <= 0)
                 {
-                    this.invoiceDataSource = invoiceData;                   
+                    this.invoiceDataSource = invoiceData;
                     SetDgvInvoice(this.invoiceDataSource);
                     if (cbAutoPrint.Checked)
                     {
@@ -449,26 +449,26 @@ namespace WinForm
             list.Add(dept);
             list.Add(org);
             list.Add(taglocation);
-            //创建要打印的数据源 
+            //创建要打印的数据源
 
             ReportDataSource source = new ReportDataSource("DataSet1", ScanSourceDataDetail); // 指定数据源
             report.DataSources.Clear();
             report.DataSources.Add(source);
-            report.SetParameters(list); //参数设置 
-            //刷新报表中的需要呈现的数据 
+            report.SetParameters(list); //参数设置
+            //刷新报表中的需要呈现的数据
              styles = "";
              colors = "";
              sizes = "";
              qtys = "";
-            report.Refresh(); 
-            ReportClass.Print(report, ScanSourceDataDetail); 
+            report.Refresh();
+            ReportClass.Print(report, ScanSourceDataDetail);
 
             */
         }
 
         public void printsReport(string tagLocation)
         {
-            //调用打印程式            
+            //调用打印程式
             string invoice = this.ScanDataDataSource.Rows[0]["tagInvoice"].ToString().Trim().ToUpper();
             this.tagInvoiceList.Add(invoice);
             this.tagLocationList.Add(tagLocation);
@@ -509,10 +509,10 @@ namespace WinForm
 											mesworktagscans s
 											LEFT JOIN mesdepts d ON d.DeptNumber = s.tagScanDeptID 
 										WHERE
-											s.tagInvoice like '" + invoice + @"%' 
-	                                        and s.tagLocation= '" + tagLocation + @"' 
+											s.tagInvoice like '" + invoice + @"%'
+	                                        and s.tagLocation= '" + tagLocation + @"'
 										ORDER BY
-											s.tagNumber 
+											s.tagNumber
 										) a
 										LEFT JOIN (
 										SELECT
@@ -525,13 +525,13 @@ namespace WinForm
 											s.tagSize,
 											s.tagInvoice,
 											d.DeptName,
-											s.tagScanAccount 
+											s.tagScanAccount
 										FROM
 											mesworktagscans s
-											LEFT JOIN mesdepts d ON d.DeptNumber = s.tagScanDeptID 
+											LEFT JOIN mesdepts d ON d.DeptNumber = s.tagScanDeptID
 										WHERE
-											s.tagInvoice like  '" + invoice + @"%'  
-                                            and s.tagLocation= '" + tagLocation + @"' 
+											s.tagInvoice like  '" + invoice + @"%'
+                                            and s.tagLocation= '" + tagLocation + @"'
 										GROUP BY
 											s.tagOrg,
 											s.tagLine,
@@ -541,12 +541,12 @@ namespace WinForm
 											s.tagSize,
 											s.tagInvoice,
 											d.DeptName,
-											s.tagScanAccount 
+											s.tagScanAccount
 										ORDER BY
-											s.tagNumber 
-										) c ON c.tagInvoice = a.tagInvoice 
-										AND c.tagStyle = a.tagstyle 
-										AND c.tagSize = a.tagsize 
+											s.tagNumber
+										) c ON c.tagInvoice = a.tagInvoice
+										AND c.tagStyle = a.tagstyle
+										AND c.tagSize = a.tagsize
 										AND c.tagColor = a.tagcolor;";
 
 
@@ -899,7 +899,7 @@ namespace WinForm
                     DialogResult result = printDialog1.ShowDialog();
                     if (result == DialogResult.OK)
                     {
-                        //pdDocument.Print();//开始打印 
+                        //pdDocument.Print();//开始打印
                         //調用打印
                         m_printPreview.Document = pdDocument;
                         try
@@ -1026,7 +1026,7 @@ namespace WinForm
             e.Graphics.DrawString("工票对点清单", new Font("黑体", 22), Brushes.Black, left, top);//号码
 
             // 二维码
-            left = Convert.ToInt32(2 / 25.4 * 100);//条码左距离  5 2CM左右 
+            left = Convert.ToInt32(2 / 25.4 * 100);//条码左距离  5 2CM左右
             top = Convert.ToInt32(7 / 25.4 * 100);//条码顶距离
             e.Graphics.DrawImage(barcodeimg, left, top);//左，顶
 
@@ -1070,13 +1070,13 @@ namespace WinForm
             left = Convert.ToInt32(42 / 25.4 * 100);//左距离
             top = Convert.ToInt32(21 / 25.4 * 100);//顶距离
             e.Graphics.DrawString("尺码:" + barcode, new Font("黑体", 10), Brushes.Black, left, top);//号码
-                                                                                                 
+
             // 数量 tagSize
             left = Convert.ToInt32(42 / 25.4 * 100);//左距离
             top = Convert.ToInt32(7 / 25.4 * 100);//顶距离
             e.Graphics.DrawString("数量:" + barcode, new Font("黑体", 10), Brushes.Black, left, top);//号码
 
-           
+
             List<string> styles =new List<string>();
             for (int i = 0; i < this.ScanDataDataSource.Rows.Count; i++)
             {
@@ -1089,7 +1089,7 @@ namespace WinForm
 
             }
 
-            
+
             this.ScanDataDataSource.
             */
 
@@ -1108,7 +1108,7 @@ namespace WinForm
                 Application.DoEvents();
                 // msg.Text = "";
                 //progressBar1.Value = 0;
-                // pictureBox1.Image = null;                   
+                // pictureBox1.Image = null;
             }
             //判斷超過一頁時，允許進行多頁打印
             if (barcode.Length > linesPrinted)
@@ -1421,11 +1421,11 @@ namespace WinForm
             }
 
             lines = lines.Substring(1, lines.Length - 1);
-            
+
             string invoice = this.ScanDataDataSource.Rows[0]["tagInvoice"].ToString().Trim().ToUpper();
             string part = this.ScanDataDataSource.Rows[0]["tagNumber"].ToString().Trim().ToUpper();
             string location = this.ScanDataDataSource.Rows[0]["tagLocation"].ToString().Trim().ToUpper();
-          
+
             FrmAccessOryPrintGrid frm = FrmAccessOryPrintGrid.GetSingleton(invoice, part, location, lines);
             frm.Show();
             frm.Activate();

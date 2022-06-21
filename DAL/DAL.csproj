@@ -285,6 +285,7 @@
     <Compile Include="AsicsImportServer.cs" />
     <Compile Include="BEST_SqlHelper.cs" />
     <Compile Include="BEST_SqlHelper_KM.cs" />
+    <Compile Include="BoxsScanServer.cs" />
     <Compile Include="CFOutputService.cs" />
     <Compile Include="CompeleteService.cs" />
     <Compile Include="CompketedSyncMesDataService.cs" />
@@ -295,10 +296,15 @@
     <Compile Include="DelScanHURLEYService.cs" />
     <Compile Include="EmployeeService.cs" />
     <Compile Include="ERP_SqlHelper.cs" />
+    <Compile Include="FrmNewStyleService.cs" />
+    <Compile Include="FrmRFIDLuluImportServer.cs" />
+    <Compile Include="FrmRFIDNikeImportServer.cs" />
+    <Compile Include="FrmRFIDScanSearchServer.cs" />
     <Compile Include="FrmScanSearchService.cs" />
     <Compile Include="IEBomService.cs" />
     <Compile Include="IEBOM_SqlHelper.cs" />
     <Compile Include="loadScanService.cs" />
+    <Compile Include="LuluSingleScanServer.cs" />
     <Compile Include="MachinesTypeService.cs" />
     <Compile Include="mesEmployeeService.cs" />
     <Compile Include="mesOrgService.cs" />

@@ -104,17 +104,30 @@ namespace DAL
 									   h.my_no,
 									   h.cust_id
 								FROM odh h
-									LEFT JOIN odb b
-										ON h.od_no = b.od_no
-								WHERE  1=1 
-								and   h.my_no LIKE +'%'+  ISNULL(@my_no,h.my_no)  +'%'  
-								and   b.style_id LIKE +'%'+  ISNULL(@style_id,b.style_id) +'%'";
+									LEFT JOIN odb b	ON h.od_no = b.od_no
+									Left join tb_sfcbuy buyid ON CONVERT (datetime,h.od_date) between
+                                                                          buyid.begin_day AND buyid.end_day
+                                                                      AND buyid.cust_buy_id=
+                                                                          case h.cust_id when 'A0000' then 'A0001' else 'SAB' end
+									left join types type on h.type_id=type.type_id
+                                    Inner join cust_dom  cust_dom ON h.cust_id = cust_dom.cust_id
+								WHERE  1=1   
+								and  type.type_tt='002'
+								and   h.my_no LIKE +'%'+  ISNULL(@my_no,h.my_no)  +'%' 
+								and   buyid.yymm LIKE +'%'+  ISNULL(@yymm,buyid.yymm)  +'%'  
+								and   b.style_id LIKE +'%'+  ISNULL(@style_id,b.style_id) +'%'
+								and   cust_dom.cust_abbr LIKE +'%'+  ISNULL(@cust_abbr,cust_dom.cust_abbr) +'%'";
+
 
 			object my_no =  DBValue(parameters[0]);
-			object style_id = DBValue(parameters[1]);
+			object yymm = DBValue(parameters[1]);
+			object style_id = DBValue(parameters[2]);
+			object cust_abbr = DBValue(parameters[3]);
 			SqlParameter[] paras =   {
 					new SqlParameter("@my_no", my_no),
-					new SqlParameter("@style_id", style_id)
+					new SqlParameter("@yymm", yymm),
+					new SqlParameter("@style_id", style_id),
+					new SqlParameter("@cust_abbr", cust_abbr)
 				 };
 
 			DataTable dt = new DataTable();
@@ -182,7 +195,7 @@ namespace DAL
 		{
 			string sqlstr = @"
 								select type.type_tt,cust_dom.cust_abbr,h1.od_date,h1.season_id,h1.my_no,
-										  case h1.be_id when 'SAA' then 'SAA' else 'TOP' end as org ,
+										  h1.be_id  as org ,
 										  buyid.yymm,type.type_name,t.* 
 								from  (                select b.od_no,b.style_id,b.clr_no,size_code=h.us01,qty=b.qty01,b.def_date,b.po_no from odb b,odh h where  b.od_no=h.od_no  
 											 union all select b.od_no,b.style_id,b.clr_no,size_code=h.us02,qty=b.qty02,b.def_date,b.po_no from odb b,odh h where  b.od_no=h.od_no  
@@ -218,5 +231,14 @@ namespace DAL
 			}
 			return dt;
 		}
+
+		public DataTable getCustAbbr(string linkServer)
+		{
+			string sqlstr = @"select DISTINCT cust_abbr from cust_dom;";
+			DataTable dt = new DataTable();
+			dt = BEST_SqlHelper.ExcuteTable(sqlstr , linkServer);
+			return dt;
+		}
+
 	}
 }

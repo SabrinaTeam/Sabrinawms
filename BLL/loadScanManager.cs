@@ -20,7 +20,7 @@ namespace BLL
             if (scans == null)
             {
                 return null;
-            }            
+            }
             //创建本地表
             DataTable table = new DataTable();
             table.Columns.Add("TagNumber", typeof(string));
@@ -30,7 +30,7 @@ namespace BLL
             table.Columns.Add("Con_no", typeof(string));
             table.Columns.Add("Location", typeof(string));
             table.Columns.Add("Org", typeof(string));
-            table.Columns.Add("Cust_Id", typeof(string)); 
+            table.Columns.Add("Cust_Id", typeof(string));
             try
             {
                 for (int i = 0; i < scans.Count(); i++)
@@ -57,7 +57,7 @@ namespace BLL
                     row["Con_no"] = con_no;
                     row["Location"] = location;
                     row["Org"] = org;
-                    row["Cust_Id"] = cust_Id; 
+                    row["Cust_Id"] = cust_Id;
                     table.Rows.Add(row);
                     /*************/
                 }
@@ -71,7 +71,7 @@ namespace BLL
                 return table;
             }
 
-            
+
             //创建处理表
             DataTable tempTb = new DataTable();
             tempTb.Columns.Add("TagNumber", typeof(string));
@@ -105,7 +105,7 @@ namespace BLL
                             custid = "TNF";
                             serialFrom = tag;
                         }
-                       
+
                     }else if(tag.Length == 12)
                     {
                         custNumber = tag.Substring(0, 1).ToUpper();
@@ -134,39 +134,62 @@ namespace BLL
                         }
                     }else if(tag.Length == 20)
                     {
-                        custNumber = tag.Substring(0, 5);
-                        switch (custNumber)
+                        custNumber = tag.Substring(0, 6);
+                        if(custNumber == "000019")
                         {
-                            case "00047":
-                            case "00147":
-                            case "00012":
-                            case "00004":
-                                custid = "NIKE";
-                                serialFrom = tag.Substring(10, 9);
-                                serialFrom = Convert.ToString(Convert.ToInt32(serialFrom));
-                                break;
-                            case "00006":
-                                custid = "LULU";
-                                serialFrom = tag.Substring(10, 9);
-                                serialFrom = Convert.ToString(Convert.ToInt32(serialFrom));
-                                break;
-                            case "00008":
-                                string custnumberall = tag.Substring(0, 8);
-                                if (custnumberall == "00008848")
-                                {
-                                    custid = "TNF";
-                                    serialFrom = tag;
-                                }
-                                else
-                                {
-                                    custid = "HURLEY";
-                                    serialFrom = tag.Substring(10, 9);
-                                }
-                                break;
-                            default:
-                                custid = "NA";
-                                break;
+                            custid = "TNF";
+                            serialFrom = tag;
+
                         }
+                        else
+                        {
+                            custNumber = tag.Substring(0, 5);
+                            switch (custNumber)
+                            {
+                                case "00047":
+                                case "00147":
+                                case "00247":
+                                case "00347":
+                                case "00447":
+                                case "00547":
+                                case "00647":
+                                case "00747":
+                                case "00847":
+                                case "00947":
+                                case "00012":
+                                case "00004":
+                                    custid = "NIKE";
+                                    serialFrom = tag.Substring(10, 9);
+                                    serialFrom = serialFrom.TrimStart('0');
+                                    // serialFrom = Convert.ToString(Convert.ToInt32(serialFrom));
+                                    break;
+                                case "00006":
+                                    custid = "LULU";
+                                    serialFrom = tag.Substring(10, 9);
+                                    serialFrom = serialFrom.TrimStart('0');
+                                    // serialFrom = Convert.ToString(Convert.ToInt32(serialFrom));
+                                    break;
+                                case "00008":
+                                    string custnumberall = tag.Substring(0, 8);
+                                    if (custnumberall == "00008848")
+                                    {
+                                        custid = "TNF";
+                                        serialFrom = tag;
+                                    }
+                                    else
+                                    {
+                                        custid = "HURLEY";
+                                        serialFrom = tag.Substring(10, 9);
+                                    }
+                                    break;
+                                default:
+                                    custid = "NA";
+                                    break;
+                            }
+                        }
+
+
+
                     }
                     else
                     {
@@ -184,7 +207,7 @@ namespace BLL
                     row["Cust_Id"] = custid;
                     tempTb.Rows.Add(row);
                 }
-               
+
 
             }
             return tempTb;
@@ -241,7 +264,7 @@ namespace BLL
                     {
                         result[0] = j.ToString();
                         result[1] = "-1";
-                       // result = false;                       
+                       // result = false;
                     }
                     else
                     {
@@ -295,11 +318,11 @@ namespace BLL
             {
                 result[0] = ServeLocations[0];
                 result[1] = "-4";
-                return result;                
+                return result;
             }
 
             /*id ,TagNumber,Cust_id,Location,update_date,org,con_no,create_pc,kg,subinv,ScanTime,exeStatus*/
-            DataTable invs = new DataTable(); 
+            DataTable invs = new DataTable();
             invs.Columns.Add("TagNumber", typeof(string));
             invs.Columns.Add("Cust_id", typeof(string));
             invs.Columns.Add("Location", typeof(string));
@@ -312,29 +335,29 @@ namespace BLL
             invs.Columns.Add("ScanTime", typeof(string));
             invs.Columns.Add("exeStatus", typeof(string));
 
-         
+
 
             for (int i = 0; i < table.Rows.Count; i++)
             {
                 string location = "";
                 string tagNumber = table.Rows[i]["TagNumber"].ToString();
-                
+
                     if (!this.barcodeCheck(tagNumber))
                     {
                         result[0] = (i+1).ToString();
                         result[1] = "-2";
                         return result;
                     }
-                
-              
-                DataRow row = invs.NewRow(); 
+
+
+                DataRow row = invs.NewRow();
 
                 row["TagNumber"] = table.Rows[i]["TagNumber"].ToString();
 
                 row["Cust_id"] = table.Rows[i]["Cust_id"].ToString();
                 location =table.Rows[i]["Location"].ToString().ToUpper();
 
-               
+
                   if (location is null || location.Length <=0 ||  location.Length >4)
                 {
                     if (location != "PP" && location != "CH" && location != "GG" && location != "GD")
@@ -342,7 +365,7 @@ namespace BLL
                         result[0] = (i + 1).ToString();
                         result[1] = "-1";
                         return result;
-                    } 
+                    }
                 }
                 string ScanTime = table.Rows[i]["ScanTime"].ToString();
                 if (ScanTime.Length <= 0)
@@ -353,7 +376,7 @@ namespace BLL
                 row["update_date"] = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 row["org"] = table.Rows[i]["org"].ToString();
                 row["con_no"] = table.Rows[i]["con_no"].ToString();
-                row["create_pc"] = Dns.GetHostName();
+                row["create_pc"] = Dns.GetHostName().ToUpper();
                 row["kg"] = table.Rows[i]["kg"].ToString();
                 row["subinv"] = table.Rows[i]["subinv"].ToString();
                 row["ScanTime"] = ScanTime;
@@ -443,10 +466,10 @@ namespace BLL
         {
             return lss.delDoubleRows();
         }
-        public DataTable getSubinvByOrg(string org) 
+        public DataTable getSubinvByOrg(string org)
         {
             return lss.getSubinvByOrg(org);
-             
+
         }
     }
 }

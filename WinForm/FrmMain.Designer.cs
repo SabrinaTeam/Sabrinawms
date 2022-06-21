@@ -38,8 +38,11 @@
             this.MenuNumber = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuMesEmployee = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuScanMakeComplete = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuNewStyleColorSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuPC = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuIE = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuIESearch = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuFP = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuPropertyNumber = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuPDAManager = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,6 +74,15 @@
             this.MenuTNFScan = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuDelScan = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuFullPO = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuRFIDScan = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuNIKERfidImport = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuLuluRfidImport = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuSingleScan = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuBoxScan = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuScanLog = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuHardwareTest = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuPI = new System.Windows.Forms.ToolStripMenuItem();
             this.menuCFoutput = new System.Windows.Forms.ToolStripMenuItem();
             this.productionStatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -80,6 +92,8 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuCloseAll = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuRFIDReader2 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -96,6 +110,7 @@
             this.MenuAccessory,
             this.MenuHD,
             this.MenuProduct,
+            this.MenuRFIDScan,
             this.MenuPI,
             this.MenuWindow});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
@@ -126,7 +141,9 @@
             this.MenuSizeRun,
             this.MenuNumber,
             this.MenuMesEmployee,
-            this.MenuScanMakeComplete});
+            this.MenuScanMakeComplete,
+            this.toolStripMenuItem6,
+            this.MenuNewStyleColorSearch});
             this.MenuPP.Name = "MenuPP";
             this.MenuPP.Size = new System.Drawing.Size(82, 20);
             this.MenuPP.Text = "生产计划(&P)";
@@ -159,10 +176,23 @@
             this.MenuScanMakeComplete.Text = "报工详情(&C)";
             this.MenuScanMakeComplete.Click += new System.EventHandler(this.MenuScanMakeComplete_Click);
             // 
+            // toolStripMenuItem6
+            // 
+            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(168, 6);
+            // 
+            // MenuNewStyleColorSearch
+            // 
+            this.MenuNewStyleColorSearch.Name = "MenuNewStyleColorSearch";
+            this.MenuNewStyleColorSearch.Size = new System.Drawing.Size(171, 22);
+            this.MenuNewStyleColorSearch.Text = "新款式查询(&S)";
+            this.MenuNewStyleColorSearch.Click += new System.EventHandler(this.MenuNewStyleSearch_Click);
+            // 
             // MenuPC
             // 
             this.MenuPC.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuIE});
+            this.MenuIE,
+            this.MenuIESearch});
             this.MenuPC.Name = "MenuPC";
             this.MenuPC.Size = new System.Drawing.Size(83, 20);
             this.MenuPC.Text = "生控中心(&C)";
@@ -170,9 +200,18 @@
             // MenuIE
             // 
             this.MenuIE.Name = "MenuIE";
-            this.MenuIE.Size = new System.Drawing.Size(133, 22);
+            this.MenuIE.Size = new System.Drawing.Size(135, 22);
             this.MenuIE.Text = "工段工程(&I)";
             this.MenuIE.Click += new System.EventHandler(this.MenuIE_Click);
+            // 
+            // MenuIESearch
+            // 
+            this.MenuIESearch.Enabled = false;
+            this.MenuIESearch.Name = "MenuIESearch";
+            this.MenuIESearch.Size = new System.Drawing.Size(135, 22);
+            this.MenuIESearch.Text = "IE表查询(&S)";
+            this.MenuIESearch.Visible = false;
+            this.MenuIESearch.Click += new System.EventHandler(this.MenuIESearch_Click);
             // 
             // MenuFP
             // 
@@ -274,7 +313,6 @@
             // 
             // MenuInvoiceSendTest
             // 
-            this.MenuInvoiceSendTest.Enabled = false;
             this.MenuInvoiceSendTest.Name = "MenuInvoiceSendTest";
             this.MenuInvoiceSendTest.Size = new System.Drawing.Size(190, 22);
             this.MenuInvoiceSendTest.Text = "信息队列发送测试(&M)";
@@ -410,6 +448,74 @@
             this.MenuFullPO.Text = "满库查询";
             this.MenuFullPO.Click += new System.EventHandler(this.MenuFullPO_Click);
             // 
+            // MenuRFIDScan
+            // 
+            this.MenuRFIDScan.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuNIKERfidImport,
+            this.MenuLuluRfidImport,
+            this.toolStripMenuItem5,
+            this.MenuSingleScan,
+            this.MenuBoxScan,
+            this.MenuScanLog,
+            this.toolStripMenuItem7,
+            this.MenuHardwareTest,
+            this.MenuRFIDReader2});
+            this.MenuRFIDScan.Name = "MenuRFIDScan";
+            this.MenuRFIDScan.Size = new System.Drawing.Size(85, 20);
+            this.MenuRFIDScan.Text = "RFID扫描(&R)";
+            // 
+            // MenuNIKERfidImport
+            // 
+            this.MenuNIKERfidImport.Name = "MenuNIKERfidImport";
+            this.MenuNIKERfidImport.Size = new System.Drawing.Size(235, 22);
+            this.MenuNIKERfidImport.Text = "NIKE RFID标导入(&N)";
+            this.MenuNIKERfidImport.Click += new System.EventHandler(this.MenuLuluRfidImport_Click);
+            // 
+            // MenuLuluRfidImport
+            // 
+            this.MenuLuluRfidImport.Name = "MenuLuluRfidImport";
+            this.MenuLuluRfidImport.Size = new System.Drawing.Size(235, 22);
+            this.MenuLuluRfidImport.Text = "LULU RFID标导入(&L)";
+            this.MenuLuluRfidImport.Click += new System.EventHandler(this.MenuNikeRfidImport_Click);
+            // 
+            // toolStripMenuItem5
+            // 
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(232, 6);
+            // 
+            // MenuSingleScan
+            // 
+            this.MenuSingleScan.Name = "MenuSingleScan";
+            this.MenuSingleScan.Size = new System.Drawing.Size(235, 22);
+            this.MenuSingleScan.Text = "单件扫描(&S)";
+            this.MenuSingleScan.Click += new System.EventHandler(this.MenuSingleScan_Click);
+            // 
+            // MenuBoxScan
+            // 
+            this.MenuBoxScan.Name = "MenuBoxScan";
+            this.MenuBoxScan.Size = new System.Drawing.Size(235, 22);
+            this.MenuBoxScan.Text = "整箱扫描(&B)";
+            this.MenuBoxScan.Click += new System.EventHandler(this.MenuBoxScan_Click);
+            // 
+            // MenuScanLog
+            // 
+            this.MenuScanLog.Name = "MenuScanLog";
+            this.MenuScanLog.Size = new System.Drawing.Size(235, 22);
+            this.MenuScanLog.Text = "扫描查询(&Q)";
+            this.MenuScanLog.Click += new System.EventHandler(this.MenuScanLog_Click);
+            // 
+            // toolStripMenuItem7
+            // 
+            this.toolStripMenuItem7.Name = "toolStripMenuItem7";
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(232, 6);
+            // 
+            // MenuHardwareTest
+            // 
+            this.MenuHardwareTest.Name = "MenuHardwareTest";
+            this.MenuHardwareTest.Size = new System.Drawing.Size(235, 22);
+            this.MenuHardwareTest.Text = "硬件测试";
+            this.MenuHardwareTest.Click += new System.EventHandler(this.MenuHardwareTest_Click);
+            // 
             // MenuPI
             // 
             this.MenuPI.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -475,6 +581,19 @@
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
             this.notifyIcon1.Text = "Sabrina 仓库管理助手";
             this.notifyIcon1.Visible = true;
+            // 
+            // toolStripMenuItem8
+            // 
+            this.toolStripMenuItem8.Name = "toolStripMenuItem8";
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(188, 22);
+            this.toolStripMenuItem8.Text = "toolStripMenuItem8";
+            // 
+            // MenuRFIDReader2
+            // 
+            this.MenuRFIDReader2.Name = "MenuRFIDReader2";
+            this.MenuRFIDReader2.Size = new System.Drawing.Size(235, 22);
+            this.MenuRFIDReader2.Text = "Asandduoo RFID reader Test";
+            this.MenuRFIDReader2.Click += new System.EventHandler(this.MenuRFIDReader2_Click);
             // 
             // FrmMain
             // 
@@ -549,6 +668,20 @@
         private System.Windows.Forms.ToolStripMenuItem productionStatus2ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem MenuPC;
         private System.Windows.Forms.ToolStripMenuItem MenuIE;
+        private System.Windows.Forms.ToolStripMenuItem MenuRFIDScan;
+        private System.Windows.Forms.ToolStripMenuItem MenuNIKERfidImport;
+        private System.Windows.Forms.ToolStripMenuItem MenuLuluRfidImport;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
+        private System.Windows.Forms.ToolStripMenuItem MenuSingleScan;
+        private System.Windows.Forms.ToolStripMenuItem MenuBoxScan;
+        private System.Windows.Forms.ToolStripMenuItem MenuScanLog;
+        private System.Windows.Forms.ToolStripMenuItem MenuIESearch;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem6;
+        private System.Windows.Forms.ToolStripMenuItem MenuNewStyleColorSearch;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem7;
+        private System.Windows.Forms.ToolStripMenuItem MenuHardwareTest;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem8;
+        private System.Windows.Forms.ToolStripMenuItem MenuRFIDReader2;
     }
 }
 

@@ -1028,9 +1028,9 @@ namespace WinForm
                                         groupColorsMaterialAll[i].masExceed_qty = 0; //超发料量
 
                                         // private string hname = Dns.GetHostName(); //得到本机的主机名
-                                        groupColorsMaterialAll[i].createPerson = Dns.GetHostName(); //创建单据人员
+                                        groupColorsMaterialAll[i].createPerson = Dns.GetHostName().ToUpper(); //创建单据人员
                                         groupColorsMaterialAll[i].createDate = DateTime.Now.ToString("yyyy'-'MM'-'dd' 'HH':'mm':'ss"); //创建单据日期时间
-                                        groupColorsMaterialAll[i].changePerson = Dns.GetHostName(); ; //单据最后修改人员
+                                        groupColorsMaterialAll[i].changePerson = Dns.GetHostName().ToUpper(); ; //单据最后修改人员
                                         groupColorsMaterialAll[i].changeDate = DateTime.Now.ToString("yyyy'-'MM'-'dd' 'HH':'mm':'ss");//单据最后修改日期时间
                                         groupColorsMaterialAll[i].receiveNumber = "DA20360001"; // 领料单号  日期月+料类别+6码流水
                                         // DA 2036 0001 辅料发料 2020年第36周 流水号4位
@@ -1288,9 +1288,9 @@ namespace WinForm
                     }
 
                     // private string hname = Dns.GetHostName(); //得到本机的主机名
-                    groupColorsMaterialAll[i].createPerson = Dns.GetHostName(); //创建单据人员
+                    groupColorsMaterialAll[i].createPerson = Dns.GetHostName().ToUpper(); //创建单据人员
                     groupColorsMaterialAll[i].createDate = DateTime.Now.ToString("yyyy'-'MM'-'dd' 'HH':'mm':'ss"); //创建单据日期时间
-                    groupColorsMaterialAll[i].changePerson = Dns.GetHostName(); ; //单据最后修改人员
+                    groupColorsMaterialAll[i].changePerson = Dns.GetHostName().ToUpper(); ; //单据最后修改人员
                     groupColorsMaterialAll[i].changeDate = DateTime.Now.ToString("yyyy'-'MM'-'dd' 'HH':'mm':'ss");//单据最后修改日期时间
 
                     date = DateTime.Now.ToString("yyMM");//当前日期

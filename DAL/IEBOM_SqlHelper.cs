@@ -166,8 +166,9 @@ namespace DAL
                 bulkcopy.DestinationTableName = "machineTypes_tmp";
                 bulkcopy.ColumnMappings.Add("machineClass", "machineClass");
                 bulkcopy.ColumnMappings.Add("MachineName", "machineName");
-                bulkcopy.ColumnMappings.Add("machineNameEN", "machineNameEN");
-                bulkcopy.ColumnMappings.Add("machinesMark", "MachinesMark");
+                bulkcopy.ColumnMappings.Add("machineTypeShortName", "machineTypeShortName");
+                bulkcopy.ColumnMappings.Add("machinesMarckKhmer", "machinesMarckKhmer");
+                bulkcopy.ColumnMappings.Add("imagestr", "imagestr");
 
                 bulkcopy.ColumnMappings.Add("isMachinesStatus", "isMachinesStatus");
                 bulkcopy.ColumnMappings.Add("CreateDate", "CreateDate");
@@ -187,5 +188,45 @@ namespace DAL
             }
 
         }
+
+
+        public static string SqlBulkCopyIEBomProcesTables(DataTable table)
+        {
+            using (SqlBulkCopy bulkcopy = new SqlBulkCopy(IEBomSQLconnstr))
+            {
+                bulkcopy.BulkCopyTimeout = 0;//超时设置
+                bulkcopy.DestinationTableName = "IEBomProces";
+                bulkcopy.ColumnMappings.Add("ProcessNumber", "ProcessNumber");
+                bulkcopy.ColumnMappings.Add("Scope", "Scope");
+                bulkcopy.ColumnMappings.Add("partNumber", "partNumber");
+                bulkcopy.ColumnMappings.Add("partName", "partName");
+                bulkcopy.ColumnMappings.Add("importantPart", "importantPart");
+
+                bulkcopy.ColumnMappings.Add("partRemark", "partRemark");
+                bulkcopy.ColumnMappings.Add("partMachineTypeID", "partMachineTypeID");
+                bulkcopy.ColumnMappings.Add("partMachineTypeName", "partMachineTypeName");
+                bulkcopy.ColumnMappings.Add("averageSecond", "averageSecond");
+                bulkcopy.ColumnMappings.Add("standardSecond", "standardSecond");
+                bulkcopy.ColumnMappings.Add("standardHourproductionCapacity", "standardHourproductionCapacity");
+                bulkcopy.ColumnMappings.Add("assignmentAllocate", "assignmentAllocate");
+
+                bulkcopy.ColumnMappings.Add("actualAllocate", "actualAllocate");
+                bulkcopy.ColumnMappings.Add("remark", "remark");
+                bulkcopy.ColumnMappings.Add("isDel", "isDel");
+
+                try
+                {
+                    bulkcopy.WriteToServer(table);
+                    return "0";
+                }
+                catch (Exception ex)
+                {
+                    return ex.ToString();
+                }
+            }
+
+        }
+
+
     }
 }

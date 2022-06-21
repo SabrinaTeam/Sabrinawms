@@ -13,7 +13,7 @@ namespace BLL
         public DataTable getSizeRunByMy_no(string my_no,string linkServer)
         {
             return sizeS.getSizeRunByMy_no(my_no, linkServer);
-          
+
         }
         public DataTable getClr_noByMy_no(string[] parameters,string linkServer)
         {
@@ -29,6 +29,12 @@ namespace BLL
         public DataTable getAllSizeRunByMy_no(string my_no ,string linkServer)
         {
             return sizeS.getAllSizeRunByMy_no(my_no, linkServer);
+
+        }
+
+        public DataTable getCustAbbr(string linkServer)
+        {
+            return sizeS.getCustAbbr(linkServer);
 
         }
     }

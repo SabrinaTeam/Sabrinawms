@@ -78,6 +78,15 @@
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ADRcpLib">
+      <HintPath>D:\OneDrive\桌面\MM_C#\dll\x64\ADRcpLib.dll</HintPath>
+    </Reference>
+    <Reference Include="ADSioLib">
+      <HintPath>D:\OneDrive\桌面\MM_C#\dll\x64\ADSioLib.dll</HintPath>
+    </Reference>
+    <Reference Include="ADUtilsLib">
+      <HintPath>D:\OneDrive\桌面\MM_C#\dll\x64\ADUtilsLib.dll</HintPath>
+    </Reference>
     <Reference Include="bcmail-jdk15-1.44, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Pdfbox.1.1.1\lib\bcmail-jdk15-1.44.dll</HintPath>
     </Reference>
@@ -217,6 +226,9 @@
     <Reference Include="RabbitMQ.Client, Version=3.6.9.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
       <HintPath>packages\RabbitMQ.Client.3.6.9\lib\net45\RabbitMQ.Client.dll</HintPath>
     </Reference>
+    <Reference Include="ReaderSDK">
+      <HintPath>..\..\..\ReaderSDK\ReaderSDK\bin\Debug\ReaderSDK.dll</HintPath>
+    </Reference>
     <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
       <HintPath>packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
     </Reference>
@@ -255,6 +267,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="UHFReader18CSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\lib\UHFReader18CSharp.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="zxing, Version=0.16.6.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
       <HintPath>packages\ZXing.Net.0.16.6\lib\net45\zxing.dll</HintPath>
@@ -304,6 +319,12 @@
     </Compile>
     <Compile Include="FrmAccessOryPrintGrid.Designer.cs">
       <DependentUpon>FrmAccessOryPrintGrid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmAsanRfidRead.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmAsanRfidRead.Designer.cs">
+      <DependentUpon>FrmAsanRfidRead.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmAsicsImport.cs">
       <SubType>Form</SubType>
@@ -371,6 +392,18 @@
     <Compile Include="FrmFactoryplanning.Designer.cs">
       <DependentUpon>FrmFactoryplanning.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmHardwareTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmHardwareTest.Designer.cs">
+      <DependentUpon>FrmHardwareTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmIEBomPrintGrid.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmIEBomPrintGrid.Designer.cs">
+      <DependentUpon>FrmIEBomPrintGrid.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmImportVF.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -382,6 +415,18 @@
     </Compile>
     <Compile Include="FrmInvoicePrint.Designer.cs">
       <DependentUpon>FrmInvoicePrint.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmlEBomSearch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmlEBomSearch.Designer.cs">
+      <DependentUpon>FrmlEBomSearch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmLuluSingleScan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmLuluSingleScan.Designer.cs">
+      <DependentUpon>FrmLuluSingleScan.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmMachinesTable.cs">
       <SubType>Form</SubType>
@@ -400,6 +445,12 @@
     </Compile>
     <Compile Include="FrmMesEmployee.Designer.cs">
       <DependentUpon>FrmMesEmployee.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmNewStyleSearch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmNewStyleSearch.Designer.cs">
+      <DependentUpon>FrmNewStyleSearch.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmNikeConnect.cs">
       <SubType>Form</SubType>
@@ -455,6 +506,30 @@
     <Compile Include="FrmProductsFullSearch.Designer.cs">
       <DependentUpon>FrmProductsFullSearch.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmRFIDBoxScan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmRFIDBoxScan.Designer.cs">
+      <DependentUpon>FrmRFIDBoxScan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmRFIDNikeImport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmRFIDNikeImport.Designer.cs">
+      <DependentUpon>FrmRFIDNikeImport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmRFIDLuluImport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmRFIDLuluImport.Designer.cs">
+      <DependentUpon>FrmRFIDLuluImport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmRFIDScanSearch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmRFIDScanSearch.Designer.cs">
+      <DependentUpon>FrmRFIDScanSearch.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmScanSearch.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -486,6 +561,9 @@
     </Compile>
     <Compile Include="lEBom.Designer.cs">
       <DependentUpon>lEBom.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MsgDiv.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="NPOIExcelCompletedToMes.cs" />
     <Compile Include="NPOIExcelDeliveryCompare.cs" />
@@ -535,6 +613,9 @@
     <EmbeddedResource Include="FrmAccessOryPrintGrid.resx">
       <DependentUpon>FrmAccessOryPrintGrid.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmAsanRfidRead.resx">
+      <DependentUpon>FrmAsanRfidRead.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmAsicsImport.resx">
       <DependentUpon>FrmAsicsImport.cs</DependentUpon>
     </EmbeddedResource>
@@ -568,11 +649,24 @@
     <EmbeddedResource Include="FrmFactoryplanning.resx">
       <DependentUpon>FrmFactoryplanning.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmHardwareTest.resx">
+      <DependentUpon>FrmHardwareTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmIEBomPrintGrid.resx">
+      <DependentUpon>FrmIEBomPrintGrid.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmImportVF.resx">
       <DependentUpon>FrmImportVF.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmInvoicePrint.resx">
       <DependentUpon>FrmInvoicePrint.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmlEBomSearch.resx">
+      <DependentUpon>FrmlEBomSearch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmLuluSingleScan.resx">
+      <DependentUpon>FrmLuluSingleScan.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmMachinesTable.resx">
       <DependentUpon>FrmMachinesTable.cs</DependentUpon>
@@ -582,6 +676,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmMesEmployee.resx">
       <DependentUpon>FrmMesEmployee.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmNewStyleSearch.resx">
+      <DependentUpon>FrmNewStyleSearch.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmNikeConnect.resx">
       <DependentUpon>FrmNikeConnect.cs</DependentUpon>
@@ -606,6 +703,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmProductsFullSearch.resx">
       <DependentUpon>FrmProductsFullSearch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmRFIDBoxScan.resx">
+      <DependentUpon>FrmRFIDBoxScan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmRFIDNikeImport.resx">
+      <DependentUpon>FrmRFIDNikeImport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmRFIDLuluImport.resx">
+      <DependentUpon>FrmRFIDLuluImport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmRFIDScanSearch.resx">
+      <DependentUpon>FrmRFIDScanSearch.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmScanSearch.resx">
       <DependentUpon>FrmScanSearch.cs</DependentUpon>
@@ -676,6 +785,9 @@
     <None Include="DSCompletedToMesDataSource.xss">
       <DependentUpon>DSCompletedToMesDataSource.xsd</DependentUpon>
     </None>
+    <None Include="IEBomReport.grf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\DoubleBufferDataGridView.datasource" />
     <None Include="Properties\DataSources\FrmaccessoryOut.datasource" />
@@ -745,6 +857,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="logo.ico" />
+    <Content Include="LOGO.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -757,6 +872,12 @@
     </Content>
     <Content Include="SqlServerTypes\x86\SqlServerSpatial140.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wav\error.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wav\ok.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -838,6 +959,10 @@
       <Project>{4e5b7a48-4ec4-4c4d-80a5-5a3ba12cc1f6}</Project>
       <Name>MODEL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UserControls\" />
+    <Folder Include="UserForms\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
