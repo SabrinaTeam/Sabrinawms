@@ -75,9 +75,6 @@
     <Reference Include="bcprov-jdk15-1.44, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\WinForm\packages\Pdfbox.1.1.1\lib\bcprov-jdk15-1.44.dll</HintPath>
     </Reference>
-    <Reference Include="Beta.Data.MyCat, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\WinForm\packages\Beta.Data.MyCat.1.0.0.1\lib\net452\Beta.Data.MyCat.dll</HintPath>
-    </Reference>
     <Reference Include="BouncyCastle.Crypto, Version=1.8.3.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
       <HintPath>..\WinForm\packages\BouncyCastle.1.8.3.1\lib\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
@@ -258,11 +255,15 @@
     <Compile Include="deliveryCompareManager.cs" />
     <Compile Include="DelScanHURLEYManager.cs" />
     <Compile Include="EmployeeManager.cs" />
+    <Compile Include="FrmBoxWeightManager.cs.cs" />
     <Compile Include="FrmNewStyleSearchManager.cs" />
+    <Compile Include="FrmPackBaseManager.cs" />
     <Compile Include="FrmRFIDLuluImportManager.cs" />
     <Compile Include="FrmRFIDNikeImportManager.cs" />
     <Compile Include="FrmRFIDScanSearchManager.cs" />
     <Compile Include="FrmScanSerachManager.cs" />
+    <Compile Include="FrmSingleWeightMaintainManager.cs" />
+    <Compile Include="FrmSingleWeightManager.cs" />
     <Compile Include="IEBomManager.cs" />
     <Compile Include="loadScanManager.cs" />
     <Compile Include="LuluSingleScanManager.cs" />
@@ -274,6 +275,7 @@
     <Compile Include="outGoingManager.cs" />
     <Compile Include="PDAManager.cs" />
     <Compile Include="PoNumberManager.cs" />
+    <Compile Include="PowerControlManager.cs" />
     <Compile Include="ProductionStatusManager.cs" />
     <Compile Include="ProductSearchManager.cs" />
     <Compile Include="ProductsFullSearchManager.cs" />

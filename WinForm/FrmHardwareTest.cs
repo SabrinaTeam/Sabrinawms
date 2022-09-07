@@ -49,7 +49,9 @@ namespace WinForm
         private bool fTimer_6B_ReadWrite;
         private string fInventory_EPC_List; //存贮询查列表（如果读取的数据没有变化，则不进行刷新）
         private int frmcomportindex;
-        private bool ComOpen = false;
+        private bool Com1Open = false; //RFID 1
+        private bool Com2Open = false; //RFID 2
+        private bool Com3Open = false; //RFID 3
         private bool breakflag = false;
         private double x_z;
         private double y_f;
@@ -254,7 +256,7 @@ namespace WinForm
             int dd = WyuanHelper.connRfidCOM(PortName, fBaud, ReaderAddr);
             if (dd == 0)
             {
-                ComOpen = true;
+                Com1Open = true;
                 frmcomportindex = Convert.ToInt32(PortName.Substring(3, PortName.Length - 3));
                 fOpenComIndex = frmcomportindex;
                 WyuanInfos info = WyuanHelper.GetReaderInfo();
@@ -268,7 +270,7 @@ namespace WinForm
                 }
                 if ((info._CmdRet == 0x35) || (info._CmdRet == 0x30))
                 {
-                    ComOpen = false;
+                    Com1Open = false;
                     MessageBox.Show("Serial Communication Error or Occupied", "Information");
                     StaticClassReaderB.CloseSpecComPort(frmcomportindex);
                     return;
@@ -521,7 +523,7 @@ namespace WinForm
             button_OffsetTime.Enabled = true;
             button_settigtime.Enabled = true;
             button_gettigtime.Enabled = true;
-            ComOpen = true;
+            Com1Open = true;
 
             RefreshStatus();
 
@@ -748,7 +750,7 @@ namespace WinForm
                 butGetWorkModeParameter.Enabled = false;
 
 
-                ComOpen = false;
+                Com1Open = false;
                 button12.Enabled = false;
                 butGetData.Text = "Get";
                 butGetData.Enabled = false;
@@ -776,14 +778,14 @@ namespace WinForm
             fOpenComIndex = frmcomportindex;
             if (openresult == 0)
             {
-                ComOpen = true;
+                Com1Open = true;
                 Button3_Click(sender, e); //自动执行读取写卡器信息
             }
             if ((openresult == 0x35) || (openresult == 0x30))
             {
                 MessageBox.Show("TCPIP error", "Information");
                 StaticClassReaderB.CloseNetPort(frmcomportindex);
-                ComOpen = false;
+                Com1Open = false;
                 return;
             }
             if ((fOpenComIndex != -1) && (openresult != 0X35) && (openresult != 0X30))
@@ -800,7 +802,7 @@ namespace WinForm
                 button_OffsetTime.Enabled = true;
                 button_settigtime.Enabled = true;
                 button_gettigtime.Enabled = true;
-                ComOpen = true;
+                Com1Open = true;
             }
             if ((fOpenComIndex == -1) && (openresult == 0x30))
                 MessageBox.Show("TCPIP Communication Error", "Information");
@@ -826,7 +828,7 @@ namespace WinForm
                 butGetWorkModeParameter.Enabled = false;
 
 
-                ComOpen = false;
+                Com1Open = false;
                 button12.Enabled = false;
                 butGetData.Text = "Get";
                 butGetData.Enabled = false;

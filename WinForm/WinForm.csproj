@@ -93,9 +93,6 @@
     <Reference Include="bcprov-jdk15-1.44, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Pdfbox.1.1.1\lib\bcprov-jdk15-1.44.dll</HintPath>
     </Reference>
-    <Reference Include="Beta.Data.MyCat, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Beta.Data.MyCat.1.0.0.1\lib\net452\Beta.Data.MyCat.dll</HintPath>
-    </Reference>
     <Reference Include="BouncyCastle.Crypto, Version=1.8.3.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
       <HintPath>packages\BouncyCastle.1.8.3.1\lib\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
@@ -470,6 +467,12 @@
     <Compile Include="FrmNoBraCodeReceipt.Designer.cs">
       <DependentUpon>FrmNoBraCodeReceipt.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmPackingBase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPackingBase.Designer.cs">
+      <DependentUpon>FrmPackingBase.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmPDAManager.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -541,6 +544,18 @@
     </Compile>
     <Compile Include="FrmShippingPackages.Designer.cs">
       <DependentUpon>FrmShippingPackages.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmSingleWeight.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSingleWeight.Designer.cs">
+      <DependentUpon>FrmSingleWeight.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmSingleWeightMaintain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSingleWeightMaintain.Designer.cs">
+      <DependentUpon>FrmSingleWeightMaintain.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmSizeRun.cs">
       <SubType>Form</SubType>
@@ -686,6 +701,9 @@
     <EmbeddedResource Include="FrmNoBraCodeReceipt.resx">
       <DependentUpon>FrmNoBraCodeReceipt.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmPackingBase.resx">
+      <DependentUpon>FrmPackingBase.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmPDAManager.resx">
       <DependentUpon>FrmPDAManager.cs</DependentUpon>
     </EmbeddedResource>
@@ -721,6 +739,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmShippingPackages.resx">
       <DependentUpon>FrmShippingPackages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSingleWeight.resx">
+      <DependentUpon>FrmSingleWeight.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSingleWeightMaintain.resx">
+      <DependentUpon>FrmSingleWeightMaintain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmSizeRun.resx">
       <DependentUpon>FrmSizeRun.cs</DependentUpon>
@@ -872,6 +896,9 @@
     </Content>
     <Content Include="SqlServerTypes\x86\SqlServerSpatial140.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wav\bi.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="wav\error.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

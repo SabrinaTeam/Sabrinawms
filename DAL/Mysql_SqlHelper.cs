@@ -13,7 +13,7 @@ namespace DAL
     {
         // public static readonly string ERPconnStr = ConfigurationManager.ConnectionStrings["ERPconnStr"].ConnectionString;
         // public static readonly string BESTconnStr = ConfigurationManager.ConnectionStrings["BESTconnStr"].ConnectionString;
-        public static readonly string MySqlconnStr = ConfigurationManager.ConnectionStrings["MySqlconnStr_fsg"].ConnectionString;
+        public static readonly string MySqlconnStr = ConfigurationManager.ConnectionStrings["MySqlconnStr"].ConnectionString;
 
         public static Object ToDbValue(Object value)
         {

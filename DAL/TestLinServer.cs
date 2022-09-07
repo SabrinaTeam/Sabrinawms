@@ -144,7 +144,7 @@ namespace DAL
                     try
                     {
                         string sql = "SHOW TABLES; ";
-                        DataTable dt = Mysql_SqlHelper.ExcuteTable(sql);
+                        DataTable dt = Mysqlfsg_SqlHelper.ExcuteTable(sql);
                         if (dt.Rows.Count <= 0)
                         {
                             lists.Add("连接数据库错误");

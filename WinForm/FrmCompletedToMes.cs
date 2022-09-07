@@ -25,9 +25,10 @@ namespace WinForm
 {
     public partial class FrmCompletedToMes : Form
     {
-
+      //  Server=192.168.4.220; Port=3306; Database=fsg; User=root; Password=Sabrina123;pooling=true;Connect Timeout = 180; CharSet=utf8mb4
         public string reportPath = System.Windows.Forms.Application.StartupPath + "\\report.grf";
-        public static string dataconnect = "MYSQL;Database=mycat_fsg;Password=Sabrina123;Port=8066;Server=192.168.4.245;User=root";
+        //   public static string dataconnect = "MYSQL;Database=mycat_fsg;Password=Sabrina123;Port=8066;Server=192.168.4.245;User=root";
+        public static string dataconnect = "MYSQL;Server=192.168.4.220; Port=3306; Database=fsg; User=root; Password=Sabrina123;pooling=true;Connect Timeout = 180; CharSet=utf8mb4";
         public bool printing = false;
         private GridppReport Report = new GridppReport();
 
@@ -91,7 +92,7 @@ namespace WinForm
             factory.UserName = this.UserName;
             factory.Password = this.Password;
             factory.AutomaticRecoveryEnabled = this.autoRecovery;
-            factory.RequestedHeartbeat = 10;
+            factory.RequestedHeartbeat = 5;
             this.dgvInvoice.DoubleBufferedDataGirdView(true);
             this.dgvWorkTagScans.DoubleBufferedDataGirdView(true);
 
@@ -1443,6 +1444,11 @@ namespace WinForm
                 }
 
             }
+
+        }
+
+        private void cbAutoPrint_CheckedChanged(object sender, EventArgs e)
+        {
 
         }
     }

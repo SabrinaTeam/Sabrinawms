@@ -14,19 +14,19 @@ namespace DAL
         public int isHaveByTradingComanyPO(string Tpo)
         {
             string sql = @"SELECT GTN_PO FROM `gtn_po` WHERE GTN_PO ='" + Tpo + "'";
-            DataTable result = new DataTable(); 
+            DataTable result = new DataTable();
             if (MiddleWare == "1")
             {
-                 result = MyCatfsg_SqlHelper.ExcuteTable(sql);             
+                 result = MyCatfsg_SqlHelper.ExcuteTable(sql);
             }
             else
             {
                 result = Mysqlfsg_SqlHelper.ExcuteTable(sql);
             }
-            return result.Rows.Count;           
+            return result.Rows.Count;
         }
         public int writeInvsToDb(DataTable dt)
-        { 
+        {
             string sqlstr = "";
             string sqlValue = "";
             for (int i = 0; i < dt.Rows.Count; i++)
@@ -75,9 +75,9 @@ namespace DAL
 	                        NOT EXISTS ( SELECT TagNumber FROM inv WHERE inv.TagNumber = q.TagNumber AND q.Location = ""HD"" );
                         ";
             sqlstr = sqlstr + sqlw;    str1.IndexOf("字")
-            
+
             */
-                
+
 
                 sqlValue = sqlValue +
                           "(  \"" + dt.Rows[i]["TagNumber"].ToString() + "\"   , \""
@@ -94,9 +94,9 @@ namespace DAL
             }
             sqlValue = sqlValue.Substring(0, sqlValue.Length - 1);
             sqlstr = @"INSERT ignore INTO inv ( TagNumber, Cust_id, Location, update_date, org, con_no, create_pc, kg, subinv, ScanTime, exeStatus )  VALUES " + sqlValue +";";
-              
 
-            int result = 0; 
+
+            int result = 0;
             if (MiddleWare == "1")
             {
                 result = MyCatfsg_SqlHelper.ExecuteNonQuery(sqlstr);
@@ -139,16 +139,16 @@ namespace DAL
             }
             else
             {
-                result = Mysqlfsg_SqlHelper.ExecuteNonQuery(sql); 
+                result = Mysqlfsg_SqlHelper.ExecuteNonQuery(sql);
             }
             return result;
         }
         public DataTable getSubinvByOrg(string org)
         {
             string sql = @"SELECT DISTINCT subinv from Location WHERE org='"+ org + "'";
-            
+
             DataTable dt = new DataTable();
-            if (MiddleWare == "1")
+            if (MiddleWare == "0")
             {
                 dt = MyCatfsg_SqlHelper.ExcuteTable(sql);
             }
@@ -163,8 +163,8 @@ namespace DAL
 
         public DataTable getLocationByOrgAndSubinv(string org, string subinv)
         {
-            string sql = @"SELECT DISTINCT location from Location WHERE org='" + org + "'  AND Subinv = '" + subinv + "'"; 
-           
+            string sql = @"SELECT DISTINCT location from Location WHERE org='" + org + "'  AND Subinv = '" + subinv + "'";
+
             DataTable dt = new DataTable();
             if (MiddleWare == "1")
             {

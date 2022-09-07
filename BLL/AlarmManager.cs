@@ -289,6 +289,13 @@ namespace BLL
              //   throw;
             }
         }
+        public void palyMediaBi( )
+        {
+            string path = "";
+            path = "./wav/bi.wav";
+            System.Media.SoundPlayer player = new System.Media.SoundPlayer(path);
+            player.PlaySync();
+        }
 
         public void palyMedia(Boolean info)
         {

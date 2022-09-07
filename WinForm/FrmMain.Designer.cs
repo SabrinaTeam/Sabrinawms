@@ -62,6 +62,9 @@
             this.MenuAccessoryOut = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuHD = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuScanSearch = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuSingleWeight = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuButBoxBase = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuPackingBase = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuProduct = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuReceipt = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuOutgoing = new System.Windows.Forms.ToolStripMenuItem();
@@ -83,6 +86,7 @@
             this.MenuScanLog = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuHardwareTest = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuRFIDReader2 = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuPI = new System.Windows.Forms.ToolStripMenuItem();
             this.menuCFoutput = new System.Windows.Forms.ToolStripMenuItem();
             this.productionStatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -93,7 +97,6 @@
             this.MenuCloseAll = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuRFIDReader2 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -131,7 +134,7 @@
             // TSMenuExit
             // 
             this.TSMenuExit.Name = "TSMenuExit";
-            this.TSMenuExit.Size = new System.Drawing.Size(113, 22);
+            this.TSMenuExit.Size = new System.Drawing.Size(180, 22);
             this.TSMenuExit.Text = "退出(&E)";
             this.TSMenuExit.Click += new System.EventHandler(this.TSMenuExit_Click);
             // 
@@ -151,40 +154,40 @@
             // MenuSizeRun
             // 
             this.MenuSizeRun.Name = "MenuSizeRun";
-            this.MenuSizeRun.Size = new System.Drawing.Size(171, 22);
+            this.MenuSizeRun.Size = new System.Drawing.Size(180, 22);
             this.MenuSizeRun.Text = "SizeRun(&R)";
             this.MenuSizeRun.Click += new System.EventHandler(this.MenuSizeRun_Click);
             // 
             // MenuNumber
             // 
             this.MenuNumber.Name = "MenuNumber";
-            this.MenuNumber.Size = new System.Drawing.Size(171, 22);
+            this.MenuNumber.Size = new System.Drawing.Size(180, 22);
             this.MenuNumber.Text = "PO&MyNumber(&P)";
             this.MenuNumber.Click += new System.EventHandler(this.MenuNumber_Click);
             // 
             // MenuMesEmployee
             // 
             this.MenuMesEmployee.Name = "MenuMesEmployee";
-            this.MenuMesEmployee.Size = new System.Drawing.Size(171, 22);
+            this.MenuMesEmployee.Size = new System.Drawing.Size(180, 22);
             this.MenuMesEmployee.Text = "Mes用户管理(&U)";
             this.MenuMesEmployee.Click += new System.EventHandler(this.MenuMesEmployee_Click);
             // 
             // MenuScanMakeComplete
             // 
             this.MenuScanMakeComplete.Name = "MenuScanMakeComplete";
-            this.MenuScanMakeComplete.Size = new System.Drawing.Size(171, 22);
+            this.MenuScanMakeComplete.Size = new System.Drawing.Size(180, 22);
             this.MenuScanMakeComplete.Text = "报工详情(&C)";
             this.MenuScanMakeComplete.Click += new System.EventHandler(this.MenuScanMakeComplete_Click);
             // 
             // toolStripMenuItem6
             // 
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(168, 6);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(177, 6);
             // 
             // MenuNewStyleColorSearch
             // 
             this.MenuNewStyleColorSearch.Name = "MenuNewStyleColorSearch";
-            this.MenuNewStyleColorSearch.Size = new System.Drawing.Size(171, 22);
+            this.MenuNewStyleColorSearch.Size = new System.Drawing.Size(180, 22);
             this.MenuNewStyleColorSearch.Text = "新款式查询(&S)";
             this.MenuNewStyleColorSearch.Click += new System.EventHandler(this.MenuNewStyleSearch_Click);
             // 
@@ -200,7 +203,7 @@
             // MenuIE
             // 
             this.MenuIE.Name = "MenuIE";
-            this.MenuIE.Size = new System.Drawing.Size(135, 22);
+            this.MenuIE.Size = new System.Drawing.Size(180, 22);
             this.MenuIE.Text = "工段工程(&I)";
             this.MenuIE.Click += new System.EventHandler(this.MenuIE_Click);
             // 
@@ -208,7 +211,7 @@
             // 
             this.MenuIESearch.Enabled = false;
             this.MenuIESearch.Name = "MenuIESearch";
-            this.MenuIESearch.Size = new System.Drawing.Size(135, 22);
+            this.MenuIESearch.Size = new System.Drawing.Size(180, 22);
             this.MenuIESearch.Text = "IE表查询(&S)";
             this.MenuIESearch.Visible = false;
             this.MenuIESearch.Click += new System.EventHandler(this.MenuIESearch_Click);
@@ -226,21 +229,21 @@
             // MenuPropertyNumber
             // 
             this.MenuPropertyNumber.Name = "MenuPropertyNumber";
-            this.MenuPropertyNumber.Size = new System.Drawing.Size(138, 22);
+            this.MenuPropertyNumber.Size = new System.Drawing.Size(180, 22);
             this.MenuPropertyNumber.Text = "财编打印(&P)";
             this.MenuPropertyNumber.Click += new System.EventHandler(this.MenuPropertyNumber_Click);
             // 
             // MenuPDAManager
             // 
             this.MenuPDAManager.Name = "MenuPDAManager";
-            this.MenuPDAManager.Size = new System.Drawing.Size(138, 22);
+            this.MenuPDAManager.Size = new System.Drawing.Size(180, 22);
             this.MenuPDAManager.Text = "PDA管理(&A)";
             this.MenuPDAManager.Click += new System.EventHandler(this.pDA管理ToolStripMenuItem_Click);
             // 
             // MenuProductSearch
             // 
             this.MenuProductSearch.Name = "MenuProductSearch";
-            this.MenuProductSearch.Size = new System.Drawing.Size(138, 22);
+            this.MenuProductSearch.Size = new System.Drawing.Size(180, 22);
             this.MenuProductSearch.Text = "成品查询";
             this.MenuProductSearch.Click += new System.EventHandler(this.MenuProductSearch_Click);
             // 
@@ -258,18 +261,18 @@
             // 
             this.MenuExcelImport.Enabled = false;
             this.MenuExcelImport.Name = "MenuExcelImport";
-            this.MenuExcelImport.Size = new System.Drawing.Size(127, 22);
+            this.MenuExcelImport.Size = new System.Drawing.Size(180, 22);
             this.MenuExcelImport.Text = "Excel导入";
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(124, 6);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(177, 6);
             // 
             // MenuEmployeeManager
             // 
             this.MenuEmployeeManager.Name = "MenuEmployeeManager";
-            this.MenuEmployeeManager.Size = new System.Drawing.Size(127, 22);
+            this.MenuEmployeeManager.Size = new System.Drawing.Size(180, 22);
             this.MenuEmployeeManager.Text = "员工管理";
             this.MenuEmployeeManager.Click += new System.EventHandler(this.MenuEmployeeManager_Click);
             // 
@@ -335,24 +338,48 @@
             // MenuAccessoryOut
             // 
             this.MenuAccessoryOut.Name = "MenuAccessoryOut";
-            this.MenuAccessoryOut.Size = new System.Drawing.Size(140, 22);
+            this.MenuAccessoryOut.Size = new System.Drawing.Size(180, 22);
             this.MenuAccessoryOut.Text = "辅料发料(&O)";
             this.MenuAccessoryOut.Click += new System.EventHandler(this.MenuAccessoryOut_Click);
             // 
             // MenuHD
             // 
             this.MenuHD.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuScanSearch});
+            this.MenuScanSearch,
+            this.MenuSingleWeight,
+            this.MenuButBoxBase,
+            this.MenuPackingBase});
             this.MenuHD.Name = "MenuHD";
-            this.MenuHD.Size = new System.Drawing.Size(84, 20);
-            this.MenuHD.Text = "后道查询(&H)";
+            this.MenuHD.Size = new System.Drawing.Size(60, 20);
+            this.MenuHD.Text = "后道(&H)";
             // 
             // MenuScanSearch
             // 
             this.MenuScanSearch.Name = "MenuScanSearch";
-            this.MenuScanSearch.Size = new System.Drawing.Size(122, 22);
-            this.MenuScanSearch.Text = "扫描查询";
+            this.MenuScanSearch.Size = new System.Drawing.Size(185, 22);
+            this.MenuScanSearch.Text = "扫描查询(&Q)";
             this.MenuScanSearch.Click += new System.EventHandler(this.MenuScanSearch_Click);
+            // 
+            // MenuSingleWeight
+            // 
+            this.MenuSingleWeight.Name = "MenuSingleWeight";
+            this.MenuSingleWeight.Size = new System.Drawing.Size(185, 22);
+            this.MenuSingleWeight.Text = "单件重量(&S)";
+            this.MenuSingleWeight.Click += new System.EventHandler(this.MenuSingleWeight_Click);
+            // 
+            // MenuButBoxBase
+            // 
+            this.MenuButBoxBase.Name = "MenuButBoxBase";
+            this.MenuButBoxBase.Size = new System.Drawing.Size(185, 22);
+            this.MenuButBoxBase.Text = "外箱基础数据(&B)";
+            this.MenuButBoxBase.Click += new System.EventHandler(this.ButBoxBase_Click);
+            // 
+            // MenuPackingBase
+            // 
+            this.MenuPackingBase.Name = "MenuPackingBase";
+            this.MenuPackingBase.Size = new System.Drawing.Size(185, 22);
+            this.MenuPackingBase.Text = "装箱方式基础数据(&P)";
+            this.MenuPackingBase.Click += new System.EventHandler(this.MenuPackingBase_Click);
             // 
             // MenuProduct
             // 
@@ -516,6 +543,13 @@
             this.MenuHardwareTest.Text = "硬件测试";
             this.MenuHardwareTest.Click += new System.EventHandler(this.MenuHardwareTest_Click);
             // 
+            // MenuRFIDReader2
+            // 
+            this.MenuRFIDReader2.Name = "MenuRFIDReader2";
+            this.MenuRFIDReader2.Size = new System.Drawing.Size(235, 22);
+            this.MenuRFIDReader2.Text = "Asandduoo RFID reader Test";
+            this.MenuRFIDReader2.Click += new System.EventHandler(this.MenuRFIDReader2_Click);
+            // 
             // MenuPI
             // 
             this.MenuPI.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -567,12 +601,12 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(159, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
             // 
             // MenuCloseAll
             // 
             this.MenuCloseAll.Name = "MenuCloseAll";
-            this.MenuCloseAll.Size = new System.Drawing.Size(162, 22);
+            this.MenuCloseAll.Size = new System.Drawing.Size(180, 22);
             this.MenuCloseAll.Text = "关闭所有窗口(&C)";
             this.MenuCloseAll.Click += new System.EventHandler(this.MenuCloseAll_Click);
             // 
@@ -587,13 +621,6 @@
             this.toolStripMenuItem8.Name = "toolStripMenuItem8";
             this.toolStripMenuItem8.Size = new System.Drawing.Size(188, 22);
             this.toolStripMenuItem8.Text = "toolStripMenuItem8";
-            // 
-            // MenuRFIDReader2
-            // 
-            this.MenuRFIDReader2.Name = "MenuRFIDReader2";
-            this.MenuRFIDReader2.Size = new System.Drawing.Size(235, 22);
-            this.MenuRFIDReader2.Text = "Asandduoo RFID reader Test";
-            this.MenuRFIDReader2.Click += new System.EventHandler(this.MenuRFIDReader2_Click);
             // 
             // FrmMain
             // 
@@ -682,6 +709,9 @@
         private System.Windows.Forms.ToolStripMenuItem MenuHardwareTest;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem8;
         private System.Windows.Forms.ToolStripMenuItem MenuRFIDReader2;
+        private System.Windows.Forms.ToolStripMenuItem MenuSingleWeight;
+        private System.Windows.Forms.ToolStripMenuItem MenuButBoxBase;
+        private System.Windows.Forms.ToolStripMenuItem MenuPackingBase;
     }
 }
 

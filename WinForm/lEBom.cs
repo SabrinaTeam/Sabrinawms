@@ -484,11 +484,25 @@ namespace WinForm
                 msDt.Rows[i]["standardSecond"] = average * coefficient;
 
                 //standardHourproductionCapacity  standardSecond
-                standardHourproductionCapacity = Convert.ToString(HourSecon / Convert.ToDouble(msDt.Rows[i]["standardSecond"].ToString()));
-                if (standardHourproductionCapacity == "∞")
+
+                double ddcd = Convert.ToDouble( msDt.Rows[i]["standardSecond"].ToString());
+
+               if(ddcd == 0)
                 {
                     standardHourproductionCapacity = "0";
+
                 }
+                else
+                {
+                    standardHourproductionCapacity = Convert.ToString(HourSecon / Convert.ToDouble(msDt.Rows[i]["standardSecond"].ToString()));
+
+                    bool s = IsNumberic(standardHourproductionCapacity);
+                    if (!s)
+                    {
+                        standardHourproductionCapacity = "0";
+                    }
+                }
+
                 msDt.Rows[i]["standardHourproductionCapacity"] = standardHourproductionCapacity;
 
             }
@@ -783,33 +797,73 @@ namespace WinForm
                 }
 
                 //工段备注 partRemark
+                //  string av = this.dgvIETables.Rows[i].Cells["averageSecond"].Value.ToString();
+                //  bool avs = Regex.IsMatch(av, "^([0-9]{1,}[.][0-9]*)$");
+
 
                 //平均时长(秒)
-                if (this.dgvIETables.Rows[i].Cells["averageSecond"].Value == null || this.dgvIETables.Rows[i].Cells["averageSecond"].Value.ToString() == "" || this.dgvIETables.Rows[i].Cells["averageSecond"].Value.ToString() == "∞")
+                if (
+                    this.dgvIETables.Rows[i].Cells["averageSecond"].Value == null ||
+                    this.dgvIETables.Rows[i].Cells["averageSecond"].Value.ToString() == "" ||
+                    IsNumberic(this.dgvIETables.Rows[i].Cells["averageSecond"].Value.ToString()) == false
+                    )
                 {
                     this.dgvIETables.Rows[i].Cells["averageSecond"].Value = 0;
                 }
 
                 //标准时长(秒)
-                if (this.dgvIETables.Rows[i].Cells["standardSecond"].Value == null || this.dgvIETables.Rows[i].Cells["standardSecond"].Value.ToString() == "" || this.dgvIETables.Rows[i].Cells["standardSecond"].Value.ToString() == "∞")
+               // string st = this.dgvIETables.Rows[i].Cells["standardSecond"].Value.ToString();
+               // bool sts = Regex.IsMatch(st, "^([0-9]{1,}[.][0-9]*)$");
+                if (
+                    this.dgvIETables.Rows[i].Cells["standardSecond"].Value == null ||
+                    this.dgvIETables.Rows[i].Cells["standardSecond"].Value.ToString() == "" ||
+
+                    IsNumberic(this.dgvIETables.Rows[i].Cells["standardSecond"].Value.ToString()) == false
+                    )
                 {
                     this.dgvIETables.Rows[i].Cells["standardSecond"].Value = 0;
                 }
 
                 //标准时产能(件)
-                if (this.dgvIETables.Rows[i].Cells["standardHourproductionCapacity"].Value == null || this.dgvIETables.Rows[i].Cells["standardHourproductionCapacity"].Value.ToString() == "" || this.dgvIETables.Rows[i].Cells["standardHourproductionCapacity"].Value.ToString() == "∞")
+
+                //  string an = this.dgvIETables.Rows[i].Cells["standardHourproductionCapacity"].Value.ToString();
+                // bool ans = Regex.IsMatch(an, "^([0-9]{1,}[.][0-9]*)$");
+
+             //   string ddd = this.dgvIETables.Rows[i].Cells["standardHourproductionCapacity"].Value.ToString();
+              //  this.
+
+                if (
+                    this.dgvIETables.Rows[i].Cells["standardHourproductionCapacity"].Value == null ||
+                    this.dgvIETables.Rows[i].Cells["standardHourproductionCapacity"].Value.ToString() == "" ||
+                    IsNumberic(this.dgvIETables.Rows[i].Cells["standardHourproductionCapacity"].Value.ToString()) == false ||
+                    IsUnsign(this.dgvIETables.Rows[i].Cells["standardHourproductionCapacity"].Value.ToString()) == false
+                    )
                 {
                     this.dgvIETables.Rows[i].Cells["standardHourproductionCapacity"].Value = 0;
                 }
 
                 //作业分配(人)
-                if (this.dgvIETables.Rows[i].Cells["assignmentAllocate"].Value == null || this.dgvIETables.Rows[i].Cells["assignmentAllocate"].Value.ToString() == "" || this.dgvIETables.Rows[i].Cells["assignmentAllocate"].Value.ToString() == "∞")
+
+               // string si = this.dgvIETables.Rows[i].Cells["assignmentAllocate"].Value.ToString();
+             //   bool sis = Regex.IsMatch(si, "^([0-9]{1,}[.][0-9]*)$");
+                if (
+                    this.dgvIETables.Rows[i].Cells["assignmentAllocate"].Value == null ||
+                    this.dgvIETables.Rows[i].Cells["assignmentAllocate"].Value.ToString() == "" ||
+                    IsNumberic(this.dgvIETables.Rows[i].Cells["assignmentAllocate"].Value.ToString()) == false
+                    )
                 {
                     this.dgvIETables.Rows[i].Cells["assignmentAllocate"].Value = 0.0;
                 }
 
                 //实际配置(人)
-                if (this.dgvIETables.Rows[i].Cells["actualAllocate"].Value == null || this.dgvIETables.Rows[i].Cells["actualAllocate"].Value.ToString() == "" || this.dgvIETables.Rows[i].Cells["actualAllocate"].Value.ToString() == "∞")
+
+              //  string ac = this.dgvIETables.Rows[i].Cells["actualAllocate"].Value.ToString();
+               // bool acs = Regex.IsMatch(ac, "^([0-9]{1,}[.][0-9]*)$");
+                if (
+                    this.dgvIETables.Rows[i].Cells["actualAllocate"].Value == null ||
+                    this.dgvIETables.Rows[i].Cells["actualAllocate"].Value.ToString() == "" ||
+                    IsNumberic(this.dgvIETables.Rows[i].Cells["actualAllocate"].Value.ToString()) == false
+                    )
                 {
                     this.dgvIETables.Rows[i].Cells["actualAllocate"].Value = 0.0;
                 }
@@ -851,6 +905,22 @@ namespace WinForm
 
 
 
+        }
+        public static bool IsUnsign(string value)
+        {
+            return Regex.IsMatch(value, @"^/d*[.]?/d*$");
+        }
+        private bool IsNumberic(string oText)
+        {
+            try
+            {
+                double var1 = Convert.ToDouble(oText);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
         public void changHeaderText()
         {
@@ -990,7 +1060,8 @@ namespace WinForm
 
                     standardHourproductionCapacity = Convert.ToString( HourSecon / Convert.ToDouble(dgvIETables.Rows[rowindex].Cells[colindex + 1].Value));
 
-                    if(standardHourproductionCapacity == "∞")
+                    bool sts = IsNumberic(standardHourproductionCapacity);
+                    if (!sts)
                     {
                         standardHourproductionCapacity = "0";
                     }
@@ -1370,6 +1441,8 @@ namespace WinForm
             this.IsNewIEVer = true;
            this.cbIEVersion.SelectedIndex = this.cbIEVersion.Items.Count - 1;
             this.butModifyIETable.Enabled = true;
+            this.txtStyleNumber.Enabled = true;
+            this.dgvIETables.ReadOnly = false;
 
             /*
 

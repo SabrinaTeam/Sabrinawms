@@ -39,7 +39,7 @@ namespace WinForm
         private string[] pId;//财编号
         private string[] pName; //财产名称
         private string[] pMode; //财产型号
-        private string[] pBuyData; //财产购买日期  
+        private string[] pBuyData; //财产购买日期
         private Image[] pIDimg; // 财编号二维码
         private int value = 0;//
         private int pageCount = 0;//页数
@@ -72,7 +72,7 @@ namespace WinForm
         {
             this.WindowState = FormWindowState.Maximized;
           //  this.gbSearch.Width = this.Width - 20;
-         //   this.splitContainer1.Width = this.gbSearch.Width;           
+         //   this.splitContainer1.Width = this.gbSearch.Width;
            // this.splitContainer1.Height = this.Height - 335;
         }
 
@@ -86,11 +86,11 @@ namespace WinForm
             {
                 this.Height = 747;
             }
-         
+
             this.bgProperty.Width = this.Width - 20;
             this.bgProperty.Height = this.Height - 110;
 
-            
+
             this.butPrints.Left = this.Width - 120;
             this.butSave.Left = this.Width - (130 + this.butPrints.Width);
 
@@ -173,7 +173,7 @@ namespace WinForm
                     }
                 }
             }
-            
+
             for (int i = 0; i < pt.Columns.Count; i++)
             {
                 if (pt.Columns[i].ColumnName != "select")
@@ -205,7 +205,7 @@ namespace WinForm
             Application.DoEvents();
             progressBar1.Value = 10;
             msg.Text = "正在查询相关财编资料,请稍等 ...";
-           
+
 
             bool IsDel = false;
             if (cbIsDel.Checked)
@@ -216,7 +216,7 @@ namespace WinForm
             {
                 IsDel = false;
             }
-            DataTable pt = pm.getPropertysByPnumberFromLocalHost( propertyNumbers, IsDel);          
+            DataTable pt = pm.getPropertysByPnumberFromLocalHost( propertyNumbers, IsDel);
             if (pt.Rows.Count <= 0   )
             {
                 if (isLocalHost == 0 && IsDel == false)
@@ -225,7 +225,7 @@ namespace WinForm
                 }
                 else
                 {
-                    this.dgvPropertys.DataSource = null;                   
+                    this.dgvPropertys.DataSource = null;
                     progressBar1.Value = 100;
                     msg.Text = "查询完成";
                     Application.DoEvents();
@@ -234,7 +234,7 @@ namespace WinForm
                     this.progressBar1.Visible = false;
                     return;
                 }
-              
+
                 pt.Columns.Add("propertyLocal", typeof(string));
                 pt.Columns.Add("propertySavePerson", typeof(string));
                 pt.Columns.Add("propertyPrintTims", typeof(int));
@@ -257,7 +257,7 @@ namespace WinForm
                 {
                     row["select"] = true;
                 }
-                                
+
             }
 
             for (int i = 0; i < pt.Columns.Count; i++)
@@ -273,7 +273,7 @@ namespace WinForm
             changHeaderText();
             Cursor = Cursors.Default;
             this.dgvPropertys.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.ColorTranslator.FromHtml("#D3D3D3");
-          
+
             progressBar1.Value = 100;
             msg.Text = "查询完成";
            // MessageBox.Show("查询完成");
@@ -293,7 +293,7 @@ namespace WinForm
             this.dgvPropertys.Columns["propertyMode"].HeaderText = "资产型号";
             this.dgvPropertys.Columns["propertyType"].HeaderText = "固资分类";
 
-            this.dgvPropertys.Columns["buyDate"].HeaderText = "购入日期";            
+            this.dgvPropertys.Columns["buyDate"].HeaderText = "购入日期";
             this.dgvPropertys.Columns["propertyDept"].HeaderText = "资产归属部门";
             this.dgvPropertys.Columns["propertyLocal"].HeaderText = "资产存放位置";
             this.dgvPropertys.Columns["propertyBuyID"].HeaderText = "资产采购单号";
@@ -302,7 +302,7 @@ namespace WinForm
 
             this.dgvPropertys.Columns["propertyPrintTims"].HeaderText = "财编打印次数";
             this.dgvPropertys.Columns["propertyIsDel"].HeaderText = "是否已报废";
-           
+
 
 
 
@@ -331,7 +331,7 @@ namespace WinForm
             {
                 this.org = "TOP";
             }
-            
+
         }
 
         private void rdbutSAA_CheckedChanged(object sender, EventArgs e)
@@ -366,7 +366,7 @@ namespace WinForm
         }
 
         private void butDeleteSelected_Click(object sender, EventArgs e)
-        {           
+        {
 
             this.gbDelNote.Visible = true;
         }
@@ -414,7 +414,7 @@ namespace WinForm
         {
             isSaveAndPrint = false;
             DataTable dt = (DataTable)this.dgvPropertys.DataSource;
-            
+
             if (dt ==null ||  dt.Rows.Count <= 0)
             {
                 return;
@@ -425,7 +425,7 @@ namespace WinForm
             {
                 propertyNumbers = propertyNumbers + "|" + dt.Rows[i]["propertyID"].ToString();
             }
-           
+
             if (propertyNumbers.Length <= 0)
             {
                 return;
@@ -460,7 +460,7 @@ namespace WinForm
                 return;
             }
             if (e.KeyCode == Keys.Enter)
-            {              
+            {
                 searchByPropertyIDs(propertyNumbers, 0);
 
             }
@@ -545,16 +545,16 @@ namespace WinForm
                 return;
             }
 
-            
+
             progressBar1.Value = 1;
             msg.Text = "生成财编中....";
-            Application.DoEvents();            
+            Application.DoEvents();
             this.msg.Visible = true;
             this.progressBar1.Visible = true;
           //  MessageBox.Show("生成财编中....");
 
             //计算出流水号码
-            
+
             if (!IsWholeNumber(first))
             {
                 MessageBox.Show("开始编号只能是数字！");
@@ -574,7 +574,7 @@ namespace WinForm
             int count = Convert.ToInt32(counts);
             List<propertys> plist = new List<propertys>();
 
-          
+
 
           //  string propertyID = "";
             for (int i = fi; i< count + fi; i++)
@@ -585,7 +585,7 @@ namespace WinForm
                 {
                     pID = "0" + pID;
                 }
-                string propertyID = type + "-" + pID;               
+                string propertyID = type + "-" + pID;
                 p.erpid = "";
                 p.org = org;
                 p.propertyID = propertyID;
@@ -602,7 +602,7 @@ namespace WinForm
                 p.propertyPrintPC = "";
                 p.propertyIsDel = 0;
                 p.propertyDelPC = "";
-                p.propertyDelDate ="";                
+                p.propertyDelDate ="";
                 p.propertyDelNote = "";
                 plist.Add(p);
             }
@@ -690,7 +690,7 @@ namespace WinForm
             finally
             {
                 pdDocument.Dispose();
-            }         
+            }
         }
 
         /// <summary>
@@ -703,7 +703,7 @@ namespace WinForm
         {
             //通用
             List<string> cartonBarcodes = new List<string>();
-            string CartonBarcode = "";          
+            string CartonBarcode = "";
 
             //显示生成条码进度条
             msg.Visible = true;
@@ -727,7 +727,7 @@ namespace WinForm
                 msg.Text = "加载进度" + value + " %";
                 Application.DoEvents();
             }
-            this.msg.Text = "加载完成";           
+            this.msg.Text = "加载完成";
             msg.Visible = false;
             progressBar1.Visible = false;
             Application.DoEvents();
@@ -786,11 +786,11 @@ namespace WinForm
             pMode = new string[ibox.Rows.Count];
             pBuyData = new string[ibox.Rows.Count];
 
-            pIDimg = new Image[ibox.Rows.Count];//条码集合   
+            pIDimg = new Image[ibox.Rows.Count];//条码集合
 
            msg.Visible = true;
             progressBar1.Visible = true;
-            msg.Text = "正在生成条码，请稍等...";        
+            msg.Text = "正在生成条码，请稍等...";
             Application.DoEvents();
 
             for (int i = 0; i < ibox.Rows.Count; i++)
@@ -798,7 +798,7 @@ namespace WinForm
                 value = Convert.ToInt32(Convert.ToDouble(i) / ibox.Rows.Count * 100);
                 progressBar1.Value = value;
                 msg.Text = "完成进度： " + value + " % , 正在生成第 " + i + " 张 ，共 " + ibox.Rows.Count + " 张";
-                Application.DoEvents(); 
+                Application.DoEvents();
                 orgs[i] = Convert.ToString(ibox.Rows[i]["org"]);
                 pId[i] = Convert.ToString(ibox.Rows[i]["propertyID"]);
                 pName[i] = Convert.ToString(ibox.Rows[i]["propertyName"]);
@@ -846,9 +846,9 @@ namespace WinForm
                     }
                     //m_printPreview.Document = pdDocument;
                     // m_printPreview.ShowDialog();
-                
+
             }
-            msg.Text = "条码生成完成";           
+            msg.Text = "条码生成完成";
             msg.Visible = false;
             progressBar1.Visible = false;
             Application.DoEvents();
@@ -858,9 +858,9 @@ namespace WinForm
             //
             this.uppropertysPrint(pId);
         }
-        
 
-        
+
+
         public void uppropertysPrint(string[] pId)
         {
             if(pId.Length<=0)
@@ -871,7 +871,7 @@ namespace WinForm
             {
                 string pids = pId[i];
             }
-             
+
             int insertcounts = pm.upPrintPropertysByPnumber(pId);
             if (insertcounts == -1)
             {
@@ -891,9 +891,9 @@ namespace WinForm
             {
                 propertyNumbers = this.propertyType;
             }
-            
+
             //显示界面更新掉
-           
+
             if (propertyNumbers.Length <= 0)
             {
                 return;
@@ -927,7 +927,7 @@ namespace WinForm
             msg.Visible = true;
             progressBar1.Visible = true;
             msg.Text = "正在生成条码，请稍等...";
-           
+
             //linesPrinted 现在要画的第几个条码
             while (linesPrinted < pIDimg.Length)
             {
@@ -945,12 +945,12 @@ namespace WinForm
 
                 left = Convert.ToInt32(9 / 25.4 * 100);//左距离
                     top = Convert.ToInt32(10 / 25.4 * 100);//顶距离
-                    e.Graphics.DrawString("財產編號:" + pId[linesPrinted].ToUpper(), new Font("微軟正黑體", 8, FontStyle.Bold), Brushes.Black, left, top);//财产编号  
-                
+                    e.Graphics.DrawString("財產編號:" + pId[linesPrinted].ToUpper(), new Font("微軟正黑體", 8, FontStyle.Bold), Brushes.Black, left, top);//财产编号
+
                 left = Convert.ToInt32(20 / 25.4 * 100);//左距离
                 top = Convert.ToInt32(34 / 25.4 * 100);//顶距离
-                e.Graphics.DrawString( pId[linesPrinted].ToUpper(), new Font("微軟正黑體", 6, FontStyle.Bold), Brushes.Black, left, top);//财产编号  
-                
+                e.Graphics.DrawString( pId[linesPrinted].ToUpper(), new Font("微軟正黑體", 6, FontStyle.Bold), Brushes.Black, left, top);//财产编号
+
 
                 left = Convert.ToInt32(9 / 25.4 * 100);//左距离
                 top = Convert.ToInt32(14 / 25.4 * 100);//顶距离
@@ -993,7 +993,7 @@ namespace WinForm
                 // }
 
 
-                left = Convert.ToInt32(5 / 25.4 * 100);//条码左距离  
+                left = Convert.ToInt32(5 / 25.4 * 100);//条码左距离
                     top = Convert.ToInt32(27 / 25.4 * 100);//条码顶距离
                     e.Graphics.DrawImage(pIDimg[linesPrinted], left, top);//左，顶   财产编码二维码
                     // y += 55;
@@ -1001,7 +1001,7 @@ namespace WinForm
                     value = Convert.ToInt32(Convert.ToDouble(linesPrinted) / pIDimg.Length * 100);
                     progressBar1.Value = value;
                     msg.Text = "生成条码" + value + " %";
-                    Application.DoEvents(); 
+                    Application.DoEvents();
 
                 //判斷超過一頁時，允許進行多頁打印
                 if (pIDimg.Length > linesPrinted)
@@ -1015,13 +1015,13 @@ namespace WinForm
                     return;
                 }
             }
-            msg.Text = "条码生成完成";           
+            msg.Text = "条码生成完成";
             msg.Visible = false;
             progressBar1.Visible = false;
             linesPrinted = 0;
             //繪制完成後，關閉多頁打印功能
             e.HasMorePages = false;
-           
+
         }
         /// <summary>
         /// 在图片上画框

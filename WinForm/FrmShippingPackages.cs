@@ -425,7 +425,7 @@ namespace WinForm
             SaveFileDialog sdfExport = new SaveFileDialog();
             sdfExport.FileName = sheetname + ".xlsx";
             sdfExport.Filter = "Excel 97-2003文件|*.xls|Excel 2007文件|*.xlsx";
-            
+
             if (sdfExport.ShowDialog() != DialogResult.OK)
             {
                 return;
@@ -1272,7 +1272,7 @@ namespace WinForm
             this.dgvPackageStatus.Columns[39].Name = "CC Lable";
             this.dgvPackageStatus.Columns[40].Name = "Sensitive";
             this.dgvPackageStatus.Columns[41].Name = "Remark";
-            this.dgvPackageStatus.Columns[42].Name = "ORG"; 
+            this.dgvPackageStatus.Columns[42].Name = "ORG";
 
             this.dgvPackageStatus.Columns[9].DefaultCellStyle.Format = "yyyy-MM-dd";
             this.dgvPackageStatus.Columns[10].DefaultCellStyle.Format = "yyyy-MM-dd";
@@ -1291,7 +1291,7 @@ namespace WinForm
                 }
 
                 string shipQty = this.dgvPackageStatus.Rows[i].Cells[16].Value.ToString(); // 16 +17
-                string overQty = this.dgvPackageStatus.Rows[i].Cells[17].Value.ToString(); 
+                string overQty = this.dgvPackageStatus.Rows[i].Cells[17].Value.ToString();
                 string GtnQty = this.dgvPackageStatus.Rows[i].Cells[19].Value.ToString();
                 //x < 0 ? y = 10 : z = 20;
                 int sQty = shipQty.Length <= 0 ? 0 : Convert.ToInt32(shipQty);
@@ -1306,7 +1306,7 @@ namespace WinForm
                 {
                     this.dgvPackageStatus.Rows[i].DefaultCellStyle.BackColor = System.Drawing.ColorTranslator.FromHtml("#FFED97");
                 }
-                 
+
 
                 string CompletionRate = this.dgvPackageStatus.Rows[i].Cells[26].Value.ToString();
                 string ShipmentRatio = this.dgvPackageStatus.Rows[i].Cells[27].Value.ToString();
@@ -1321,7 +1321,7 @@ namespace WinForm
                 string DifferenceDate = d3.Days.ToString();
                 if (Convert.ToInt32(DifferenceDate) <= 7 && CRate <= 80)
                 {
-                    
+
                     this.dgvPackageStatus.Rows[i].DefaultCellStyle.BackColor = System.Drawing.ColorTranslator.FromHtml("#FE9600");
                 }
                 if (Convert.ToInt32(DifferenceDate) <= 2 && CRate <= 90)

@@ -66,9 +66,6 @@
     <Reference Include="bcprov-jdk15-1.44, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\WinForm\packages\Pdfbox.1.1.1\lib\bcprov-jdk15-1.44.dll</HintPath>
     </Reference>
-    <Reference Include="Beta.Data.MyCat, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\WinForm\packages\Beta.Data.MyCat.1.0.0.1\lib\net452\Beta.Data.MyCat.dll</HintPath>
-    </Reference>
     <Reference Include="BouncyCastle.Crypto, Version=1.8.5.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
       <HintPath>..\WinForm\packages\BouncyCastle.1.8.5\lib\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
@@ -220,9 +217,6 @@
     <Reference Include="Pomelo.Data.MySql, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\WinForm\packages\Pomelo.Data.MySql.1.0.0\lib\net451\Pomelo.Data.MySql.dll</HintPath>
     </Reference>
-    <Reference Include="Pomelo.EntityFrameworkCore.MyCat, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\WinForm\packages\Pomelo.EntityFrameworkCore.MyCat.1.1.0-prerelease-10027\lib\net451\Pomelo.EntityFrameworkCore.MyCat.dll</HintPath>
-    </Reference>
     <Reference Include="Remotion.Linq, Version=2.1.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
       <HintPath>..\WinForm\packages\Remotion.Linq.2.1.1\lib\net45\Remotion.Linq.dll</HintPath>
     </Reference>
@@ -296,11 +290,15 @@
     <Compile Include="DelScanHURLEYService.cs" />
     <Compile Include="EmployeeService.cs" />
     <Compile Include="ERP_SqlHelper.cs" />
+    <Compile Include="FrmBoxWeightService.cs" />
     <Compile Include="FrmNewStyleService.cs" />
+    <Compile Include="FrmPackBaseServer.cs" />
     <Compile Include="FrmRFIDLuluImportServer.cs" />
     <Compile Include="FrmRFIDNikeImportServer.cs" />
     <Compile Include="FrmRFIDScanSearchServer.cs" />
     <Compile Include="FrmScanSearchService.cs" />
+    <Compile Include="FrmsingleWeightMaintainService.cs" />
+    <Compile Include="FrmSingleWeightService.cs" />
     <Compile Include="IEBomService.cs" />
     <Compile Include="IEBOM_SqlHelper.cs" />
     <Compile Include="loadScanService.cs" />

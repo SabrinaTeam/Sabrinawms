@@ -37,7 +37,7 @@ namespace WinForm
         public string TOPTest = "http://192.168.7.240:5000/api/reportPlace";
         public bool isRead = false;
         public string orgName = "SAA";
-        public string processID = "10";
+        public string processID = "99";
 
         DataTable invoiceDataSource = new DataTable();
 
@@ -51,7 +51,7 @@ namespace WinForm
         private static FrmInvoicePrint frm;
         public AlarmManager am = new AlarmManager();
 
-        
+
 
         public FrmInvoicePrint()
         {
@@ -59,7 +59,7 @@ namespace WinForm
             factory.UserName = this.UserName;
             factory.Password = this.Password;
             factory.AutomaticRecoveryEnabled = this.autoRecovery;
-            factory.RequestedHeartbeat = 10;
+            factory.RequestedHeartbeat = 5;
 
 
             InitializeComponent();
@@ -102,14 +102,23 @@ namespace WinForm
             factory.UserName = "sabrina";
             factory.Password = "sabrina";
             factory.AutomaticRecoveryEnabled = true;
-            factory.RequestedHeartbeat = 10;
-            string queueName = "10";
+            factory.RequestedHeartbeat = 5;
+            string queueName = "SAA-99";
             string exchangeName = "SAA";
             connection = factory.CreateConnection();
 
             if (connection.IsOpen)
             {
+
                 channel = connection.CreateModel();
+                if (!this.isRead)
+                {
+
+                    connection.Close();
+                    channel.Close();
+                    return;
+                }
+
                 channel.ExchangeDeclare(exchange: exchangeName, ExchangeType.Direct, durable: true, autoDelete: false, arguments: null);
                 channel.QueueDeclare(queue: queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
                 channel.QueueBind(queueName, exchangeName, ExchangeType.Direct, null);
@@ -264,7 +273,7 @@ namespace WinForm
             return boolresult;
         }
 
-        
+
 
         private void button7_Click(object sender, EventArgs e)
         {
@@ -282,7 +291,7 @@ namespace WinForm
 
             return;
             }
- 
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -350,7 +359,7 @@ namespace WinForm
         }
 
 
- 
+
 
         private void button13_Click(object sender, EventArgs e)
         {
@@ -372,10 +381,10 @@ namespace WinForm
         private void FrmInvoicePrint_Load(object sender, EventArgs e)
         {
             groupBox1.Enabled = false;
- 
+
 
         }
 
-  
+
     }
 }

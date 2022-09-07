@@ -38,7 +38,7 @@ namespace DAL
             string sql = @" insert into rfidboxsscandetails (BoxHeadID,CustID , CartonNumber, PolyBagNumber, RFIDNumber, WWMTNumber, Buyer_item, Color_code, Size1,
                               Qty, Org, PO, ScanTime, ScanHost)  values   " + value + ";";
 
-            int insertBoxDetails = Mysql_SqlHelper.ExecuteNonQuery(sql);
+            int insertBoxDetails = Mysqlfsg_SqlHelper.ExecuteNonQuery(sql);
 
             return insertBoxDetails;
 
@@ -67,7 +67,7 @@ namespace DAL
             value = value.Substring(0, value.Length - 1);
             string sql = @" insert into rfidboxsscanheads (CustID , CartonNumber, Buyer_item, Color_code, 
                               Qty, Org, PO, ScanTime, ScanHost)  values   " + value + @";";
-            int insertBoxScan = Mysql_SqlHelper.ExecuteNonQuery(sql);
+            int insertBoxScan = Mysqlfsg_SqlHelper.ExecuteNonQuery(sql);
             return insertBoxScan;
 
         }
@@ -79,7 +79,7 @@ namespace DAL
 
             string sql = @" select id from rfidboxsscanheads  ORDER BY id DESC LIMIT 0,1 ;";
 
-            DataTable dt = Mysql_SqlHelper.ExcuteTable(sql);
+            DataTable dt = Mysqlfsg_SqlHelper.ExcuteTable(sql);
             int MaxRos = -1;
             if(dt.Rows.Count > 0)
             {

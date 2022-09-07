@@ -1,6 +1,7 @@
 ﻿using MODEL;
+using MySql.Data.MySqlClient;
 using Pomelo.Data.MyCat;
-using Pomelo.Data.MySql;
+
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;

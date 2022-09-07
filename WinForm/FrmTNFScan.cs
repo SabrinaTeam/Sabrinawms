@@ -56,7 +56,7 @@ namespace WinForm
                 this.gbLoad.Enabled = false;
             }
             this.dgvExcels.DoubleBufferedDataGirdView(true);
-           
+
         }
         public static FrmTNFScan GetSingleton()
         {
@@ -123,7 +123,7 @@ namespace WinForm
             this.btnLoadExcel.Enabled = false;
             this.btnUpload.Enabled = true;
         }
- 
+
 
         private void butDelDoubleRows_Click(object sender, EventArgs e)
         {
@@ -145,10 +145,10 @@ namespace WinForm
 
         private void loadExcel()
         {
-            
+
             if (this.org == "SAA")
             {
-               
+
                 this.rbOrgSAA.Checked = true;
 
             }
@@ -160,7 +160,7 @@ namespace WinForm
             {
                // this.gbLoad.Visible = true;
                 this.btnLoadExcel.Enabled = true;
-                MessageBox.Show("请先设置默认厂区或选择厂区"); 
+                MessageBox.Show("请先设置默认厂区或选择厂区");
                 return;
             }
 
@@ -195,7 +195,7 @@ namespace WinForm
               //  this.cbSubinv.Items.Add(this.subinv);
                 this.cbSubinv.SelectedItem = this.subinv;
             }
-           
+
 
             this.dgvExcels.DataSource = null;
             if(!File.Exists(filename))
@@ -216,9 +216,9 @@ namespace WinForm
             {
                 this.txtSelectedFilePath.Enabled = false;
                 this.txtSelectedFilePath.Text = filename;
-                
+
             }
-           
+
             string[] sheetnames = xiaomingCommom.getExcelSheetSum(filename);
             for(int i = 0; i < sheetnames.Length; i++)
             {
@@ -229,7 +229,7 @@ namespace WinForm
                     this.cbSelectSheet.Enabled = false;
                     this.cbSelectSheet.Text = this.sheetname;
                     this.cbSelectSheet.Items.Clear();
-                    this.cbSelectSheet.Items.Add(sheetnames[i]);//添加表名     
+                    this.cbSelectSheet.Items.Add(sheetnames[i]);//添加表名
                     this.cbSelectSheet.SelectedIndex = i;
                     break;
                 }
@@ -244,15 +244,15 @@ namespace WinForm
                 this.cbSelectSheet.Items.Clear();
                 for (int i = 0; i < sheetnames.Length; i++)
                 {
-                     this.cbSelectSheet.Items.Add(sheetnames[i]);//添加表名                    
+                     this.cbSelectSheet.Items.Add(sheetnames[i]);//添加表名
                 }
 
                 if (this.cbSelectSheet.SelectedIndex == -1)
                 {
                     MessageBox.Show("请选择表名！");
                     this.cbSelectSheet.DroppedDown = true;
-                    this.btnLoadExcel.Enabled = true; 
-                    return; 
+                    this.btnLoadExcel.Enabled = true;
+                    return;
                 }
             }
 
@@ -269,12 +269,12 @@ namespace WinForm
 
             }
 
-           
 
-          
-        
 
-            int headno = 0; 
+
+
+
+            int headno = 0;
             Regex reg = new Regex("^[0-9]+$"); //正则表达式 检测是否数字
             Match ma = reg.Match(txtSheetHead.Text.ToString());
             if (!ma.Success)
@@ -305,7 +305,7 @@ namespace WinForm
             this.sheeTnameStr = this.sheetname;
             this.headNoStr = headno;
 
-           
+
 
         }
 
@@ -371,39 +371,39 @@ namespace WinForm
             UpdateUIDelegate(barstr);
             if (this.fileNameStr == "")
             {
-                
+
                 return;
             }
             if (this.sheeTnameStr == "")
             {
-               
+
                 return;
             }
             if (this.headNoStr == -1)
             {
-                 
+
                 return;
             }
-           
+
             if (this.subinv.Length <= 0)
             {
-                 
+
                 return;
             }
-            
+
             this.table = lScan.ExcelRead(this.fileNameStr, this.sheeTnameStr, this.headNoStr, this.org,  this.subinv);
             if(this.table is null)
             {
                 MessageBox.Show("EXCEL内容有误，请查证后再上传...", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-           
-            
+
+
         }
 
         public void changHeaderText()
         {
             this.dgvExcels.Columns["tagNumber"].HeaderText = "外箱条码号";
-           
+
             this.dgvExcels.Columns["ScanTime"].HeaderText = "扫描时间";
             this.dgvExcels.Columns["ScanTime"].DefaultCellStyle.Format = "yyyy-MM-dd";
             this.dgvExcels.Columns["Kg"].HeaderText = "重量";
@@ -416,7 +416,7 @@ namespace WinForm
 
         private void FrmTNFScan_Resize(object sender, EventArgs e)
         {
-            //1188, 834 
+            //1188, 834
             if (this.Width <= 1188)
             {
                 this.Width = 1188;
@@ -448,20 +448,20 @@ namespace WinForm
             }
             else
             {
-                
+
                 for (int i = 0; i < subinvs.Rows.Count; i++)
                 {
                     this.cbSubinv.Items.Add(subinvs.Rows[i]["subinv"].ToString());
 
                 }
-                
+
             }
             if (this.subinv == "")
             {
                 this.gbLoad.Visible = true;
                 this.cbSubinv.DroppedDown = true;
             }
-           
+
 
         }
 
@@ -469,10 +469,14 @@ namespace WinForm
         {
             this.cbSubinv.Items.Clear();
             DataTable subinvs = new DataTable();
-            if (rbOrgTOP.Checked)
+            if (rbOrgSAA.Checked)
+            {
+                subinvs = lScan.getSubinvByOrg("SAA");
+                this.org = "SAA";
+            }else if (rbOrgTOP.Checked)
             {
                 subinvs =  lScan.getSubinvByOrg("TOP");
-                this.org = "SAA";
+                this.org = "TOP";
             }
             if (subinvs.Rows.Count <= 0)
             {
@@ -525,15 +529,15 @@ namespace WinForm
             {
                 MessageBox.Show("共保存:" + result[1].ToString() + " 行。 保存成功", "提示");
             }
-           
+
             this.btnUpload.Enabled = false;
         }
-       
+
 
         private void cbSubinv_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.btnLoadExcel.Enabled = true;
-            this.subinv = this.cbSubinv.SelectedItem.ToString();
+          //  this.subinv = this.cbSubinv.SelectedItem.ToString();
         }
 
         private void FrmTNFScan_Load(object sender, EventArgs e)

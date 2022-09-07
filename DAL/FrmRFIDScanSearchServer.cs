@@ -66,7 +66,7 @@ namespace DAL
 								PO;";
 			}
 
-			DataTable dt = Mysql_SqlHelper.ExcuteTable(sql);
+			DataTable dt = Mysqlfsg_SqlHelper.ExcuteTable(sql);
 			return dt;
         }
 
@@ -96,7 +96,7 @@ namespace DAL
 									ScanTime;";
 
 
-			DataTable dt = Mysql_SqlHelper.ExcuteTable(sql);
+			DataTable dt = Mysqlfsg_SqlHelper.ExcuteTable(sql);
 			return dt;
 		}
 
@@ -157,7 +157,7 @@ namespace DAL
 							AND CartonNumber LIKE '%" + parameters[4] + @"%' ";
 			}
 
-			DataTable dt = Mysql_SqlHelper.ExcuteTable(sql);
+			DataTable dt = Mysqlfsg_SqlHelper.ExcuteTable(sql);
 			return dt;
 		}
 	}

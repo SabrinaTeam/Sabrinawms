@@ -32,7 +32,7 @@ namespace MODEL
         private string _Po;
         private int? _Main_Line;
 
-        private int _SKU;
+        private string _SKU;
         private string _ColorName;
         private string _Seanson;
 
@@ -130,9 +130,9 @@ namespace MODEL
             get { return _Main_Line; }
         }
 
-        public int? SKU
+        public string SKU
         {
-            set { _SKU = Convert.ToInt32(value); }
+            set { _SKU =value; }
             get { return _SKU; }
         }
         public string ColorName

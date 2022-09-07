@@ -25,6 +25,7 @@ namespace WinForm
     public partial class FrmRFIDBoxScan : Form
     {
         AsadDuooRFIDReaderHelper AsadHelper = new AsadDuooRFIDReaderHelper();
+        //AsadDuooSystemPub rfidHub = new AsadDuooSystemPub();
 
         // [STAThread]
         private bool fAppClosed; //在测试模式下响应关闭应用程序
@@ -48,7 +49,12 @@ namespace WinForm
         private bool fTimer_6B_ReadWrite;
         private string fInventory_EPC_List; //存贮询查列表（如果读取的数据没有变化，则不进行刷新）
         private int frmcomportindex;
-        private bool ComOpen = false;
+        private bool Com1Open = false; //RFID 1
+        private bool Com2Open = false; //RFID 2
+        private bool Com3Open = false; //RFID 3
+        private bool Com4Open = false; //RFID 4
+        private bool Com5Open = false; //RFID 5
+        private bool Com6Open = false; //RFID 6
         private bool breakflag = false;
         private double x_z;
         private double y_f;
@@ -87,13 +93,19 @@ namespace WinForm
 
         private static FrmRFIDBoxScan frm;
         public AlarmManager am = new AlarmManager();
+        public PowerControlManager pm = new PowerControlManager();
         public LuluSingleScanManager lscm = new LuluSingleScanManager();
         public BoxsScanManager bsm = new BoxsScanManager();
 
         private static readonly string strOpenAlarm = ConfigurationManager.ConnectionStrings["OpenAlarm"].ConnectionString; //报警器灯光
         private static readonly string strOpenMedia = ConfigurationManager.ConnectionStrings["OpenMedia"].ConnectionString;//报警器声音
         private static readonly string BoxCartonCOM = ConfigurationManager.ConnectionStrings["BoxCartonCOM"].ConnectionString; //
-        private static readonly string BoxRFIDCOM = ConfigurationManager.ConnectionStrings["BoxRFIDCOM"].ConnectionString; //
+        private static readonly string BoxRFIDCOM1 = ConfigurationManager.ConnectionStrings["BoxRFIDCOM1"].ConnectionString; //
+        private static readonly string BoxRFIDCOM2 = ConfigurationManager.ConnectionStrings["BoxRFIDCOM2"].ConnectionString; //
+        private static readonly string BoxRFIDCOM3 = ConfigurationManager.ConnectionStrings["BoxRFIDCOM3"].ConnectionString; //
+        private static readonly string BoxRFIDCOM4 = ConfigurationManager.ConnectionStrings["BoxRFIDCOM4"].ConnectionString; //
+        private static readonly string BoxRFIDCOM5 = ConfigurationManager.ConnectionStrings["BoxRFIDCOM5"].ConnectionString; //
+        private static readonly string BoxRFIDCOM6 = ConfigurationManager.ConnectionStrings["BoxRFIDCOM6"].ConnectionString; //
 
         private string responseStr = ""; //扫描回来的外箱条码号
         private string scanno = "";
@@ -122,10 +134,22 @@ namespace WinForm
                 newCarton.Rows.Clear();
                 newCarton.Columns.Clear();
             }
+            // rfidHub.RcpBase.RxRspParsed += RcpBase_RxRspParsed;
+
             AsadDuooSystemPub.RcpBase.RxRspParsed += RcpBase_RxRspParsed;
             AsadDuooSystemPub.RcpBase.TxRspParsed += RcpBase_TxRspParsed;
+            AsadDuooSystemPub2.RcpBase.RxRspParsed += RcpBase2_RxRspParsed;
+            AsadDuooSystemPub2.RcpBase.TxRspParsed += RcpBase2_TxRspParsed;
+            AsadDuooSystemPub3.RcpBase.RxRspParsed += RcpBase3_RxRspParsed;
+            AsadDuooSystemPub3.RcpBase.TxRspParsed += RcpBase3_TxRspParsed;
 
-          //  this.dgvBoxHeads.DoubleBufferedDataGirdView(true);
+            AsadDuooSystemPub4.RcpBase.RxRspParsed += RcpBase4_RxRspParsed;
+            AsadDuooSystemPub4.RcpBase.TxRspParsed += RcpBase4_TxRspParsed;
+            AsadDuooSystemPub5.RcpBase.RxRspParsed += RcpBase5_RxRspParsed;
+            AsadDuooSystemPub5.RcpBase.TxRspParsed += RcpBase5_TxRspParsed;
+            AsadDuooSystemPub6.RcpBase.RxRspParsed += RcpBase6_RxRspParsed;
+            AsadDuooSystemPub6.RcpBase.TxRspParsed += RcpBase6_TxRspParsed;
+            //  this.dgvBoxHeads.DoubleBufferedDataGirdView(true);
             this.dgvBoxDetails.DoubleBufferedDataGirdView(true);
         }
 
@@ -140,7 +164,172 @@ namespace WinForm
             }
 
         }
+        private void RcpBase2_TxRspParsed(object sender, ProtocolEventArgs e)
+        {
+
+            byte[] data = e.Data;
+            foreach (var item in data)
+            {
+                textBox1.AppendText(item.ToString());
+            }
+
+        }
+        private void RcpBase3_TxRspParsed(object sender, ProtocolEventArgs e)
+        {
+
+            byte[] data = e.Data;
+            foreach (var item in data)
+            {
+                textBox1.AppendText(item.ToString());
+            }
+
+        }
+        private void RcpBase4_TxRspParsed(object sender, ProtocolEventArgs e)
+        {
+
+            byte[] data = e.Data;
+            foreach (var item in data)
+            {
+                textBox1.AppendText(item.ToString());
+            }
+
+        }
+        private void RcpBase5_TxRspParsed(object sender, ProtocolEventArgs e)
+        {
+
+            byte[] data = e.Data;
+            foreach (var item in data)
+            {
+                textBox1.AppendText(item.ToString());
+            }
+
+        }
+        private void RcpBase6_TxRspParsed(object sender, ProtocolEventArgs e)
+        {
+
+            byte[] data = e.Data;
+            foreach (var item in data)
+            {
+                textBox1.AppendText(item.ToString());
+            }
+
+        }
         private void RcpBase_RxRspParsed(object sender, ProtocolEventArgs e)
+        {
+            if (this.IsDisposed)
+                return;
+
+            if (!this.InvokeRequired)
+            {
+                __ParseRsp(e.Protocol);
+                return;
+            }
+
+            this.Invoke(new MethodInvoker(delegate ()
+            {
+                try
+                {
+                    __ParseRsp(e.Protocol);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+            }));
+        }
+        private void RcpBase2_RxRspParsed(object sender, ProtocolEventArgs e)
+        {
+            if (this.IsDisposed)
+                return;
+
+            if (!this.InvokeRequired)
+            {
+                __ParseRsp(e.Protocol);
+                return;
+            }
+
+            this.Invoke(new MethodInvoker(delegate ()
+            {
+                try
+                {
+                    __ParseRsp(e.Protocol);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+            }));
+        }
+        private void RcpBase3_RxRspParsed(object sender, ProtocolEventArgs e)
+        {
+            if (this.IsDisposed)
+                return;
+
+            if (!this.InvokeRequired)
+            {
+                __ParseRsp(e.Protocol);
+                return;
+            }
+
+            this.Invoke(new MethodInvoker(delegate ()
+            {
+                try
+                {
+                    __ParseRsp(e.Protocol);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+            }));
+        }
+        private void RcpBase4_RxRspParsed(object sender, ProtocolEventArgs e)
+        {
+            if (this.IsDisposed)
+                return;
+
+            if (!this.InvokeRequired)
+            {
+                __ParseRsp(e.Protocol);
+                return;
+            }
+
+            this.Invoke(new MethodInvoker(delegate ()
+            {
+                try
+                {
+                    __ParseRsp(e.Protocol);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+            }));
+        }
+        private void RcpBase5_RxRspParsed(object sender, ProtocolEventArgs e)
+        {
+            if (this.IsDisposed)
+                return;
+
+            if (!this.InvokeRequired)
+            {
+                __ParseRsp(e.Protocol);
+                return;
+            }
+
+            this.Invoke(new MethodInvoker(delegate ()
+            {
+                try
+                {
+                    __ParseRsp(e.Protocol);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+            }));
+        }
+        private void RcpBase6_RxRspParsed(object sender, ProtocolEventArgs e)
         {
             if (this.IsDisposed)
                 return;
@@ -307,10 +496,20 @@ namespace WinForm
         }
         private void ScanStop()
         {
+
+            // 传送带结束工作
+           // pm.closeportall();
+          //  Thread.Sleep(50);
+
+
+           // pm.openport2();
+           // Thread.Sleep(50);
+            //  pm.closeportall();
+            //  Thread.Sleep(50);
+
             mIsStatus = READ_EXIT;
             this.butReScan.Enabled = true;
             this.butReScan.Text = "重新扫描";
-
             this.RFIDCheck();
             // 开始比较是不是这个箱子与数量
         }
@@ -331,11 +530,11 @@ namespace WinForm
                     DataRow rowfs = m_dtTagTable.Table.Rows[nEpcLengthFS - 1];
                     ListViewItem itemfs = new ListViewItem();
                     itemfs.Text = (nEpcCountFS + 1).ToString();
-                   // itemfs.SubItems.Add(rowfs["PC"].ToString());
+                    // itemfs.SubItems.Add(rowfs["PC"].ToString());
                     itemfs.SubItems.Add(rowfs["EPC"].ToString());
-                  //  itemfs.SubItems.Add(rowfs["COUNT"].ToString());
-                   // itemfs.SubItems.Add(GetAntString(rowfs));
-                  //  itemfs.SubItems.Add(rowfs["RSSI"].ToString());
+                    //  itemfs.SubItems.Add(rowfs["COUNT"].ToString());
+                    // itemfs.SubItems.Add(GetAntString(rowfs));
+                    //  itemfs.SubItems.Add(rowfs["RSSI"].ToString());
                     dgvBoxHeads.Items.Add(itemfs);
                     dgvBoxHeads.Items[nEpcCountFS].EnsureVisible();
                 }
@@ -360,27 +559,27 @@ namespace WinForm
 
         private void SetAntHeadText(int ant)
         {
-           // if (ant > nMaxAnt)
-         //   {
-                nMaxAnt = ant;
-              //  if (nMaxAnt > 0)
-               // {
-                  //  cAnt.Text = "ANT1";
-                 //   for (int m = 1; m < nMaxAnt; m++)
-                  //  {
-                   //     cAnt.Text += "/ANT" + (m + 1);
-                 //   }
-                  //  if (nMaxAnt <= 2)
-                   //     cAnt.Width = 50 * nMaxAnt;
-                  //  else
-                     //   cAnt.Width = 40 * nMaxAnt;
-              //  }
-              ////  else
-             //   {
-                  //  cAnt.Text = "ANT";
-                 //   cAnt.Width = 40 * 1;
-              //  }
-          //  }
+            // if (ant > nMaxAnt)
+            //   {
+            nMaxAnt = ant;
+            //  if (nMaxAnt > 0)
+            // {
+            //  cAnt.Text = "ANT1";
+            //   for (int m = 1; m < nMaxAnt; m++)
+            //  {
+            //     cAnt.Text += "/ANT" + (m + 1);
+            //   }
+            //  if (nMaxAnt <= 2)
+            //     cAnt.Width = 50 * nMaxAnt;
+            //  else
+            //   cAnt.Width = 40 * nMaxAnt;
+            //  }
+            ////  else
+            //   {
+            //  cAnt.Text = "ANT";
+            //   cAnt.Width = 40 * 1;
+            //  }
+            //  }
         }
         private void DataTagTableShow(bool flag)
         {
@@ -398,9 +597,9 @@ namespace WinForm
                     foreach (DataRow rowfs in m_dtTagTable.Table.Rows)
                     {
                         ListViewItem itemfs = dgvBoxHeads.Items[nIndex];
-                     //   itemfs.SubItems[3].Text = rowfs["COUNT"].ToString();
-                     //   itemfs.SubItems[4].Text = GetAntString(rowfs);
-                     //   itemfs.SubItems[5].Text = rowfs["RSSI"].ToString();
+                        //   itemfs.SubItems[3].Text = rowfs["COUNT"].ToString();
+                        //   itemfs.SubItems[4].Text = GetAntString(rowfs);
+                        //   itemfs.SubItems[5].Text = rowfs["RSSI"].ToString();
                         nIndex++;
                     }
                     nReadShowTime = DateTime.Now;
@@ -425,6 +624,7 @@ namespace WinForm
             this.gbScanPort.Left = this.bgCartonInfo.Left;
             this.gbBoxInfo.Left = this.gbBoxs.Left;
             this.groupBox1.Left = this.gbBoxInfo.Left;
+            this.gbStatus.Left = this.bgCartonInfo.Left;
 
 
         }
@@ -481,12 +681,8 @@ namespace WinForm
                 }
                 if (strOpenAlarm == "1")
                 {
-                    this.am.closeportall();
-                    Thread.Sleep(50);
-                    this.am.openport2();
-                    Thread.Sleep(300);
-                    this.am.closeport2();
-                    Thread.Sleep(50);
+                    Thread threadA = new Thread(openLights);
+                    threadA.Start("3");
                 }
 
                 this.labMsg.ForeColor = Color.Red;
@@ -499,10 +695,10 @@ namespace WinForm
                 return;
             }
 
-            if (this.txtStyle.Text == "" )
+            if (this.txtStyle.Text == "")
             {
                 scanCarton(responseStr, null);
-               // this.ScanStop();
+                // this.ScanStop();
             }
 
             else if (this.gbBoxInfo.Text != responseStr && Convert.ToInt32(noScanQty) != 0)
@@ -515,10 +711,8 @@ namespace WinForm
                 }
                 if (strOpenAlarm == "1")
                 {
-                    this.am.closeportall();
-                    Thread.Sleep(50);
-                    this.am.openport2();
-                    Thread.Sleep(50);
+                    Thread threadA = new Thread(openLights);
+                    threadA.Start("3");
                 }
 
 
@@ -536,8 +730,8 @@ namespace WinForm
                     }
                     if (strOpenAlarm == "1")
                     {
-                        this.am.closeportall();
-                        Thread.Sleep(50);
+                        Thread threadA = new Thread(openLights);
+                        threadA.Start("2");
                     }
 
 
@@ -550,7 +744,7 @@ namespace WinForm
 
             }
 
-            else if(this.gbBoxInfo.Text == responseStr )
+            else if (this.gbBoxInfo.Text == responseStr)
             {
                 /* 报警器*/
                 if (strOpenMedia == "1")
@@ -559,12 +753,8 @@ namespace WinForm
                 }
                 if (strOpenAlarm == "1")
                 {
-                    this.am.closeportall();
-                    Thread.Sleep(50);
-                    this.am.openport2();
-                    Thread.Sleep(300);
-                    this.am.closeport2();
-                    Thread.Sleep(50);
+                    Thread threadA = new Thread(openLights);
+                    threadA.Start("2");
                 }
 
                 this.setDefault();
@@ -577,7 +767,7 @@ namespace WinForm
             else
             {
                 scanCarton(responseStr, null);
-              //  this.ScanStop();
+                //  this.ScanStop();
             }
         }
 
@@ -741,7 +931,7 @@ namespace WinForm
             this.txtScanSizeQtys.Text = "";
             this.labScanQtys.Text = "";
             //this.dgvBoxHeads.Clear();
-            this.txtSizeQtys.Text="";
+            this.txtSizeQtys.Text = "";
 
             this.dgvBoxDetails.DataSource = null;
             this.ledInventoryTags.Text = "0";
@@ -767,12 +957,8 @@ namespace WinForm
                 }
                 if (strOpenAlarm == "1")
                 {
-                    this.am.closeportall();
-                    Thread.Sleep(50);
-                    this.am.openport2();
-                    Thread.Sleep(300);
-                    this.am.closeport2();
-                    Thread.Sleep(50);
+                    Thread threadA = new Thread(openLights);
+                    threadA.Start("3");
                 }
 
                 this.labMsg.ForeColor = Color.Red;
@@ -797,7 +983,7 @@ namespace WinForm
                 string skus = "";
                 for (int i = 0; i < dpllist.Count; i++)
                 {
-                    skus = dpllist[0].SKU.Value.ToString();
+                    skus = dpllist[0].SKU.ToString();
                     if (skus == "")
                     {
                         break;
@@ -812,10 +998,8 @@ namespace WinForm
                     }
                     if (strOpenAlarm == "1")
                     {
-                        am.closeportall();
-                        Thread.Sleep(50);
-                        am.openport3();
-                        Thread.Sleep(50);
+                        Thread threadA = new Thread(openLights);
+                        threadA.Start("3");
                     }
 
 
@@ -843,10 +1027,8 @@ namespace WinForm
                 }
                 if (strOpenAlarm == "1")
                 {
-                    am.closeportall();
-                    Thread.Sleep(50);
-                    am.openport3();
-                    Thread.Sleep(50);
+                    Thread threadA = new Thread(openLights);
+                    threadA.Start("3");
                 }
 
 
@@ -861,10 +1043,10 @@ namespace WinForm
                 return;
             }
 
-                string sku = "";
+            string sku = "";
             for (int i = 0; i < dpllist.Count; i++)
             {
-                sku = dpllist[0].SKU.Value.ToString();
+                sku = dpllist[0].SKU.ToString();
                 if (sku == "")
                 {
                     break;
@@ -886,7 +1068,7 @@ namespace WinForm
                     this.BoxDetailsLog.Columns.Clear();
                 }
 
-                this.labMsg.ForeColor= Color.Red;
+                this.labMsg.ForeColor = Color.Red;
 
                 // this.dgvBoxDetails.Rows.Clear(); //已扫描的每一箱记录
                 // this.dgvBoxDetails.Rows.Clear(); //!每一箱的明细（每一件记录）
@@ -910,12 +1092,8 @@ namespace WinForm
                 }
                 if (strOpenAlarm == "1")
                 {
-                    am.closeportall();
-                    Thread.Sleep(50);
-                    am.openport2();
-                    Thread.Sleep(300);
-                    am.closeport2();
-                    Thread.Sleep(50);
+                    Thread threadA = new Thread(openLights);
+                    threadA.Start("2");
                 }
 
 
@@ -960,10 +1138,8 @@ namespace WinForm
                     }
                     if (strOpenAlarm == "1")
                     {
-                        am.closeportall();
-                        Thread.Sleep(50);
-                        am.openport3();
-                        Thread.Sleep(50);
+                        Thread threadA = new Thread(openLights);
+                        threadA.Start("3");
                     }
 
                     return;
@@ -1016,8 +1192,8 @@ namespace WinForm
                 */
 
 
-             //   this.dgvBoxHeads.DataSource = null;
-             //   this.dgvBoxHeads.DataSource = RFIDBoxs;
+                //   this.dgvBoxHeads.DataSource = null;
+                //   this.dgvBoxHeads.DataSource = RFIDBoxs;
 
                 for (int i = 0; i < dpllist.Count; i++)
                 {
@@ -1050,6 +1226,8 @@ namespace WinForm
                 string SKUNumber = "";
                 string RFIDNumber = "";
                 this.setDefault(); // 默认显示界面
+
+                // 开始扫描 RFID
                 this.ScanStart();
 
 
@@ -1062,10 +1240,8 @@ namespace WinForm
                     {
                         am.palyMedia(false);
                     }
-                    am.closeportall();
-                    Thread.Sleep(50);
-                    am.openport3();
-                    Thread.Sleep(50);
+                    Thread threadA = new Thread(openLights);
+                    threadA.Start("3");
                 }
 
                 this.labMsg.ForeColor = Color.Red;
@@ -1100,6 +1276,7 @@ namespace WinForm
 
             if (strOpenAlarm == "1")
             {
+                // 报警器红绿灯测试
                 if (am.OpenAlarm())
                 {
                     am.closeportall();
@@ -1123,26 +1300,128 @@ namespace WinForm
                     }
                     labAlarmStatus.BackColor = Color.Red;
                     MessageBox.Show("警报灯 Com通信失败，请检查线路");
-                    return;
+                    //  return;
                 }
             }
-            this.txtCartonNumber.Focus();
-            this.serialPortRFIDNumber.PortName = BoxRFIDCOM;
 
 
-
-
-
-            openRfidReader();
-            if (ComOpen)
+            // 输送带转动测试
+            if (pm.OpenPowerControl())
             {
-                labRFIDReaderStatus.BackColor = Color.LightGreen;
-                 //   ScanStart();
+                pm.closeportall();
+                Thread.Sleep(50);
+                // 正转5秒
+                pm.openport2();
+                Thread.Sleep(2000);
+                pm.closeportall();
+                Thread.Sleep(1000);
+                // 反转5秒
+                pm.openport1();
+                Thread.Sleep(2000);
+                pm.closeportall();
+                Thread.Sleep(50);
+
+                labPowerControlStatus.BackColor = Color.LightGreen;
+                if (strOpenMedia == "1")
+                {
+                    am.palyMedia(true);
+                }
+
             }
             else
             {
-                labRFIDReaderStatus.BackColor = Color.Red;
+                if (strOpenMedia == "1")
+                {
+                    am.palyMedia(false);
+                }
+                labPowerControlStatus.BackColor = Color.Red;
+                MessageBox.Show("输送带Com通信失败，请检查线路");
+                //  return;
             }
+
+
+            this.txtCartonNumber.Focus();
+            this.serialPortRFIDNumber1.PortName = BoxRFIDCOM1;
+            this.serialPortRFIDNumber2.PortName = BoxRFIDCOM2;
+            this.serialPortRFIDNumber3.PortName = BoxRFIDCOM3;
+            this.serialPortRFIDNumber4.PortName = BoxRFIDCOM4;
+            this.serialPortRFIDNumber5.PortName = BoxRFIDCOM5;
+            this.serialPortRFIDNumber6.PortName = BoxRFIDCOM6;
+
+
+            openRfidReader1();
+            openRfidReader2();
+            openRfidReader3();
+            openRfidReader4();
+            openRfidReader5();
+            openRfidReader6();
+
+
+            if (Com1Open && Com2Open && Com3Open && Com4Open && Com5Open && Com6Open)
+            {
+                labStatusRuning.BackColor = Color.LightGreen;
+                labRFID1.BackColor = Color.LightGreen;
+                labRFID2.BackColor = Color.LightGreen;
+                labRFID3.BackColor = Color.LightGreen;
+                labRFID4.BackColor = Color.LightGreen;
+                labRFID5.BackColor = Color.LightGreen;
+                labRFID6.BackColor = Color.LightGreen;
+                //   ScanStart();
+            }
+            else
+            {
+                labStatusRuning.BackColor = Color.Red;
+                if (!Com1Open)
+                {
+                    labRFID1.BackColor = Color.Red;
+                }
+                else
+                {
+                    labRFID1.BackColor = Color.LightGreen;
+                }
+
+                if (!Com2Open)
+                {
+                    labRFID2.BackColor = Color.Red;
+                }
+                else
+                {
+                    labRFID2.BackColor = Color.LightGreen;
+                }
+                if (!Com3Open)
+                {
+                    labRFID3.BackColor = Color.Red;
+                }
+                else
+                {
+                    labRFID3.BackColor = Color.LightGreen;
+                }
+                if (!Com4Open)
+                {
+                    labRFID4.BackColor = Color.Red;
+                }
+                else
+                {
+                    labRFID4.BackColor = Color.LightGreen;
+                }
+                if (!Com5Open)
+                {
+                    labRFID5.BackColor = Color.Red;
+                }
+                else
+                {
+                    labRFID5.BackColor = Color.LightGreen;
+                }
+                if (!Com6Open)
+                {
+                    labRFID6.BackColor = Color.Red;
+                }
+                else
+                {
+                    labRFID6.BackColor = Color.LightGreen;
+                }
+            }
+
             // timer1.Enabled = !timer1.Enabled;
 
 
@@ -1150,6 +1429,15 @@ namespace WinForm
         }
         private void ScanStart()
         {
+
+                // 传送带开始工作
+                pm.closeportall();
+            Thread.Sleep(50);
+            pm.openport2();
+            Thread.Sleep(50);
+
+          //  pm.closeportall();
+          //  Thread.Sleep(50);
 
 
             mIsStop = false;
@@ -1184,37 +1472,133 @@ namespace WinForm
         {
             nAntIndex = 0;
             nAntChooseList = AsadDuooSystemPub.AntCurrentListInt;
+            nAntChooseList = AsadDuooSystemPub2.AntCurrentListInt;
             if (nAntChooseList.Count > 0)
                 ledCurrentAnt.Text = nAntChooseList[nAntIndex].ToString();
             else
                 ledCurrentAnt.Text = "0";
         }
 
-        private void openRfidReader()
+        private void openRfidReader1()
         {
-           //  timer1.Enabled = false;
+            //  timer1.Enabled = false;
             if (AsadDuooSystemPub.IsConnectedSio)
             {
                 AsadDuooSystemPub.SioBase.onReceived -= SioBase_onReceived;
                 AsadDuooSystemPub.DisConnectSio();
                 AsadDuooSystemPub.RcpBase.Address = 65535;
-                this.ComOpen = false;
+                this.Com1Open = false;
                 return;
             }
-            InitSio(IniSettings.Communication);
+            InitSio1(IniSettings.Communication);
+            //  InitSio2(IniSettings.Communication);
+            // InitSio3(IniSettings.Communication);
             AsadDuooSystemPub.SioBase.Connect(IniSettings.HostName, IniSettings.HostPort);
             if (AsadDuooSystemPub.IsConnectedSio)
             {
                 AsadDuooSystemPub.SioBase.onReceived += SioBase_onReceived;
-                this.ComOpen = true;
+                this.Com1Open = true;
             }
         }
+        private void openRfidReader2()
+        {
+            if (AsadDuooSystemPub2.IsConnectedSio)
+            {
+                AsadDuooSystemPub2.SioBase.onReceived -= SioBase2_onReceived;
+                AsadDuooSystemPub2.DisConnectSio();
+                AsadDuooSystemPub2.RcpBase.Address = 65535;
+                this.Com2Open = false;
+                return;
+            }
+            InitSio2(IniSettings.Communication);
+            AsadDuooSystemPub2.SioBase.Connect(IniSettings.HostName, IniSettings.HostPort);
+            if (AsadDuooSystemPub2.IsConnectedSio)
+            {
+                AsadDuooSystemPub2.SioBase.onReceived += SioBase2_onReceived;
+                this.Com2Open = true;
+            }
+        }
+
+        private void openRfidReader3()
+        {
+            if (AsadDuooSystemPub3.IsConnectedSio)
+            {
+                AsadDuooSystemPub3.SioBase.onReceived -= SioBase3_onReceived;
+                AsadDuooSystemPub3.DisConnectSio();
+                AsadDuooSystemPub3.RcpBase.Address = 65535;
+                this.Com3Open = false;
+                return;
+            }
+            InitSio3(IniSettings.Communication);
+            AsadDuooSystemPub3.SioBase.Connect(IniSettings.HostName, IniSettings.HostPort);
+            if (AsadDuooSystemPub3.IsConnectedSio)
+            {
+                AsadDuooSystemPub3.SioBase.onReceived += SioBase3_onReceived;
+                this.Com3Open = true;
+            }
+        }
+        private void openRfidReader4()
+        {
+            if (AsadDuooSystemPub4.IsConnectedSio)
+            {
+                AsadDuooSystemPub4.SioBase.onReceived -= SioBase4_onReceived;
+                AsadDuooSystemPub4.DisConnectSio();
+                AsadDuooSystemPub4.RcpBase.Address = 65535;
+                this.Com4Open = false;
+                return;
+            }
+            InitSio4(IniSettings.Communication);
+            AsadDuooSystemPub4.SioBase.Connect(IniSettings.HostName, IniSettings.HostPort);
+            if (AsadDuooSystemPub4.IsConnectedSio)
+            {
+                AsadDuooSystemPub4.SioBase.onReceived += SioBase4_onReceived;
+                this.Com4Open = true;
+            }
+        }
+
+        private void openRfidReader5()
+        {
+            if (AsadDuooSystemPub5.IsConnectedSio)
+            {
+                AsadDuooSystemPub5.SioBase.onReceived -= SioBase5_onReceived;
+                AsadDuooSystemPub5.DisConnectSio();
+                AsadDuooSystemPub5.RcpBase.Address = 65535;
+                this.Com5Open = false;
+                return;
+            }
+            InitSio5(IniSettings.Communication);
+            AsadDuooSystemPub5.SioBase.Connect(IniSettings.HostName, IniSettings.HostPort);
+            if (AsadDuooSystemPub5.IsConnectedSio)
+            {
+                AsadDuooSystemPub5.SioBase.onReceived += SioBase5_onReceived;
+                this.Com5Open = true;
+            }
+        }
+        private void openRfidReader6()
+        {
+            if (AsadDuooSystemPub6.IsConnectedSio)
+            {
+                AsadDuooSystemPub6.SioBase.onReceived -= SioBase6_onReceived;
+                AsadDuooSystemPub6.DisConnectSio();
+                AsadDuooSystemPub6.RcpBase.Address = 65535;
+                this.Com6Open = false;
+                return;
+            }
+            InitSio6(IniSettings.Communication);
+            AsadDuooSystemPub6.SioBase.Connect(IniSettings.HostName, IniSettings.HostPort);
+            if (AsadDuooSystemPub6.IsConnectedSio)
+            {
+                AsadDuooSystemPub6.SioBase.onReceived += SioBase6_onReceived;
+                this.Com6Open = true;
+            }
+        }
+
 
 
         private void CloseRfidReader()
         {
             int dd = -1;
-         //   string PortName = BoxRFIDCOM;
+            //   string PortName = BoxRFIDCOM;
             AsadDuooSystemPub.SioBase.onReceived -= SioBase_onReceived;
             AsadDuooSystemPub.DisConnectSio();
             AsadDuooSystemPub.RcpBase.Address = 65535;
@@ -1236,19 +1620,89 @@ namespace WinForm
 
 
         }
-    private void SioBase_onReceived(object sender, ADSioLib.ReceivedEventArgs e)
-    {
-        AsadDuooSystemPub.RcpBase.ReciveBytePkt(e.Data);
-    }
-        private void InitSio(int commType)
+        private void SioBase_onReceived(object sender, ADSioLib.ReceivedEventArgs e)
         {
-            IniSettings.PortName = BoxRFIDCOM;
+            AsadDuooSystemPub.RcpBase.ReciveBytePkt(e.Data);
+        }
+        private void SioBase2_onReceived(object sender, ADSioLib.ReceivedEventArgs e)
+        {
+            AsadDuooSystemPub2.RcpBase.ReciveBytePkt(e.Data);
+        }
+        private void SioBase3_onReceived(object sender, ADSioLib.ReceivedEventArgs e)
+        {
+            AsadDuooSystemPub3.RcpBase.ReciveBytePkt(e.Data);
+        }
+        private void SioBase4_onReceived(object sender, ADSioLib.ReceivedEventArgs e)
+        {
+            AsadDuooSystemPub4.RcpBase.ReciveBytePkt(e.Data);
+        }
+        private void SioBase5_onReceived(object sender, ADSioLib.ReceivedEventArgs e)
+        {
+            AsadDuooSystemPub5.RcpBase.ReciveBytePkt(e.Data);
+        }
+        private void SioBase6_onReceived(object sender, ADSioLib.ReceivedEventArgs e)
+        {
+            AsadDuooSystemPub6.RcpBase.ReciveBytePkt(e.Data);
+        }
+        private void InitSio1(int commType)
+        {
+            IniSettings.PortName = BoxRFIDCOM1;
             IniSettings.BaudRate = 57600;
             if (AsadDuooSystemPub.IsConnectedSio)
             {
                 AsadDuooSystemPub.DisConnectSio();
             }
             AsadDuooSystemPub.SioBase = new SioCom();
+        }
+        private void InitSio2(int commType)
+        {
+            IniSettings.PortName = BoxRFIDCOM2;
+            IniSettings.BaudRate = 57600;
+            if (AsadDuooSystemPub2.IsConnectedSio)
+            {
+                AsadDuooSystemPub2.DisConnectSio();
+            }
+            AsadDuooSystemPub2.SioBase = new SioCom();
+        }
+        private void InitSio3(int commType)
+        {
+            IniSettings.PortName = BoxRFIDCOM3;
+            IniSettings.BaudRate = 57600;
+            if (AsadDuooSystemPub3.IsConnectedSio)
+            {
+                AsadDuooSystemPub3.DisConnectSio();
+            }
+            AsadDuooSystemPub3.SioBase = new SioCom();
+        }
+        private void InitSio4(int commType)
+        {
+            IniSettings.PortName = BoxRFIDCOM4;
+            IniSettings.BaudRate = 57600;
+            if (AsadDuooSystemPub4.IsConnectedSio)
+            {
+                AsadDuooSystemPub4.DisConnectSio();
+            }
+            AsadDuooSystemPub4.SioBase = new SioCom();
+        }
+        private void InitSio5(int commType)
+        {
+            IniSettings.PortName = BoxRFIDCOM5;
+            IniSettings.BaudRate = 57600;
+            if (AsadDuooSystemPub5.IsConnectedSio)
+            {
+                AsadDuooSystemPub5.DisConnectSio();
+            }
+            AsadDuooSystemPub5.SioBase = new SioCom();
+        }
+        private void InitSio6(int commType)
+        {
+            IniSettings.PortName = BoxRFIDCOM6;
+            IniSettings.BaudRate = 57600;
+            if (AsadDuooSystemPub6.IsConnectedSio)
+            {
+                AsadDuooSystemPub6.DisConnectSio();
+            }
+            AsadDuooSystemPub6.SioBase = new SioCom();
         }
 
 
@@ -1268,7 +1722,7 @@ namespace WinForm
         private void serialPortRFIDNumber_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
             byte[] bytes = new byte[2 * 1024];//创建缓存区接收数据
-            int len = serialPortRFIDNumber.Read(bytes, 0, bytes.Length);
+            int len = serialPortRFIDNumber1.Read(bytes, 0, bytes.Length);
             //串口的相应数据
             string responseStr1 = Encoding.Default.GetString(bytes, 0, len);
             this.Invoke(new Action(
@@ -1327,12 +1781,22 @@ namespace WinForm
 
         private void RFIDCheck()
         {
+            // 停止输送带动作
+            this.pm.closeportall();
+            Thread.Sleep(50);
             //Mytimer.Stop();
             mytimeCount = 0;
             // 停止计时 开始运算
             // 下一箱再进来的时候  再进行计算感应RFID
             if (this.dgvBoxHeads.Items.Count <= 0)
             {
+                // 传送带开始后退出箱子
+                pm.closeportall();
+                Thread.Sleep(50);
+                 pm.openport1();
+                 Thread.Sleep(50);
+
+
                 this.labMsg.ForeColor = Color.Red;
                 this.labMsg.Text = "没有感应到RFID资料，请检查设备是否已连接并设置好";
                 this.setWrong();
@@ -1342,13 +1806,10 @@ namespace WinForm
                 }
                 if (strOpenAlarm == "1")
                 {
-                    am.closeportall();
-                    Thread.Sleep(50);
-                    am.openport2();
-                    Thread.Sleep(300);
-                    am.closeport2();
-                    Thread.Sleep(50);
+                    Thread threadA = new Thread(openLights);
+                    threadA.Start("3");
                 }
+                // 感位开始 结束传送带工作
                 return;
             }
             DataTable RFIDTables = new DataTable();
@@ -1367,6 +1828,13 @@ namespace WinForm
             // string RFIDNumber//
             if (newCarton == null || newCarton.Rows.Count <= 0)
             {
+                // 传送带开始后退出箱子
+                this.ScanStop();
+                pm.closeportall();
+                Thread.Sleep(50);
+                pm.openport1();
+                Thread.Sleep(50);
+
                 this.setWrong();
                 this.labMsg.ForeColor = Color.Red;
                 this.labMsg.Text = "请先扫描外箱贴纸，谢谢";
@@ -1377,10 +1845,8 @@ namespace WinForm
                 }
                 if (strOpenAlarm == "1")
                 {
-                    am.closeportall();
-                    Thread.Sleep(50);
-                    am.openport3();
-                    Thread.Sleep(50);
+                    Thread threadA = new Thread(openLights);
+                    threadA.Start("3");
                 }
 
                 return;
@@ -1388,6 +1854,12 @@ namespace WinForm
             // this.dgvBoxDetails.DataSource = ScanLogDB;
             if (this.txtCustID.Text != "LULU" && this.txtCustID.Text != "NIKE")
             {
+                // 传送带开始后退出箱子
+                this.ScanStop();
+                pm.closeportall();
+                Thread.Sleep(50);
+                pm.openport1();
+                Thread.Sleep(50);
                 this.labMsg.ForeColor = Color.Red;
                 this.labMsg.Text = "非 LULU , NIKE 品牌， 暂时不能进行整箱扫描。谢谢";
                 this.setWrong();
@@ -1397,12 +1869,8 @@ namespace WinForm
                 }
                 if (strOpenAlarm == "1")
                 {
-                    am.closeportall();
-                    Thread.Sleep(50);
-                    am.openport2();
-                    Thread.Sleep(300);
-                    am.closeport2();
-                    Thread.Sleep(50);
+                    Thread threadA = new Thread(openLights);
+                    threadA.Start("2");
                 }
 
                 // 非 NIKE  LULU 外箱
@@ -1422,12 +1890,8 @@ namespace WinForm
             }
             if (strOpenAlarm == "1")
             {
-                am.closeportall();
-                Thread.Sleep(50);
-                am.openport2();
-                Thread.Sleep(50);
-                // am.closeport2();
-                //  Thread.Sleep(30);
+                Thread threadA = new Thread(openLights);
+                threadA.Start("2");
             }
 
 
@@ -1454,6 +1918,13 @@ namespace WinForm
                 // 解析RFID号码到SKU
                 if (!lscm.IsHexadecimal(RFIDNumber))
                 {
+                    // 传送带开始后退出箱子
+                  //  this.ScanStop();
+                  //  pm.closeportall();
+                 //   Thread.Sleep(50);
+                 //   pm.openport1();
+                 //   Thread.Sleep(50);
+
                     /*
                     this.labMsg.ForeColor = Color.Red;
                     this.labMsg.Text = "不是有效的RFID号码，请检查。";
@@ -1485,7 +1956,7 @@ namespace WinForm
 
 
                     DataRow dr = BoxDetailsLog.NewRow();
-                   // dr["BoxHeadID"] = -1;
+                    // dr["BoxHeadID"] = -1;
                     dr["CustID"] = this.txtCustID.Text;
                     dr["CartonNumber"] = this.labCartonNumber.Text;
                     dr["PolyBagNumber"] = SKUNumber;
@@ -1500,6 +1971,7 @@ namespace WinForm
                     dr["ScanTime"] = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                     dr["ScanHost"] = Dns.GetHostName().ToUpper();
                     BoxDetailsLog.Rows.Add(dr);
+                  /*
                     if (strOpenMedia == "1")
                     {
                         am.palyMedia(false);
@@ -1511,6 +1983,7 @@ namespace WinForm
                         am.openport3();
                         Thread.Sleep(50);
                     }
+                  */
                     rfids.Add(RFIDNumber);
                     continue;
 
@@ -1580,7 +2053,7 @@ namespace WinForm
                         // 添加日志 Details
                         // 添加日志 Heads
                         DataRow dr = BoxDetailsLog.NewRow();
-                       // dr["BoxHeadID"] = -1;
+                        // dr["BoxHeadID"] = -1;
                         dr["CustID"] = this.txtCustID.Text;
                         dr["CartonNumber"] = this.labCartonNumber.Text;
                         dr["PolyBagNumber"] = SKUNumber;
@@ -1622,6 +2095,14 @@ namespace WinForm
                 }
                 else
                 {
+                    // 传送带开始后退出箱子
+                    // 错误了直接退出 不在扫描
+                  //  this.ScanStop();
+
+                  //  pm.closeportall();
+                 //   Thread.Sleep(50);
+                 //   pm.openport1();
+                //    Thread.Sleep(50);
                     // 记录起来 错误的成衣
                     // 本件不是这个箱子的
                     //  this.labMsg.ForeColor = Color.Red;
@@ -1655,6 +2136,7 @@ namespace WinForm
                     dr["ScanTime"] = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                     dr["ScanHost"] = Dns.GetHostName().ToUpper();
                     BoxDetailsLog.Rows.Add(dr);
+                    /*
                     if (strOpenMedia == "1")
                     {
                         am.palyMedia(false);
@@ -1666,6 +2148,7 @@ namespace WinForm
                         am.openport3();
                         Thread.Sleep(50);
                     }
+                    */
 
                 }
             }
@@ -1840,7 +2323,7 @@ namespace WinForm
 
 
 
-        public int SaveBoxDetailsLog(DataTable BoxDetailsLogDB,int MaxRow)
+        public int SaveBoxDetailsLog(DataTable BoxDetailsLogDB, int MaxRow)
         {
 
             if (BoxDetailsLogDB.Rows.Count <= 0)
@@ -1853,7 +2336,7 @@ namespace WinForm
         }
         public int SaveRFIDBoxScanLogs(DataTable dt)
         {
-            if(dt.Rows.Count <= 0)
+            if (dt.Rows.Count <= 0)
             {
                 return 0;
             }
@@ -1866,12 +2349,12 @@ namespace WinForm
         {
             string[] ScanSizeQtys = txtScanSizeQtys.Text.Split(' ');
             string[] SizeQtys = txtSizeQtys.Text.Split(' ');
-            if (this.txtCartonQty.Text.ToString() == rfids.Count.ToString()  && Enumerable.SequenceEqual(ScanSizeQtys, SizeQtys))
+            if (this.txtCartonQty.Text.ToString() == rfids.Count.ToString() && Enumerable.SequenceEqual(ScanSizeQtys, SizeQtys))
             {
                 int BoxHeads = this.SaveRFIDBoxScanLogs(BoxDetailsLog);  //保存箱信息
                 int MaxRow = this.getRFIDBoxScanLogsMaxID();  //保存箱信息
 
-                if (BoxHeads <= 0 || MaxRow <=0)
+                if (BoxHeads <= 0 || MaxRow <= 0)
                 {
                     this.setWrong();
                     this.labMsg.ForeColor = Color.Red;
@@ -1882,12 +2365,8 @@ namespace WinForm
                     }
                     if (strOpenAlarm == "1")
                     {
-                        am.closeportall();
-                        Thread.Sleep(50);
-                        am.openport2();
-                        Thread.Sleep(300);
-                        am.closeport2();
-                        Thread.Sleep(50);
+                        Thread threadA = new Thread(openLights);
+                        threadA.Start("3");
                     }
 
                     this.butSaveLogs.Visible = true;
@@ -1907,12 +2386,8 @@ namespace WinForm
                     }
                     if (strOpenAlarm == "1")
                     {
-                        am.closeportall();
-                        Thread.Sleep(50);
-                        am.openport2();
-                        Thread.Sleep(300);
-                        am.closeport2();
-                        Thread.Sleep(50);
+                        Thread threadA = new Thread(openLights);
+                        threadA.Start("3");
                     }
 
                     this.butSaveLogs.Visible = true;
@@ -1920,9 +2395,6 @@ namespace WinForm
 
                 if (BoxHeads > 0 && BoxDetails > 0)
                 {
-
-
-
                     this.butSaveLogs.Visible = false;
                     this.setAllright();
 
@@ -1934,24 +2406,30 @@ namespace WinForm
                     }
                     if (strOpenAlarm == "1")
                     {
-                        am.closeportall();
-                        Thread.Sleep(50);
-                        am.openport2();
-                        Thread.Sleep(300);
-                        am.closeport2();
-                        Thread.Sleep(50);
+                        Thread threadA = new Thread(openLights);
+                        threadA.Start("2");
                     }
-
-
+                    this.pm.closeportall();
+                    Thread.Sleep(50);
+                    this.pm.openport2();
+                    Thread.Sleep(50);
                     // 保存资料
                     this.RFIDNUMBERS.Clear(); //完事了清空，以便下一箱进行扫描
                 }
-            }else if(!Enumerable.SequenceEqual(ScanSizeQtys, SizeQtys))
+            }
+            else if (!Enumerable.SequenceEqual(ScanSizeQtys, SizeQtys))
             {
+
+                // 传送带开始后退出箱子
+                pm.closeportall();
+                Thread.Sleep(50);
+                pm.openport1();
+                Thread.Sleep(50);
+
                 string[] Sizes = txtSize.Text.Split(' ');
                 for (int i = 0; i < Sizes.Length; i++)
                 {
-                   if( ScanSizeQtys[i] != SizeQtys[i])
+                    if (ScanSizeQtys[i] != SizeQtys[i])
                     {
                         for (int j = 0; j < this.dgvBoxDetails.Rows.Count; j++)
                         {
@@ -1978,16 +2456,20 @@ namespace WinForm
                 }
                 if (strOpenAlarm == "1")
                 {
-                    am.closeportall();
-                    Thread.Sleep(50);
-                    am.openport3();
-                    Thread.Sleep(50);
+                    Thread threadA = new Thread(openLights);
+                    threadA.Start("3");
 
                 }
 
             }
             else
             {
+                // 传送带开始后退出箱子
+                pm.closeportall();
+                Thread.Sleep(50);
+                pm.openport1();
+                Thread.Sleep(50);
+
                 this.txtSizeQtys.BackColor = System.Drawing.Color.Red;
                 this.txtScanSizeQtys.BackColor = System.Drawing.Color.Red;
                 this.txtSizeQtys.ForeColor = System.Drawing.Color.Yellow;
@@ -2001,10 +2483,8 @@ namespace WinForm
                 }
                 if (strOpenAlarm == "1")
                 {
-                    am.closeportall();
-                    Thread.Sleep(50);
-                    am.openport3();
-                    Thread.Sleep(50);
+                    Thread threadA = new Thread(openLights);
+                    threadA.Start("3");
 
                 }
 
@@ -2021,7 +2501,7 @@ namespace WinForm
                 }
             }
 
-    }
+        }
         private void butSaveLogs_Click(object sender, EventArgs e)
         {
             this.saveScanBoxLogs();
@@ -2063,7 +2543,7 @@ namespace WinForm
                 TextRenderer.DrawText(e.Graphics, (e.RowIndex + 1).ToString(), e.InheritedRowStyle.Font, rect, e.InheritedRowStyle.ForeColor, TextFormatFlags.Right | TextFormatFlags.VerticalCenter);
             }
         }
-        public int getRFIDBoxScanLogsMaxID( )
+        public int getRFIDBoxScanLogsMaxID()
         {
 
             int MaxRow = this.bsm.getRFIDBoxScanLogsMaxID();
@@ -2233,6 +2713,189 @@ namespace WinForm
                 }
             }
             */
+        }
+
+        private void serialPortRFIDNumber2_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            byte[] bytes = new byte[2 * 1024];//创建缓存区接收数据
+            int len = serialPortRFIDNumber2.Read(bytes, 0, bytes.Length);
+            //串口的相应数据
+            string responseStr1 = Encoding.Default.GetString(bytes, 0, len);
+            this.Invoke(new Action(
+              delegate
+              {
+                  this.txtRFIDNumber.AppendText(responseStr1);
+                  if (System.Text.RegularExpressions.Regex.IsMatch(this.txtRFIDNumber.Text, @".*\r\n$"))
+                  {
+                      string RFIDNumber = this.txtRFIDNumber.Text;
+                      RFIDNumber = RFIDNumber.Trim();
+                      this.addRFIDNumberToDB(RFIDNumber);
+                      this.txtRFIDNumber.Text = "";
+                  }
+              }));
+        }
+
+        private void serialPortRFIDNumber3_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            byte[] bytes = new byte[2 * 1024];//创建缓存区接收数据
+            int len = serialPortRFIDNumber3.Read(bytes, 0, bytes.Length);
+            //串口的相应数据
+            string responseStr1 = Encoding.Default.GetString(bytes, 0, len);
+            this.Invoke(new Action(
+              delegate
+              {
+                  this.txtRFIDNumber.AppendText(responseStr1);
+                  if (System.Text.RegularExpressions.Regex.IsMatch(this.txtRFIDNumber.Text, @".*\r\n$"))
+                  {
+                      string RFIDNumber = this.txtRFIDNumber.Text;
+                      RFIDNumber = RFIDNumber.Trim();
+                      this.addRFIDNumberToDB(RFIDNumber);
+                      this.txtRFIDNumber.Text = "";
+                  }
+              }));
+        }
+
+        private void serialPortRFIDNumber4_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            byte[] bytes = new byte[2 * 1024];//创建缓存区接收数据
+            int len = serialPortRFIDNumber4.Read(bytes, 0, bytes.Length);
+            //串口的相应数据
+            string responseStr1 = Encoding.Default.GetString(bytes, 0, len);
+            this.Invoke(new Action(
+              delegate
+              {
+                  this.txtRFIDNumber.AppendText(responseStr1);
+                  if (System.Text.RegularExpressions.Regex.IsMatch(this.txtRFIDNumber.Text, @".*\r\n$"))
+                  {
+                      string RFIDNumber = this.txtRFIDNumber.Text;
+                      RFIDNumber = RFIDNumber.Trim();
+                      this.addRFIDNumberToDB(RFIDNumber);
+                      this.txtRFIDNumber.Text = "";
+                  }
+              }));
+        }
+
+        private void serialPortRFIDNumber5_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            byte[] bytes = new byte[2 * 1024];//创建缓存区接收数据
+            int len = serialPortRFIDNumber5.Read(bytes, 0, bytes.Length);
+            //串口的相应数据
+            string responseStr1 = Encoding.Default.GetString(bytes, 0, len);
+            this.Invoke(new Action(
+              delegate
+              {
+                  this.txtRFIDNumber.AppendText(responseStr1);
+                  if (System.Text.RegularExpressions.Regex.IsMatch(this.txtRFIDNumber.Text, @".*\r\n$"))
+                  {
+                      string RFIDNumber = this.txtRFIDNumber.Text;
+                      RFIDNumber = RFIDNumber.Trim();
+                      this.addRFIDNumberToDB(RFIDNumber);
+                      this.txtRFIDNumber.Text = "";
+                  }
+              }));
+        }
+
+        private void serialPortRFIDNumber6_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            byte[] bytes = new byte[2 * 1024];//创建缓存区接收数据
+            int len = serialPortRFIDNumber6.Read(bytes, 0, bytes.Length);
+            //串口的相应数据
+            string responseStr1 = Encoding.Default.GetString(bytes, 0, len);
+            this.Invoke(new Action(
+              delegate
+              {
+                  this.txtRFIDNumber.AppendText(responseStr1);
+                  if (System.Text.RegularExpressions.Regex.IsMatch(this.txtRFIDNumber.Text, @".*\r\n$"))
+                  {
+                      string RFIDNumber = this.txtRFIDNumber.Text;
+                      RFIDNumber = RFIDNumber.Trim();
+                      this.addRFIDNumberToDB(RFIDNumber);
+                      this.txtRFIDNumber.Text = "";
+                  }
+              }));
+        }
+
+        private void butback_Click(object sender, EventArgs e)
+        {
+            if (pm.OpenPowerControl())
+            {
+                this.pm.closeportall();
+                Thread.Sleep(50);
+                this.pm.openport1();
+                Thread.Sleep(50);
+            }
+
+
+        }
+
+        private void butstop_Click(object sender, EventArgs e)
+        {
+            if (pm.OpenPowerControl())
+            {
+                this.pm.closeportall();
+                Thread.Sleep(50);
+            }
+
+        }
+
+        private void butgoing_Click(object sender, EventArgs e)
+        {
+            if (pm.OpenPowerControl())
+            {
+                this.pm.closeportall();
+                Thread.Sleep(50);
+                this.pm.openport2();
+                Thread.Sleep(50);
+            }
+        }
+
+
+        public void openLights(object port)
+        {
+            string p = port.ToString();
+            switch (p)
+            {
+                case "1":
+                    am.closeport3();
+                    Thread.Sleep(50);
+                    am.openport1();
+                    Thread.Sleep(500);
+                    am.closeport1();
+                    Thread.Sleep(50);
+                    break;
+
+                case "2":
+                    am.closeport3();
+                    Thread.Sleep(50);
+                    am.openport2();
+                    Thread.Sleep(500);
+                    am.closeport2();
+                    Thread.Sleep(50);
+                    break;
+
+                case "3":
+                    //  am.closeportall();
+                    //    Thread.Sleep(50);
+                    am.openport3();
+                    Thread.Sleep(500);
+                    //  am.closeport3();
+                    //  Thread.Sleep(50);
+                    break;
+
+                case "4":
+                    //   am.closeportall();
+                    //   Thread.Sleep(50);
+                    //  am.openport4();
+                    //  Thread.Sleep(500);
+                    //  am.closeport4();
+                    //  Thread.Sleep(50);
+                    break;
+
+                default:
+                    break;
+            }
+
+
         }
     }
 }

@@ -58,10 +58,10 @@
             this.labStatusRuning = new System.Windows.Forms.Label();
             this.labAlarmStatus = new System.Windows.Forms.Label();
             this.labCartonReaderStatus = new System.Windows.Forms.Label();
-            this.labRFIDReaderStatus = new System.Windows.Forms.Label();
+            this.labRFID3 = new System.Windows.Forms.Label();
             this.txtRFIDNumber = new System.Windows.Forms.TextBox();
             this.labRFID = new System.Windows.Forms.Label();
-            this.serialPortRFIDNumber = new System.IO.Ports.SerialPort(this.components);
+            this.serialPortRFIDNumber1 = new System.IO.Ports.SerialPort(this.components);
             this.gbBoxs = new System.Windows.Forms.GroupBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.dgvBoxHeads = new System.Windows.Forms.ListView();
@@ -94,6 +94,22 @@
             this.lblAllTags = new System.Windows.Forms.Label();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.serialPortRFIDNumber2 = new System.IO.Ports.SerialPort(this.components);
+            this.serialPortRFIDNumber3 = new System.IO.Ports.SerialPort(this.components);
+            this.labRFID2 = new System.Windows.Forms.Label();
+            this.labRFID1 = new System.Windows.Forms.Label();
+            this.gbStatus = new System.Windows.Forms.GroupBox();
+            this.labRFID5 = new System.Windows.Forms.Label();
+            this.labRFID4 = new System.Windows.Forms.Label();
+            this.labRFID6 = new System.Windows.Forms.Label();
+            this.labPowerControlStatus = new System.Windows.Forms.Label();
+            this.serialPortRFIDNumber4 = new System.IO.Ports.SerialPort(this.components);
+            this.serialPortRFIDNumber5 = new System.IO.Ports.SerialPort(this.components);
+            this.serialPortRFIDNumber6 = new System.IO.Ports.SerialPort(this.components);
+            this.butgoing = new System.Windows.Forms.Button();
+            this.butstop = new System.Windows.Forms.Button();
+            this.butback = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.bgCartonInfo.SuspendLayout();
             this.gbScanPort.SuspendLayout();
             this.gbBoxs.SuspendLayout();
@@ -109,6 +125,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudRunTimes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMaxTag)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.gbStatus.SuspendLayout();
             this.SuspendLayout();
             // 
             // butSaveLogs
@@ -421,7 +438,7 @@
             this.labMsg.AutoSize = true;
             this.labMsg.Font = new System.Drawing.Font("新細明體", 12F);
             this.labMsg.ForeColor = System.Drawing.Color.Red;
-            this.labMsg.Location = new System.Drawing.Point(11, 29);
+            this.labMsg.Location = new System.Drawing.Point(9, 31);
             this.labMsg.Name = "labMsg";
             this.labMsg.Size = new System.Drawing.Size(39, 16);
             this.labMsg.TabIndex = 9;
@@ -432,7 +449,7 @@
             this.labCarton.AutoSize = true;
             this.labCarton.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.labCarton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labCarton.Location = new System.Drawing.Point(5, 60);
+            this.labCarton.Location = new System.Drawing.Point(6, 57);
             this.labCarton.Name = "labCarton";
             this.labCarton.Size = new System.Drawing.Size(75, 16);
             this.labCarton.TabIndex = 1;
@@ -442,7 +459,7 @@
             // 
             this.txtCartonNumber.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.txtCartonNumber.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.txtCartonNumber.Location = new System.Drawing.Point(93, 57);
+            this.txtCartonNumber.Location = new System.Drawing.Point(94, 54);
             this.txtCartonNumber.Name = "txtCartonNumber";
             this.txtCartonNumber.Size = new System.Drawing.Size(192, 23);
             this.txtCartonNumber.TabIndex = 0;
@@ -452,10 +469,10 @@
             // 
             // gbScanPort
             // 
-            this.gbScanPort.Controls.Add(this.labStatusRuning);
-            this.gbScanPort.Controls.Add(this.labAlarmStatus);
-            this.gbScanPort.Controls.Add(this.labCartonReaderStatus);
-            this.gbScanPort.Controls.Add(this.labRFIDReaderStatus);
+            this.gbScanPort.Controls.Add(this.label1);
+            this.gbScanPort.Controls.Add(this.butback);
+            this.gbScanPort.Controls.Add(this.butstop);
+            this.gbScanPort.Controls.Add(this.butgoing);
             this.gbScanPort.Controls.Add(this.txtRFIDNumber);
             this.gbScanPort.Controls.Add(this.labRFID);
             this.gbScanPort.Controls.Add(this.txtCartonNumber);
@@ -470,45 +487,45 @@
             // 
             // labStatusRuning
             // 
-            this.labStatusRuning.Location = new System.Drawing.Point(10, 118);
+            this.labStatusRuning.Location = new System.Drawing.Point(13, 19);
             this.labStatusRuning.Name = "labStatusRuning";
-            this.labStatusRuning.Size = new System.Drawing.Size(59, 46);
+            this.labStatusRuning.Size = new System.Drawing.Size(100, 46);
             this.labStatusRuning.TabIndex = 19;
-            this.labStatusRuning.Text = "Status";
+            this.labStatusRuning.Text = "SystemStatus";
             this.labStatusRuning.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labAlarmStatus
             // 
-            this.labAlarmStatus.Location = new System.Drawing.Point(186, 144);
+            this.labAlarmStatus.Location = new System.Drawing.Point(644, 19);
             this.labAlarmStatus.Name = "labAlarmStatus";
-            this.labAlarmStatus.Size = new System.Drawing.Size(100, 23);
+            this.labAlarmStatus.Size = new System.Drawing.Size(85, 46);
             this.labAlarmStatus.TabIndex = 18;
             this.labAlarmStatus.Text = "Alarm";
             this.labAlarmStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labCartonReaderStatus
             // 
-            this.labCartonReaderStatus.Location = new System.Drawing.Point(80, 118);
+            this.labCartonReaderStatus.Location = new System.Drawing.Point(758, 19);
             this.labCartonReaderStatus.Name = "labCartonReaderStatus";
-            this.labCartonReaderStatus.Size = new System.Drawing.Size(100, 23);
+            this.labCartonReaderStatus.Size = new System.Drawing.Size(85, 46);
             this.labCartonReaderStatus.TabIndex = 17;
             this.labCartonReaderStatus.Text = "CartonReader";
             this.labCartonReaderStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // labRFIDReaderStatus
+            // labRFID3
             // 
-            this.labRFIDReaderStatus.Location = new System.Drawing.Point(80, 144);
-            this.labRFIDReaderStatus.Name = "labRFIDReaderStatus";
-            this.labRFIDReaderStatus.Size = new System.Drawing.Size(100, 23);
-            this.labRFIDReaderStatus.TabIndex = 15;
-            this.labRFIDReaderStatus.Text = "RFIDReader";
-            this.labRFIDReaderStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labRFID3.Location = new System.Drawing.Point(259, 19);
+            this.labRFID3.Name = "labRFID3";
+            this.labRFID3.Size = new System.Drawing.Size(45, 46);
+            this.labRFID3.TabIndex = 15;
+            this.labRFID3.Text = "RFID3";
+            this.labRFID3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // txtRFIDNumber
             // 
             this.txtRFIDNumber.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.txtRFIDNumber.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.txtRFIDNumber.Location = new System.Drawing.Point(93, 86);
+            this.txtRFIDNumber.Location = new System.Drawing.Point(94, 83);
             this.txtRFIDNumber.Name = "txtRFIDNumber";
             this.txtRFIDNumber.Size = new System.Drawing.Size(192, 23);
             this.txtRFIDNumber.TabIndex = 11;
@@ -519,17 +536,17 @@
             this.labRFID.AutoSize = true;
             this.labRFID.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.labRFID.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labRFID.Location = new System.Drawing.Point(10, 89);
+            this.labRFID.Location = new System.Drawing.Point(6, 86);
             this.labRFID.Name = "labRFID";
             this.labRFID.Size = new System.Drawing.Size(77, 16);
             this.labRFID.TabIndex = 10;
             this.labRFID.Text = "吊卡RFID:";
             // 
-            // serialPortRFIDNumber
+            // serialPortRFIDNumber1
             // 
-            this.serialPortRFIDNumber.BaudRate = 57600;
-            this.serialPortRFIDNumber.PortName = "COM5";
-            this.serialPortRFIDNumber.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPortRFIDNumber_DataReceived);
+            this.serialPortRFIDNumber1.BaudRate = 57600;
+            this.serialPortRFIDNumber1.PortName = "COM5";
+            this.serialPortRFIDNumber1.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPortRFIDNumber_DataReceived);
             // 
             // gbBoxs
             // 
@@ -900,11 +917,156 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "RFID运行信息";
             // 
+            // serialPortRFIDNumber2
+            // 
+            this.serialPortRFIDNumber2.BaudRate = 57600;
+            this.serialPortRFIDNumber2.PortName = "COM6";
+            this.serialPortRFIDNumber2.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPortRFIDNumber2_DataReceived);
+            // 
+            // serialPortRFIDNumber3
+            // 
+            this.serialPortRFIDNumber3.BaudRate = 57600;
+            this.serialPortRFIDNumber3.PortName = "COM7";
+            this.serialPortRFIDNumber3.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPortRFIDNumber3_DataReceived);
+            // 
+            // labRFID2
+            // 
+            this.labRFID2.Location = new System.Drawing.Point(201, 19);
+            this.labRFID2.Name = "labRFID2";
+            this.labRFID2.Size = new System.Drawing.Size(45, 46);
+            this.labRFID2.TabIndex = 20;
+            this.labRFID2.Text = "RFID2";
+            this.labRFID2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labRFID1
+            // 
+            this.labRFID1.Location = new System.Drawing.Point(143, 19);
+            this.labRFID1.Name = "labRFID1";
+            this.labRFID1.Size = new System.Drawing.Size(45, 46);
+            this.labRFID1.TabIndex = 21;
+            this.labRFID1.Text = "RFID1";
+            this.labRFID1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // gbStatus
+            // 
+            this.gbStatus.Controls.Add(this.labPowerControlStatus);
+            this.gbStatus.Controls.Add(this.labAlarmStatus);
+            this.gbStatus.Controls.Add(this.labRFID5);
+            this.gbStatus.Controls.Add(this.labCartonReaderStatus);
+            this.gbStatus.Controls.Add(this.labRFID4);
+            this.gbStatus.Controls.Add(this.labRFID6);
+            this.gbStatus.Controls.Add(this.labRFID2);
+            this.gbStatus.Controls.Add(this.labRFID1);
+            this.gbStatus.Controls.Add(this.labRFID3);
+            this.gbStatus.Controls.Add(this.labStatusRuning);
+            this.gbStatus.Location = new System.Drawing.Point(5, 554);
+            this.gbStatus.Name = "gbStatus";
+            this.gbStatus.Size = new System.Drawing.Size(1101, 75);
+            this.gbStatus.TabIndex = 88;
+            this.gbStatus.TabStop = false;
+            this.gbStatus.Text = "硬件状态";
+            // 
+            // labRFID5
+            // 
+            this.labRFID5.Location = new System.Drawing.Point(375, 19);
+            this.labRFID5.Name = "labRFID5";
+            this.labRFID5.Size = new System.Drawing.Size(45, 46);
+            this.labRFID5.TabIndex = 23;
+            this.labRFID5.Text = "RFID5";
+            this.labRFID5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labRFID4
+            // 
+            this.labRFID4.Location = new System.Drawing.Point(317, 19);
+            this.labRFID4.Name = "labRFID4";
+            this.labRFID4.Size = new System.Drawing.Size(45, 46);
+            this.labRFID4.TabIndex = 24;
+            this.labRFID4.Text = "RFID4";
+            this.labRFID4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labRFID6
+            // 
+            this.labRFID6.Location = new System.Drawing.Point(433, 19);
+            this.labRFID6.Name = "labRFID6";
+            this.labRFID6.Size = new System.Drawing.Size(45, 46);
+            this.labRFID6.TabIndex = 22;
+            this.labRFID6.Text = "RFID6";
+            this.labRFID6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labPowerControlStatus
+            // 
+            this.labPowerControlStatus.Location = new System.Drawing.Point(530, 19);
+            this.labPowerControlStatus.Name = "labPowerControlStatus";
+            this.labPowerControlStatus.Size = new System.Drawing.Size(85, 46);
+            this.labPowerControlStatus.TabIndex = 25;
+            this.labPowerControlStatus.Text = "PowerControl";
+            this.labPowerControlStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // serialPortRFIDNumber4
+            // 
+            this.serialPortRFIDNumber4.BaudRate = 57600;
+            this.serialPortRFIDNumber4.PortName = "COM5";
+            this.serialPortRFIDNumber4.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPortRFIDNumber4_DataReceived);
+            // 
+            // serialPortRFIDNumber5
+            // 
+            this.serialPortRFIDNumber5.BaudRate = 57600;
+            this.serialPortRFIDNumber5.PortName = "COM6";
+            this.serialPortRFIDNumber5.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPortRFIDNumber5_DataReceived);
+            // 
+            // serialPortRFIDNumber6
+            // 
+            this.serialPortRFIDNumber6.BaudRate = 57600;
+            this.serialPortRFIDNumber6.PortName = "COM7";
+            this.serialPortRFIDNumber6.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPortRFIDNumber6_DataReceived);
+            // 
+            // butgoing
+            // 
+            this.butgoing.Location = new System.Drawing.Point(232, 136);
+            this.butgoing.Name = "butgoing";
+            this.butgoing.Size = new System.Drawing.Size(52, 35);
+            this.butgoing.TabIndex = 12;
+            this.butgoing.Text = "前进 >>";
+            this.butgoing.UseVisualStyleBackColor = true;
+            this.butgoing.Click += new System.EventHandler(this.butgoing_Click);
+            // 
+            // butstop
+            // 
+            this.butstop.Location = new System.Drawing.Point(132, 136);
+            this.butstop.Name = "butstop";
+            this.butstop.Size = new System.Drawing.Size(52, 35);
+            this.butstop.TabIndex = 13;
+            this.butstop.Text = "停止 ||";
+            this.butstop.UseVisualStyleBackColor = true;
+            this.butstop.Click += new System.EventHandler(this.butstop_Click);
+            // 
+            // butback
+            // 
+            this.butback.Location = new System.Drawing.Point(16, 136);
+            this.butback.Name = "butback";
+            this.butback.Size = new System.Drawing.Size(68, 35);
+            this.butback.TabIndex = 14;
+            this.butback.Text = "<< 后退";
+            this.butback.UseVisualStyleBackColor = true;
+            this.butback.Click += new System.EventHandler(this.butback_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("新細明體", 9F);
+            this.label1.ForeColor = System.Drawing.Color.Red;
+            this.label1.Location = new System.Drawing.Point(7, 122);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(65, 12);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "输送带测试";
+            // 
             // FrmRFIDBoxScan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1114, 551);
+            this.ClientSize = new System.Drawing.Size(1114, 634);
+            this.Controls.Add(this.gbStatus);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.gbBoxInfo);
             this.Controls.Add(this.gbBoxs);
@@ -936,6 +1098,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudRunTimes)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMaxTag)).EndInit();
             this.groupBox1.ResumeLayout(false);
+            this.gbStatus.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -967,7 +1130,7 @@
         private System.Windows.Forms.Label labCarton;
         private System.Windows.Forms.TextBox txtCartonNumber;
         private System.Windows.Forms.GroupBox gbScanPort;
-        private System.IO.Ports.SerialPort serialPortRFIDNumber;
+        private System.IO.Ports.SerialPort serialPortRFIDNumber1;
         private System.Windows.Forms.GroupBox gbBoxs;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.DataGridView dgvBoxDetails;
@@ -979,7 +1142,7 @@
         private System.Windows.Forms.Label labStatusRuning;
         private System.Windows.Forms.Label labAlarmStatus;
         private System.Windows.Forms.Label labCartonReaderStatus;
-        private System.Windows.Forms.Label labRFIDReaderStatus;
+        private System.Windows.Forms.Label labRFID3;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Panel pnlMsg;
         private System.Windows.Forms.Label ledAllTimes;
@@ -1006,5 +1169,21 @@
         private System.Windows.Forms.Timer timer2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button butReScan;
+        private System.IO.Ports.SerialPort serialPortRFIDNumber2;
+        private System.IO.Ports.SerialPort serialPortRFIDNumber3;
+        private System.Windows.Forms.Label labRFID1;
+        private System.Windows.Forms.Label labRFID2;
+        private System.Windows.Forms.GroupBox gbStatus;
+        private System.Windows.Forms.Label labPowerControlStatus;
+        private System.Windows.Forms.Label labRFID5;
+        private System.Windows.Forms.Label labRFID4;
+        private System.Windows.Forms.Label labRFID6;
+        private System.IO.Ports.SerialPort serialPortRFIDNumber4;
+        private System.IO.Ports.SerialPort serialPortRFIDNumber5;
+        private System.IO.Ports.SerialPort serialPortRFIDNumber6;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button butback;
+        private System.Windows.Forms.Button butstop;
+        private System.Windows.Forms.Button butgoing;
     }
 }

@@ -118,6 +118,7 @@
             this.cbAutoPrint.TabIndex = 16;
             this.cbAutoPrint.Text = "自动打印";
             this.cbAutoPrint.UseVisualStyleBackColor = true;
+            this.cbAutoPrint.CheckedChanged += new System.EventHandler(this.cbAutoPrint_CheckedChanged);
             this.cbAutoPrint.Click += new System.EventHandler(this.cbAutoPrint_Click);
             // 
             // labOrgID
@@ -180,7 +181,7 @@
             // 
             this.txtReceiptNumber.Location = new System.Drawing.Point(6, 29);
             this.txtReceiptNumber.Name = "txtReceiptNumber";
-            this.txtReceiptNumber.Size = new System.Drawing.Size(196, 21);
+            this.txtReceiptNumber.Size = new System.Drawing.Size(196, 22);
             this.txtReceiptNumber.TabIndex = 0;
             // 
             // label4
@@ -237,7 +238,7 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(337, 33);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(11, 12);
+            this.label6.Size = new System.Drawing.Size(9, 12);
             this.label6.TabIndex = 12;
             this.label6.Text = "-";
             // 
@@ -266,14 +267,14 @@
             // 
             this.dtpStopScanDate.Location = new System.Drawing.Point(353, 27);
             this.dtpStopScanDate.Name = "dtpStopScanDate";
-            this.dtpStopScanDate.Size = new System.Drawing.Size(103, 21);
+            this.dtpStopScanDate.Size = new System.Drawing.Size(103, 22);
             this.dtpStopScanDate.TabIndex = 2;
             // 
             // dtpStarScanDate
             // 
             this.dtpStarScanDate.Location = new System.Drawing.Point(213, 28);
             this.dtpStarScanDate.Name = "dtpStarScanDate";
-            this.dtpStarScanDate.Size = new System.Drawing.Size(120, 21);
+            this.dtpStarScanDate.Size = new System.Drawing.Size(120, 22);
             this.dtpStarScanDate.TabIndex = 1;
             // 
             // splitContainer1
@@ -370,13 +371,13 @@
             this.RmeCopyRows,
             this.RmeExportExcel});
             this.MenuRight.Name = "contextMenuStrip1";
-            this.MenuRight.Size = new System.Drawing.Size(144, 70);
+            this.MenuRight.Size = new System.Drawing.Size(141, 70);
             // 
             // RmeCopyCells
             // 
             this.RmeCopyCells.Image = global::WinForm.Properties.Resources.icons8_复制_64;
             this.RmeCopyCells.Name = "RmeCopyCells";
-            this.RmeCopyCells.Size = new System.Drawing.Size(143, 22);
+            this.RmeCopyCells.Size = new System.Drawing.Size(140, 22);
             this.RmeCopyCells.Text = "CopyCells";
             this.RmeCopyCells.Click += new System.EventHandler(this.RmeCopyCells_Click);
             // 
@@ -384,7 +385,7 @@
             // 
             this.RmeCopyRows.Image = global::WinForm.Properties.Resources.icons8_复制_48;
             this.RmeCopyRows.Name = "RmeCopyRows";
-            this.RmeCopyRows.Size = new System.Drawing.Size(143, 22);
+            this.RmeCopyRows.Size = new System.Drawing.Size(140, 22);
             this.RmeCopyRows.Text = "CopyRows";
             this.RmeCopyRows.Click += new System.EventHandler(this.RmeCopyRows_Click);
             // 
@@ -392,7 +393,7 @@
             // 
             this.RmeExportExcel.Image = global::WinForm.Properties.Resources.Excel_32px_1185986_easyicon_net;
             this.RmeExportExcel.Name = "RmeExportExcel";
-            this.RmeExportExcel.Size = new System.Drawing.Size(143, 22);
+            this.RmeExportExcel.Size = new System.Drawing.Size(140, 22);
             this.RmeExportExcel.Text = "ExportExcel";
             this.RmeExportExcel.Click += new System.EventHandler(this.RmeExportExcel_Click);
             // 
@@ -412,7 +413,7 @@
             this.axGRPrintViewer1.Location = new System.Drawing.Point(984, 10);
             this.axGRPrintViewer1.Name = "axGRPrintViewer1";
             this.axGRPrintViewer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axGRPrintViewer1.OcxState")));
-            this.axGRPrintViewer1.Size = new System.Drawing.Size(127, 45);
+            this.axGRPrintViewer1.Size = new System.Drawing.Size(192, 192);
             this.axGRPrintViewer1.TabIndex = 18;
             this.axGRPrintViewer1.Visible = false;
             // 

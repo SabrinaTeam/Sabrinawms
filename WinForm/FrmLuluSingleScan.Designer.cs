@@ -40,6 +40,11 @@
             this.txtWwmtNumber = new System.Windows.Forms.TextBox();
             this.txtRFIDNumber = new System.Windows.Forms.TextBox();
             this.bgScanNumbers = new System.Windows.Forms.GroupBox();
+            this.labStatusRuning = new System.Windows.Forms.Label();
+            this.labAlarmStatus = new System.Windows.Forms.Label();
+            this.labCartonReaderStatus = new System.Windows.Forms.Label();
+            this.labPolybagStatus = new System.Windows.Forms.Label();
+            this.labRFIDReaderStatus = new System.Windows.Forms.Label();
             this.labMsg = new System.Windows.Forms.Label();
             this.bgCartonInfo = new System.Windows.Forms.GroupBox();
             this.txtCustID = new System.Windows.Forms.TextBox();
@@ -63,6 +68,9 @@
             this.labSizes = new System.Windows.Forms.Label();
             this.labColor = new System.Windows.Forms.Label();
             this.bgCartonLogs = new System.Windows.Forms.GroupBox();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.butSaveLogs = new System.Windows.Forms.Button();
             this.dgvScanLogs = new System.Windows.Forms.DataGridView();
             this.labQtys = new System.Windows.Forms.Label();
@@ -79,13 +87,8 @@
             this.labSizeQty = new System.Windows.Forms.Label();
             this.labRFIDNumber = new System.Windows.Forms.Label();
             this.labPolybagNumber = new System.Windows.Forms.Label();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.labRFIDReaderStatus = new System.Windows.Forms.Label();
-            this.labPolybagStatus = new System.Windows.Forms.Label();
-            this.labCartonReaderStatus = new System.Windows.Forms.Label();
-            this.labAlarmStatus = new System.Windows.Forms.Label();
-            this.labStatusRuning = new System.Windows.Forms.Label();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bgScanNumbers.SuspendLayout();
             this.bgCartonInfo.SuspendLayout();
             this.bgCartonLogs.SuspendLayout();
@@ -214,6 +217,52 @@
             this.bgScanNumbers.TabIndex = 9;
             this.bgScanNumbers.TabStop = false;
             this.bgScanNumbers.Text = "扫描组件";
+            // 
+            // labStatusRuning
+            // 
+            this.labStatusRuning.Location = new System.Drawing.Point(9, 145);
+            this.labStatusRuning.Name = "labStatusRuning";
+            this.labStatusRuning.Size = new System.Drawing.Size(59, 46);
+            this.labStatusRuning.TabIndex = 14;
+            this.labStatusRuning.Text = "Status";
+            this.labStatusRuning.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labStatusRuning.Click += new System.EventHandler(this.labStatusRuning_Click);
+            // 
+            // labAlarmStatus
+            // 
+            this.labAlarmStatus.Location = new System.Drawing.Point(185, 171);
+            this.labAlarmStatus.Name = "labAlarmStatus";
+            this.labAlarmStatus.Size = new System.Drawing.Size(100, 23);
+            this.labAlarmStatus.TabIndex = 13;
+            this.labAlarmStatus.Text = "Alarm";
+            this.labAlarmStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labCartonReaderStatus
+            // 
+            this.labCartonReaderStatus.Location = new System.Drawing.Point(79, 145);
+            this.labCartonReaderStatus.Name = "labCartonReaderStatus";
+            this.labCartonReaderStatus.Size = new System.Drawing.Size(100, 23);
+            this.labCartonReaderStatus.TabIndex = 12;
+            this.labCartonReaderStatus.Text = "CartonReader";
+            this.labCartonReaderStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labPolybagStatus
+            // 
+            this.labPolybagStatus.Location = new System.Drawing.Point(185, 145);
+            this.labPolybagStatus.Name = "labPolybagStatus";
+            this.labPolybagStatus.Size = new System.Drawing.Size(100, 23);
+            this.labPolybagStatus.TabIndex = 11;
+            this.labPolybagStatus.Text = "PolybagReader";
+            this.labPolybagStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labRFIDReaderStatus
+            // 
+            this.labRFIDReaderStatus.Location = new System.Drawing.Point(79, 171);
+            this.labRFIDReaderStatus.Name = "labRFIDReaderStatus";
+            this.labRFIDReaderStatus.Size = new System.Drawing.Size(100, 23);
+            this.labRFIDReaderStatus.TabIndex = 10;
+            this.labRFIDReaderStatus.Text = "RFIDReader";
+            this.labRFIDReaderStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labMsg
             // 
@@ -512,15 +561,51 @@
             // 
             // bgCartonLogs
             // 
+            this.bgCartonLogs.Controls.Add(this.button3);
+            this.bgCartonLogs.Controls.Add(this.button2);
+            this.bgCartonLogs.Controls.Add(this.button1);
             this.bgCartonLogs.Controls.Add(this.butSaveLogs);
             this.bgCartonLogs.Controls.Add(this.dgvScanLogs);
             this.bgCartonLogs.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.bgCartonLogs.Location = new System.Drawing.Point(836, 7);
+            this.bgCartonLogs.Location = new System.Drawing.Point(770, 7);
             this.bgCartonLogs.Name = "bgCartonLogs";
-            this.bgCartonLogs.Size = new System.Drawing.Size(252, 528);
+            this.bgCartonLogs.Size = new System.Drawing.Size(233, 528);
             this.bgCartonLogs.TabIndex = 12;
             this.bgCartonLogs.TabStop = false;
             this.bgCartonLogs.Text = "扫描LOG";
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(106, 303);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 4;
+            this.button3.Text = "setDefault";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Visible = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(106, 274);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 3;
+            this.button2.Text = "setWrong";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Visible = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(106, 245);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "setAllright";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // butSaveLogs
             // 
@@ -545,7 +630,7 @@
             this.dgvScanLogs.Name = "dgvScanLogs";
             this.dgvScanLogs.ReadOnly = true;
             this.dgvScanLogs.RowTemplate.Height = 24;
-            this.dgvScanLogs.Size = new System.Drawing.Size(246, 507);
+            this.dgvScanLogs.Size = new System.Drawing.Size(227, 507);
             this.dgvScanLogs.TabIndex = 0;
             this.dgvScanLogs.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dgvScanLogs_RowPostPaint);
             // 
@@ -557,7 +642,7 @@
             this.labQtys.ForeColor = System.Drawing.SystemColors.ControlText;
             this.labQtys.Location = new System.Drawing.Point(8, 194);
             this.labQtys.Name = "labQtys";
-            this.labQtys.Size = new System.Drawing.Size(505, 331);
+            this.labQtys.Size = new System.Drawing.Size(439, 331);
             this.labQtys.TabIndex = 18;
             this.labQtys.Text = "0";
             this.labQtys.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -566,11 +651,11 @@
             // 
             this.labCartonNumber.BackColor = System.Drawing.SystemColors.Control;
             this.labCartonNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.labCartonNumber.Font = new System.Drawing.Font("新細明體", 24.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.labCartonNumber.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Bold);
             this.labCartonNumber.ForeColor = System.Drawing.SystemColors.ControlText;
             this.labCartonNumber.Location = new System.Drawing.Point(9, 28);
             this.labCartonNumber.Name = "labCartonNumber";
-            this.labCartonNumber.Size = new System.Drawing.Size(375, 44);
+            this.labCartonNumber.Size = new System.Drawing.Size(298, 44);
             this.labCartonNumber.TabIndex = 19;
             this.labCartonNumber.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -578,11 +663,11 @@
             // 
             this.labCartonN.BackColor = System.Drawing.SystemColors.Control;
             this.labCartonN.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.labCartonN.Font = new System.Drawing.Font("新細明體", 24.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.labCartonN.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Bold);
             this.labCartonN.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labCartonN.Location = new System.Drawing.Point(389, 28);
+            this.labCartonN.Location = new System.Drawing.Point(313, 28);
             this.labCartonN.Name = "labCartonN";
-            this.labCartonN.Size = new System.Drawing.Size(124, 44);
+            this.labCartonN.Size = new System.Drawing.Size(134, 44);
             this.labCartonN.TabIndex = 20;
             this.labCartonN.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -590,7 +675,7 @@
             // 
             this.labCantons.AutoSize = true;
             this.labCantons.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labCantons.Location = new System.Drawing.Point(13, 15);
+            this.labCantons.Location = new System.Drawing.Point(12, 16);
             this.labCantons.Name = "labCantons";
             this.labCantons.Size = new System.Drawing.Size(53, 12);
             this.labCantons.TabIndex = 21;
@@ -600,7 +685,7 @@
             // 
             this.labCartonNs.AutoSize = true;
             this.labCartonNs.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labCartonNs.Location = new System.Drawing.Point(392, 14);
+            this.labCartonNs.Location = new System.Drawing.Point(339, 15);
             this.labCartonNs.Name = "labCartonNs";
             this.labCartonNs.Size = new System.Drawing.Size(29, 12);
             this.labCartonNs.TabIndex = 22;
@@ -625,7 +710,7 @@
             this.bgScaninfo.ForeColor = System.Drawing.SystemColors.ControlText;
             this.bgScaninfo.Location = new System.Drawing.Point(311, 6);
             this.bgScaninfo.Name = "bgScaninfo";
-            this.bgScaninfo.Size = new System.Drawing.Size(521, 529);
+            this.bgScaninfo.Size = new System.Drawing.Size(453, 529);
             this.bgScaninfo.TabIndex = 23;
             this.bgScaninfo.TabStop = false;
             this.bgScaninfo.Text = "扫描信息";
@@ -654,7 +739,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label4.Location = new System.Drawing.Point(391, 73);
+            this.label4.Location = new System.Drawing.Point(337, 73);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(53, 12);
             this.label4.TabIndex = 31;
@@ -664,7 +749,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label3.Location = new System.Drawing.Point(263, 72);
+            this.label3.Location = new System.Drawing.Point(243, 73);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(29, 12);
             this.label3.TabIndex = 30;
@@ -674,11 +759,11 @@
             // 
             this.labPolySize.BackColor = System.Drawing.SystemColors.Control;
             this.labPolySize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.labPolySize.Font = new System.Drawing.Font("新細明體", 24.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.labPolySize.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Bold);
             this.labPolySize.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labPolySize.Location = new System.Drawing.Point(260, 86);
+            this.labPolySize.Location = new System.Drawing.Point(237, 86);
             this.labPolySize.Name = "labPolySize";
-            this.labPolySize.Size = new System.Drawing.Size(124, 44);
+            this.labPolySize.Size = new System.Drawing.Size(93, 44);
             this.labPolySize.TabIndex = 29;
             this.labPolySize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -686,11 +771,11 @@
             // 
             this.labSizeQty.BackColor = System.Drawing.SystemColors.Control;
             this.labSizeQty.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.labSizeQty.Font = new System.Drawing.Font("新細明體", 24.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.labSizeQty.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Bold);
             this.labSizeQty.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labSizeQty.Location = new System.Drawing.Point(389, 86);
+            this.labSizeQty.Location = new System.Drawing.Point(336, 85);
             this.labSizeQty.Name = "labSizeQty";
-            this.labSizeQty.Size = new System.Drawing.Size(124, 44);
+            this.labSizeQty.Size = new System.Drawing.Size(111, 44);
             this.labSizeQty.TabIndex = 28;
             this.labSizeQty.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -698,11 +783,11 @@
             // 
             this.labRFIDNumber.BackColor = System.Drawing.SystemColors.Control;
             this.labRFIDNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.labRFIDNumber.Font = new System.Drawing.Font("新細明體", 24.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.labRFIDNumber.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Bold);
             this.labRFIDNumber.ForeColor = System.Drawing.SystemColors.ControlText;
             this.labRFIDNumber.Location = new System.Drawing.Point(8, 146);
             this.labRFIDNumber.Name = "labRFIDNumber";
-            this.labRFIDNumber.Size = new System.Drawing.Size(505, 44);
+            this.labRFIDNumber.Size = new System.Drawing.Size(439, 44);
             this.labRFIDNumber.TabIndex = 27;
             this.labRFIDNumber.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -710,75 +795,29 @@
             // 
             this.labPolybagNumber.BackColor = System.Drawing.SystemColors.Control;
             this.labPolybagNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.labPolybagNumber.Font = new System.Drawing.Font("新細明體", 24.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.labPolybagNumber.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Bold);
             this.labPolybagNumber.ForeColor = System.Drawing.SystemColors.ControlText;
             this.labPolybagNumber.Location = new System.Drawing.Point(9, 86);
             this.labPolybagNumber.Name = "labPolybagNumber";
-            this.labPolybagNumber.Size = new System.Drawing.Size(250, 44);
+            this.labPolybagNumber.Size = new System.Drawing.Size(222, 44);
             this.labPolybagNumber.TabIndex = 26;
             this.labPolybagNumber.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // dataGridViewTextBoxColumn1
             // 
             this.dataGridViewTextBoxColumn1.HeaderText = "Column1";
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             // 
-            // timer1
-            // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // labRFIDReaderStatus
-            // 
-            this.labRFIDReaderStatus.Location = new System.Drawing.Point(79, 171);
-            this.labRFIDReaderStatus.Name = "labRFIDReaderStatus";
-            this.labRFIDReaderStatus.Size = new System.Drawing.Size(100, 23);
-            this.labRFIDReaderStatus.TabIndex = 10;
-            this.labRFIDReaderStatus.Text = "RFIDReader";
-            this.labRFIDReaderStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // labPolybagStatus
-            // 
-            this.labPolybagStatus.Location = new System.Drawing.Point(185, 145);
-            this.labPolybagStatus.Name = "labPolybagStatus";
-            this.labPolybagStatus.Size = new System.Drawing.Size(100, 23);
-            this.labPolybagStatus.TabIndex = 11;
-            this.labPolybagStatus.Text = "PolybagReader";
-            this.labPolybagStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // labCartonReaderStatus
-            // 
-            this.labCartonReaderStatus.Location = new System.Drawing.Point(79, 145);
-            this.labCartonReaderStatus.Name = "labCartonReaderStatus";
-            this.labCartonReaderStatus.Size = new System.Drawing.Size(100, 23);
-            this.labCartonReaderStatus.TabIndex = 12;
-            this.labCartonReaderStatus.Text = "CartonReader";
-            this.labCartonReaderStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // labAlarmStatus
-            // 
-            this.labAlarmStatus.Location = new System.Drawing.Point(185, 171);
-            this.labAlarmStatus.Name = "labAlarmStatus";
-            this.labAlarmStatus.Size = new System.Drawing.Size(100, 23);
-            this.labAlarmStatus.TabIndex = 13;
-            this.labAlarmStatus.Text = "Alarm";
-            this.labAlarmStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // labStatusRuning
-            // 
-            this.labStatusRuning.Location = new System.Drawing.Point(9, 145);
-            this.labStatusRuning.Name = "labStatusRuning";
-            this.labStatusRuning.Size = new System.Drawing.Size(59, 46);
-            this.labStatusRuning.TabIndex = 14;
-            this.labStatusRuning.Text = "Status";
-            this.labStatusRuning.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.labStatusRuning.Click += new System.EventHandler(this.labStatusRuning_Click);
-            // 
             // FrmLuluSingleScan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1095, 540);
+            this.ClientSize = new System.Drawing.Size(1009, 540);
             this.Controls.Add(this.bgScaninfo);
             this.Controls.Add(this.bgCartonLogs);
             this.Controls.Add(this.bgCartonInfo);
@@ -860,5 +899,8 @@
         private System.Windows.Forms.Label labPolybagStatus;
         private System.Windows.Forms.Label labRFIDReaderStatus;
         private System.Windows.Forms.Label labStatusRuning;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
     }
 }

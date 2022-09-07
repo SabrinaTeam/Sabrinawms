@@ -1,5 +1,6 @@
-﻿using Pomelo.Data.MyCat;
-using Pomelo.Data.MySql;
+﻿using MySql.Data.MySqlClient;
+using Pomelo.Data.MyCat;
+
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -8,19 +9,19 @@ using System.Linq;
 using System.Text;
 
 
- 
+
 
 
 namespace DAL
 {
     public class mesEmployeeService
     {
-        public static readonly string MiddleWare = ConfigurationManager.ConnectionStrings["EnableMiddleWare"].ConnectionString; 
+        public static readonly string MiddleWare = ConfigurationManager.ConnectionStrings["EnableMiddleWare"].ConnectionString;
 
         public bool isExistsByaccount(string account)
         {
             string sql = @"SELECT id FROM mesusers WHERE account='" + account + "'";
-          
+
             DataTable dt = new DataTable();
             if (MiddleWare == "1")
             {
@@ -31,7 +32,7 @@ namespace DAL
                 dt = Mysqlfsg_SqlHelper.ExcuteTable(sql);
             }
 
-           
+
 
             if (dt.Rows.Count <= 0)
             {
@@ -45,7 +46,7 @@ namespace DAL
 
         public int addUser(string[] userInfo)
         {
-          
+
             if (userInfo[2] == "")
             {
                 return -2;
@@ -56,8 +57,8 @@ namespace DAL
             };
 
             string sql = @"INSERT INTO mesusers (account,password,UserName,deptID,Marsk)VALUES(@account,@password,@UserName,@deptID,@Marsk);";
-            
-            int insets = 0;           
+
+            int insets = 0;
             if (MiddleWare == "1")
             {
                 MyCatParameter[] p = {
@@ -70,7 +71,7 @@ namespace DAL
                 insets = MyCatfsg_SqlHelper.ExecuteNonQuery(sql, p);
             }
             else
-            { 
+            {
                 MySqlParameter[] p = {
                 new MySqlParameter("account", userInfo[1]),
                 new MySqlParameter("password", userInfo[2]),
@@ -87,7 +88,7 @@ namespace DAL
 
         public int updataUser(string[] userInfo)
         {
-           
+
             string sql = "";
             if (userInfo[2] == "") {
                 sql = @"UPDATE mesusers 
@@ -113,7 +114,7 @@ namespace DAL
             int updatas = 0;
             if (MiddleWare == "1")
             {
-                MyCatParameter[] p = {             
+                MyCatParameter[] p = {
                 new MyCatParameter("ID", userInfo[0]),
                 new MyCatParameter("account", userInfo[1]),
                 new MyCatParameter("password", userInfo[2]),
@@ -155,17 +156,17 @@ namespace DAL
                 cp[0] = new MyCatParameter("account", searchParameter[0]);
                 cp[1] = new MyCatParameter("deptID", deptID);
                 cp[2] = new MyCatParameter("userName", searchParameter[2]);
-               
+
             }
             else
             {
                 mp[0] = new MySqlParameter("account", searchParameter[0]);
                 mp[1] = new MySqlParameter("deptID", deptID);
                 mp[2] = new MySqlParameter("userName", searchParameter[2]);
-                
+
 
             };
-            //  account ,processID, userName 
+            //  account ,processID, userName
             string sql = @"SELECT
 	                            ID,
 	                            account,
@@ -199,9 +200,9 @@ namespace DAL
                                             Marsk 
                                             FROM
 
-	                                            ( SELECT """+ depts[4] + @""" AS DeptName, 
+	                                            ( SELECT """+ depts[4] + @""" AS DeptName,
                                                          """+ depts[5] + @""" AS DeptNumber,
-                                                         """+ depts[7] + @""" AS Marsk FROM DUAL ) AS q 
+                                                         """+ depts[7] + @""" AS Marsk FROM DUAL ) AS q
                                             WHERE
                                                 NOT EXISTS(
                                                 SELECT
@@ -223,4 +224,4 @@ namespace DAL
             return insets;
         }
     }
-} 
+}

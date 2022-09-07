@@ -1378,7 +1378,7 @@ and(size != '' or size is null)  group by od_no,style_id,mas_id,color_no,size--s
         {
             string sqlstr = @"SELECT * from accessoryouth where receiveNumber ='" + reno + "' and receiveNumberBatch= '" + renoBatch + "'";
             DataTable dt = new DataTable();
-            if (MiddleWare == "0")
+            if (MiddleWare == "1")
             {
                 dt = MyCatfsg_SqlHelper.ExcuteTable(sqlstr);
             }

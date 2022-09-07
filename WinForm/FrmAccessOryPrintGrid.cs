@@ -13,8 +13,12 @@ namespace WinForm
 		public static string tagLocation = "";
         public static string taglines = "";
 
-		public  string reportPath = System.Windows.Forms.Application.StartupPath + "\\report.grf"; 
-        public static string dataconnect = "MYSQL;Database=mycat_fsg;Password=Sabrina123;Port=8066;Server=192.168.4.245;User=root";
+		public  string reportPath = System.Windows.Forms.Application.StartupPath + "\\report.grf";
+		//
+		public static string dataconnect = "MYSQL;Server=192.168.4.220; Port=3306; Database=fsg; User=root; Password=Sabrina123;pooling=true;Connect Timeout = 180; CharSet=utf8mb4";
+
+	//	public static string dataconnect = "MYSQL;Database=mycat_fsg;Password=Sabrina123;Port=8066;Server=192.168.4.245;User=root";
+	//	public static string dataconnect = "Server=192.168.4.220; Port=3306; Database=fsg; User=root; Password=Sabrina123;pooling=true;Connect Timeout = 180; CharSet=utf8mb4";
 		CompletedToMesManager cmm = new CompletedToMesManager();
 
 		private GridppReport Report = new GridppReport();
@@ -43,7 +47,7 @@ namespace WinForm
         {
             // MessageBox.Show(System.Windows.Forms.Application.StartupPath);
             //载入报表模板文件，必须保证 Grid++Report 的安装目录在‘C:\Grid++Report 6’下，
-            //关于动态设置报表路径与数据绑定参数请参考其它例子程序  
+            //关于动态设置报表路径与数据绑定参数请参考其它例子程序
             if (tagInvoice.Length <= 0)
             {
 				MessageBox.Show("没有出库单号");
@@ -94,10 +98,10 @@ namespace WinForm
 											mesworktagscans s
 											LEFT JOIN mesdepts d ON d.DeptNumber = s.tagScanDeptID 
 										WHERE
-											s.tagInvoice = '" + tagInvoice + @"' 
+											s.tagInvoice = '" + tagInvoice + @"'
 											and s.tagLocation =  '" + tagLocation + @"'
 										ORDER BY
-											s.tagNumber 
+											s.tagNumber
 										) a
 										  right  JOIN (
 										SELECT
@@ -110,13 +114,13 @@ namespace WinForm
 											s.tagSize,
 											s.tagInvoice,
 											d.DeptName,
-											s.tagScanAccount 
+											s.tagScanAccount
 										FROM
 											mesworktagscans s
-											LEFT JOIN mesdepts d ON d.DeptNumber = s.tagScanDeptID 
+											LEFT JOIN mesdepts d ON d.DeptNumber = s.tagScanDeptID
 										WHERE
-											s.tagInvoice =  '" + tagInvoice + @"'  
-											and s.tagLocation =  '" + tagLocation + @"'  
+											s.tagInvoice =  '" + tagInvoice + @"'
+											and s.tagLocation =  '" + tagLocation + @"'
 										GROUP BY
 											s.tagOrg,
 											s.tagLine,
@@ -126,19 +130,19 @@ namespace WinForm
 											s.tagSize,
 											s.tagInvoice,
 											d.DeptName,
-											s.tagScanAccount 
+											s.tagScanAccount
 										ORDER BY
-											s.tagNumber 
-										) c ON c.tagInvoice = a.tagInvoice 
-										AND c.tagStyle = a.tagstyle 
-										AND c.tagSize = a.tagsize 
+											s.tagNumber
+										) c ON c.tagInvoice = a.tagInvoice
+										AND c.tagStyle = a.tagstyle
+										AND c.tagSize = a.tagsize
 										AND c.tagColor = a.tagcolor
                                         and c.tagLine = a.tagLine
                                     ) d group by  tagOrg,
                                            tagLine,
                                            tagLocation,
                                            tagNumber,
-                                           tagQty, 
+                                           tagQty,
                                            tagStyle,
                                            tagColor,
                                            tagSize,
@@ -147,8 +151,8 @@ namespace WinForm
                                            tagScanAccount";
 
 			Report.LoadFromFile(System.Windows.Forms.Application.StartupPath + "\\report.grf");
-			Report.DetailGrid.Recordset.ConnectionString = dataconnect; 
-			Report.DetailGrid.Recordset.QuerySQL = QuerySQL; 
+			Report.DetailGrid.Recordset.ConnectionString = dataconnect;
+			Report.DetailGrid.Recordset.QuerySQL = QuerySQL;
 			string p = "";
 			if (Part.Length > 11)
             {
@@ -168,7 +172,7 @@ namespace WinForm
 
 		public void isPrintEnd( )
 		{
-			cmm.updataIsPrints(tagInvoice, tagLocation);		  
+			cmm.updataIsPrints(tagInvoice, tagLocation);
 			Report.PrintEnd -= isPrintEnd;//取消侦听注册事件，避免多次侦听
 		}
 	}

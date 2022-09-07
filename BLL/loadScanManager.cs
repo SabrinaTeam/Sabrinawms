@@ -134,63 +134,77 @@ namespace BLL
                         }
                     }else if(tag.Length == 20)
                     {
-                        custNumber = tag.Substring(0, 6);
-                        if(custNumber == "000019")
+                        custNumber = tag.Substring(0, 7);
+                        if (custNumber == "0000843")
                         {
-                            custid = "TNF";
-                            serialFrom = tag;
+                            custid = "VUORI";
+                            serialFrom = tag.Substring(10, 9);
+                            serialFrom = serialFrom.TrimStart('0');
 
                         }
                         else
                         {
-                            custNumber = tag.Substring(0, 5);
-                            switch (custNumber)
+                            custNumber = tag.Substring(0, 6);
+                            if (custNumber == "000019")
                             {
-                                case "00047":
-                                case "00147":
-                                case "00247":
-                                case "00347":
-                                case "00447":
-                                case "00547":
-                                case "00647":
-                                case "00747":
-                                case "00847":
-                                case "00947":
-                                case "00012":
-                                case "00004":
-                                    custid = "NIKE";
-                                    serialFrom = tag.Substring(10, 9);
-                                    serialFrom = serialFrom.TrimStart('0');
-                                    // serialFrom = Convert.ToString(Convert.ToInt32(serialFrom));
-                                    break;
-                                case "00006":
-                                    custid = "LULU";
-                                    serialFrom = tag.Substring(10, 9);
-                                    serialFrom = serialFrom.TrimStart('0');
-                                    // serialFrom = Convert.ToString(Convert.ToInt32(serialFrom));
-                                    break;
-                                case "00008":
-                                    string custnumberall = tag.Substring(0, 8);
-                                    if (custnumberall == "00008848")
-                                    {
-                                        custid = "TNF";
-                                        serialFrom = tag;
-                                    }
-                                    else
-                                    {
-                                        custid = "HURLEY";
+                                custid = "TNF";
+                                serialFrom = tag;
+
+                            }
+
+
+                            else
+                            {
+                                custNumber = tag.Substring(0, 5);
+                                switch (custNumber)
+                                {
+                                    case "00047":
+                                    case "00147":
+                                    case "00247":
+                                    case "00347":
+                                    case "00447":
+                                    case "00547":
+                                    case "00647":
+                                    case "00747":
+                                    case "00847":
+                                    case "00947":
+                                    case "00012":
+                                    case "00004":
+                                        custid = "NIKE";
                                         serialFrom = tag.Substring(10, 9);
-                                    }
-                                    break;
-                                default:
-                                    custid = "NA";
-                                    break;
+                                        serialFrom = serialFrom.TrimStart('0');
+                                        // serialFrom = Convert.ToString(Convert.ToInt32(serialFrom));
+                                        break;
+                                    case "00006":
+                                        custid = "LULU";
+                                        serialFrom = tag.Substring(10, 9);
+                                        serialFrom = serialFrom.TrimStart('0');
+                                        // serialFrom = Convert.ToString(Convert.ToInt32(serialFrom));
+                                        break;
+                                    case "00008":
+                                        string custnumberall = tag.Substring(0, 8);
+                                        if (custnumberall == "00008848")
+                                        {
+                                            custid = "TNF";
+                                            serialFrom = tag;
+                                        }
+                                        else
+                                        {
+                                            custid = "HURLEY";
+                                            serialFrom = tag.Substring(10, 9);
+                                        }
+                                        break;
+                                    default:
+                                        custid = "NA";
+                                        break;
+                                }
                             }
                         }
 
 
 
                     }
+
                     else
                     {
                         custid = "NA";
@@ -358,7 +372,7 @@ namespace BLL
                 location =table.Rows[i]["Location"].ToString().ToUpper();
 
 
-                  if (location is null || location.Length <=0 ||  location.Length >4)
+                  if (location is null || location.Length <=0 ||  location.Length >6)
                 {
                     if (location != "PP" && location != "CH" && location != "GG" && location != "GD")
                     {

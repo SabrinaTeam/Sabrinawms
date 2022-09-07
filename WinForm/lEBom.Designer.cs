@@ -30,14 +30,23 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle55 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle60 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle56 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle57 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle58 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle59 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.gbIEVersion = new System.Windows.Forms.GroupBox();
+            this.ckChangeGroup = new System.Windows.Forms.CheckBox();
+            this.txtNewGroupName = new System.Windows.Forms.TextBox();
+            this.cbSameGroupStyles = new System.Windows.Forms.ComboBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.cbGroupStyleName = new System.Windows.Forms.ComboBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.txtStyleGroup = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.labCreator = new System.Windows.Forms.Label();
             this.labLastModifyDate = new System.Windows.Forms.Label();
             this.labCreateDate = new System.Windows.Forms.Label();
@@ -228,15 +237,6 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.delteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteRowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label10 = new System.Windows.Forms.Label();
-            this.txtStyleGroup = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.cbGroupStyleName = new System.Windows.Forms.ComboBox();
-            this.cbSameGroupStyles = new System.Windows.Forms.ComboBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.txtNewGroupName = new System.Windows.Forms.TextBox();
-            this.ckChangeGroup = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -313,6 +313,93 @@
             this.gbIEVersion.TabIndex = 80;
             this.gbIEVersion.TabStop = false;
             this.gbIEVersion.Text = "IE版本";
+            // 
+            // ckChangeGroup
+            // 
+            this.ckChangeGroup.AutoSize = true;
+            this.ckChangeGroup.Location = new System.Drawing.Point(12, 39);
+            this.ckChangeGroup.Name = "ckChangeGroup";
+            this.ckChangeGroup.Size = new System.Drawing.Size(72, 16);
+            this.ckChangeGroup.TabIndex = 35;
+            this.ckChangeGroup.Text = "更换群组";
+            this.ckChangeGroup.UseVisualStyleBackColor = true;
+            this.ckChangeGroup.CheckedChanged += new System.EventHandler(this.ckChangeGroup_CheckedChanged);
+            // 
+            // txtNewGroupName
+            // 
+            this.txtNewGroupName.Location = new System.Drawing.Point(74, 56);
+            this.txtNewGroupName.Name = "txtNewGroupName";
+            this.txtNewGroupName.Size = new System.Drawing.Size(118, 22);
+            this.txtNewGroupName.TabIndex = 34;
+            this.txtNewGroupName.TabStop = false;
+            // 
+            // cbSameGroupStyles
+            // 
+            this.cbSameGroupStyles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSameGroupStyles.FormattingEnabled = true;
+            this.cbSameGroupStyles.Location = new System.Drawing.Point(74, 104);
+            this.cbSameGroupStyles.Name = "cbSameGroupStyles";
+            this.cbSameGroupStyles.Size = new System.Drawing.Size(118, 20);
+            this.cbSameGroupStyles.TabIndex = 32;
+            this.cbSameGroupStyles.SelectedIndexChanged += new System.EventHandler(this.cbSameGroupStyles_SelectedIndexChanged);
+            this.cbSameGroupStyles.Click += new System.EventHandler(this.cbSameGroupStyles_Click);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(12, 108);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(56, 12);
+            this.label13.TabIndex = 33;
+            this.label13.Text = "同组款号:";
+            // 
+            // cbGroupStyleName
+            // 
+            this.cbGroupStyleName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbGroupStyleName.FormattingEnabled = true;
+            this.cbGroupStyleName.Location = new System.Drawing.Point(74, 81);
+            this.cbGroupStyleName.Name = "cbGroupStyleName";
+            this.cbGroupStyleName.Size = new System.Drawing.Size(118, 20);
+            this.cbGroupStyleName.TabIndex = 30;
+            this.cbGroupStyleName.SelectedIndexChanged += new System.EventHandler(this.cbGroupStyleName_SelectedIndexChanged);
+            this.cbGroupStyleName.Click += new System.EventHandler(this.cbGroupStyleName_Click);
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(12, 85);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(56, 12);
+            this.label12.TabIndex = 31;
+            this.label12.Text = "群组名称:";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(12, 61);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(56, 12);
+            this.label11.TabIndex = 29;
+            this.label11.Text = "新增群组:";
+            // 
+            // txtStyleGroup
+            // 
+            this.txtStyleGroup.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtStyleGroup.Location = new System.Drawing.Point(226, 39);
+            this.txtStyleGroup.Multiline = true;
+            this.txtStyleGroup.Name = "txtStyleGroup";
+            this.txtStyleGroup.ReadOnly = true;
+            this.txtStyleGroup.Size = new System.Drawing.Size(360, 83);
+            this.txtStyleGroup.TabIndex = 26;
+            // 
+            // label10
+            // 
+            this.label10.Location = new System.Drawing.Point(205, 51);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(20, 60);
+            this.label10.TabIndex = 28;
+            this.label10.Text = "群组款号";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labCreator
             // 
@@ -1540,14 +1627,14 @@
             this.dgvIETables.AllowUserToAddRows = false;
             this.dgvIETables.AllowUserToDeleteRows = false;
             this.dgvIETables.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle55.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomLeft;
-            dataGridViewCellStyle55.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle55.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle55.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle55.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle55.SelectionForeColor = System.Drawing.Color.Red;
-            dataGridViewCellStyle55.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvIETables.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle55;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Red;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvIETables.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvIETables.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvIETables.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Scope,
@@ -1563,14 +1650,14 @@
             this.assignmentAllocate,
             this.actualAllocate,
             this.remark});
-            dataGridViewCellStyle60.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle60.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle60.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle60.ForeColor = System.Drawing.Color.Red;
-            dataGridViewCellStyle60.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle60.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle60.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvIETables.DefaultCellStyle = dataGridViewCellStyle60;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Red;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvIETables.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgvIETables.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvIETables.Location = new System.Drawing.Point(0, 0);
             this.dgvIETables.Name = "dgvIETables";
@@ -1594,8 +1681,8 @@
             // 
             // Scope
             // 
-            dataGridViewCellStyle56.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Scope.DefaultCellStyle = dataGridViewCellStyle56;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Scope.DefaultCellStyle = dataGridViewCellStyle2;
             this.Scope.HeaderText = "部件";
             this.Scope.Name = "Scope";
             this.Scope.Resizable = System.Windows.Forms.DataGridViewTriState.True;
@@ -1604,8 +1691,8 @@
             // 
             // partNumber
             // 
-            dataGridViewCellStyle57.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.partNumber.DefaultCellStyle = dataGridViewCellStyle57;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.partNumber.DefaultCellStyle = dataGridViewCellStyle3;
             this.partNumber.HeaderText = "工段号";
             this.partNumber.Name = "partNumber";
             this.partNumber.ReadOnly = true;
@@ -1613,8 +1700,8 @@
             // 
             // partName
             // 
-            dataGridViewCellStyle58.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.partName.DefaultCellStyle = dataGridViewCellStyle58;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.partName.DefaultCellStyle = dataGridViewCellStyle4;
             this.partName.HeaderText = "工段名称";
             this.partName.Name = "partName";
             this.partName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
@@ -1668,9 +1755,9 @@
             // 
             // assignmentAllocate
             // 
-            dataGridViewCellStyle59.Format = "N1";
-            dataGridViewCellStyle59.NullValue = "0.0";
-            this.assignmentAllocate.DefaultCellStyle = dataGridViewCellStyle59;
+            dataGridViewCellStyle5.Format = "N1";
+            dataGridViewCellStyle5.NullValue = "0.0";
+            this.assignmentAllocate.DefaultCellStyle = dataGridViewCellStyle5;
             this.assignmentAllocate.HeaderText = "作业分配(人)";
             this.assignmentAllocate.Name = "assignmentAllocate";
             this.assignmentAllocate.Width = 80;
@@ -1716,7 +1803,7 @@
             // ckAutoPicture
             // 
             this.ckAutoPicture.AutoSize = true;
-            this.ckAutoPicture.Location = new System.Drawing.Point(355, 6);
+            this.ckAutoPicture.Location = new System.Drawing.Point(337, 3);
             this.ckAutoPicture.Name = "ckAutoPicture";
             this.ckAutoPicture.Size = new System.Drawing.Size(96, 16);
             this.ckAutoPicture.TabIndex = 28;
@@ -1727,7 +1814,7 @@
             // 
             // butDelIETable
             // 
-            this.butDelIETable.Location = new System.Drawing.Point(529, 19);
+            this.butDelIETable.Location = new System.Drawing.Point(529, 21);
             this.butDelIETable.Name = "butDelIETable";
             this.butDelIETable.Size = new System.Drawing.Size(57, 34);
             this.butDelIETable.TabIndex = 8;
@@ -1747,7 +1834,7 @@
             // 
             // butModifyIETable
             // 
-            this.butModifyIETable.Location = new System.Drawing.Point(471, 19);
+            this.butModifyIETable.Location = new System.Drawing.Point(471, 21);
             this.butModifyIETable.Name = "butModifyIETable";
             this.butModifyIETable.Size = new System.Drawing.Size(57, 34);
             this.butModifyIETable.TabIndex = 6;
@@ -1757,7 +1844,7 @@
             // 
             // butAddIETable
             // 
-            this.butAddIETable.Location = new System.Drawing.Point(355, 19);
+            this.butAddIETable.Location = new System.Drawing.Point(334, 21);
             this.butAddIETable.Name = "butAddIETable";
             this.butAddIETable.Size = new System.Drawing.Size(57, 34);
             this.butAddIETable.TabIndex = 5;
@@ -1786,11 +1873,11 @@
             // 
             // butCopyAddIETable
             // 
-            this.butCopyAddIETable.Location = new System.Drawing.Point(413, 19);
+            this.butCopyAddIETable.Location = new System.Drawing.Point(397, 21);
             this.butCopyAddIETable.Name = "butCopyAddIETable";
-            this.butCopyAddIETable.Size = new System.Drawing.Size(57, 34);
+            this.butCopyAddIETable.Size = new System.Drawing.Size(73, 34);
             this.butCopyAddIETable.TabIndex = 1;
-            this.butCopyAddIETable.Text = "复制新版本";
+            this.butCopyAddIETable.Text = "复制新版本/新款式";
             this.butCopyAddIETable.UseVisualStyleBackColor = true;
             this.butCopyAddIETable.Click += new System.EventHandler(this.butCopyAddIETable_Click);
             // 
@@ -2183,93 +2270,6 @@
             this.deleteRowToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.deleteRowToolStripMenuItem.Text = "DeleteRow";
             this.deleteRowToolStripMenuItem.Click += new System.EventHandler(this.deleteRowToolStripMenuItem_Click);
-            // 
-            // label10
-            // 
-            this.label10.Location = new System.Drawing.Point(205, 51);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(20, 60);
-            this.label10.TabIndex = 28;
-            this.label10.Text = "群组款号";
-            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // txtStyleGroup
-            // 
-            this.txtStyleGroup.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtStyleGroup.Location = new System.Drawing.Point(226, 39);
-            this.txtStyleGroup.Multiline = true;
-            this.txtStyleGroup.Name = "txtStyleGroup";
-            this.txtStyleGroup.ReadOnly = true;
-            this.txtStyleGroup.Size = new System.Drawing.Size(360, 83);
-            this.txtStyleGroup.TabIndex = 26;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(12, 61);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(56, 12);
-            this.label11.TabIndex = 29;
-            this.label11.Text = "新增群组:";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(12, 85);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(56, 12);
-            this.label12.TabIndex = 31;
-            this.label12.Text = "群组名称:";
-            // 
-            // cbGroupStyleName
-            // 
-            this.cbGroupStyleName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbGroupStyleName.FormattingEnabled = true;
-            this.cbGroupStyleName.Location = new System.Drawing.Point(74, 81);
-            this.cbGroupStyleName.Name = "cbGroupStyleName";
-            this.cbGroupStyleName.Size = new System.Drawing.Size(118, 20);
-            this.cbGroupStyleName.TabIndex = 30;
-            this.cbGroupStyleName.SelectedIndexChanged += new System.EventHandler(this.cbGroupStyleName_SelectedIndexChanged);
-            this.cbGroupStyleName.Click += new System.EventHandler(this.cbGroupStyleName_Click);
-            // 
-            // cbSameGroupStyles
-            // 
-            this.cbSameGroupStyles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbSameGroupStyles.FormattingEnabled = true;
-            this.cbSameGroupStyles.Location = new System.Drawing.Point(74, 104);
-            this.cbSameGroupStyles.Name = "cbSameGroupStyles";
-            this.cbSameGroupStyles.Size = new System.Drawing.Size(118, 20);
-            this.cbSameGroupStyles.TabIndex = 32;
-            this.cbSameGroupStyles.SelectedIndexChanged += new System.EventHandler(this.cbSameGroupStyles_SelectedIndexChanged);
-            this.cbSameGroupStyles.Click += new System.EventHandler(this.cbSameGroupStyles_Click);
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(12, 108);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(56, 12);
-            this.label13.TabIndex = 33;
-            this.label13.Text = "同组款号:";
-            // 
-            // txtNewGroupName
-            // 
-            this.txtNewGroupName.Location = new System.Drawing.Point(74, 56);
-            this.txtNewGroupName.Name = "txtNewGroupName";
-            this.txtNewGroupName.Size = new System.Drawing.Size(118, 22);
-            this.txtNewGroupName.TabIndex = 34;
-            this.txtNewGroupName.TabStop = false;
-            // 
-            // ckChangeGroup
-            // 
-            this.ckChangeGroup.AutoSize = true;
-            this.ckChangeGroup.Location = new System.Drawing.Point(12, 39);
-            this.ckChangeGroup.Name = "ckChangeGroup";
-            this.ckChangeGroup.Size = new System.Drawing.Size(72, 16);
-            this.ckChangeGroup.TabIndex = 35;
-            this.ckChangeGroup.Text = "更换群组";
-            this.ckChangeGroup.UseVisualStyleBackColor = true;
-            this.ckChangeGroup.CheckedChanged += new System.EventHandler(this.ckChangeGroup_CheckedChanged);
             // 
             // lEBom
             // 

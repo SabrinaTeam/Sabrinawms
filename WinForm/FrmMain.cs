@@ -386,5 +386,30 @@ namespace WinForm
             frm.Show();
             frm.Activate();
         }
+
+        private void MenuSingleWeight_Click(object sender, EventArgs e)
+        {
+            FrmSingleWeight frm = FrmSingleWeight.GetSingleton();
+            frm.MdiParent = this;
+            frm.Show();
+            frm.Activate();
+        }
+
+        private void ButBoxBase_Click(object sender, EventArgs e)
+        {
+            FrmSingleWeightMaintain frm = FrmSingleWeightMaintain.GetSingleton();
+            frm.MdiParent = this;
+            frm.Show();
+            frm.Activate();
+
+        }
+
+        private void MenuPackingBase_Click(object sender, EventArgs e)
+        {
+            FrmPackingBase frm = FrmPackingBase.GetSingleton();
+            frm.MdiParent = this;
+            frm.Show();
+            frm.Activate();
+        }
     }
 }

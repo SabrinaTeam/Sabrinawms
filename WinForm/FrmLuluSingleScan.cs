@@ -38,7 +38,7 @@ namespace WinForm
         DataTable ScanLogDB;
         List<int> sizesQtys;
         List<int> ScanSQtys;
-
+        public bool isFullBox = false;
 
 
         // public receiManager rm = new receiManager();
@@ -46,6 +46,10 @@ namespace WinForm
         public int hiedcolumnindex = -1; //是否选中外面
                                          // public int delID = 0; //要删除的ID行号
                                          // public int rowIndex = -1; //表的行索引
+
+        public string RFIDSKUNumber = "";
+        public string NewRFIDNumber = "";
+        public bool doubleScan = true;
         public FrmLuluSingleScan()
         {
             InitializeComponent();
@@ -133,6 +137,7 @@ namespace WinForm
         /// <param name="responseStr"></param>
         public void scancheck(string responseStr)
         {
+
             string noScanQty = "0";
             if (this.txtCartonNoscanQty.Text != "")
                 noScanQty = this.txtCartonNoscanQty.Text;
@@ -145,10 +150,8 @@ namespace WinForm
                 }
                 if (strOpenAlarm == "1")
                 {
-                    this.am.closeportall();
-                    Thread.Sleep(50);
-                    this.am.openport3();
-                    Thread.Sleep(500);
+                    Thread threadA = new Thread(openLights);
+                    threadA.Start("3");
 
                 }
 
@@ -164,21 +167,21 @@ namespace WinForm
                 return;
             }
 
-            if (this.txtStyle.Text == "" || this.labQtys.Text =="OK")
+            if (this.txtStyle.Text == "" || this.labQtys.Text == "OK")
 
             {
                 this.setDefault();
-                if (strOpenMedia == "1")
-                {
-                    am.palyMedia(true);
-                }
-                if (strOpenAlarm == "1")
-                {
-                    this.am.closeportall();
-                    Thread.Sleep(50);
-                    this.am.openport1();
-                    Thread.Sleep(50);
-                }
+                ////   if (strOpenMedia == "1")
+                //  {
+                //      am.palyMedia(true);
+                //  }
+                //  if (strOpenAlarm == "1")
+                //   {
+                //      this.am.closeportall();
+                //      Thread.Sleep(50);
+                //      this.am.openport1();
+                //       Thread.Sleep(50);
+                //   }
                 this.labCartonNumber.Text = responseStr;
                 this.cleanAllText();
                 scanCarton(responseStr, null);
@@ -193,11 +196,8 @@ namespace WinForm
                 }
                 if (strOpenAlarm == "1")
                 {
-                    this.am.closeportall();
-                    Thread.Sleep(50);
-                    this.am.openport2();
-                    this.am.openport3();
-                    Thread.Sleep(50);
+                    Thread threadA = new Thread(openLights);
+                    threadA.Start("2");
                 }
 
 
@@ -216,10 +216,8 @@ namespace WinForm
                     }
                     if (strOpenAlarm == "1")
                     {
-                        this.am.closeportall();
-                        Thread.Sleep(50);
-                        this.am.openport1();
-                        Thread.Sleep(50);
+                        Thread threadA = new Thread(openLights);
+                        threadA.Start("2");
                     }
                     this.labCartonNumber.Text = responseStr;
                     this.cleanAllText();
@@ -235,12 +233,8 @@ namespace WinForm
                 }
                 if (strOpenAlarm == "1")
                 {
-                    this.am.closeportall();
-                    Thread.Sleep(50);
-                    this.am.openport2();
-                    Thread.Sleep(300);
-                    this.am.closeport2();
-                    Thread.Sleep(50);
+                    Thread threadA = new Thread(openLights);
+                    threadA.Start("2");
                 }
 
                 this.setDefault();
@@ -267,10 +261,8 @@ namespace WinForm
                 }
                 if (strOpenAlarm == "1")
                 {
-                    this.am.closeportall();
-                    Thread.Sleep(50);
-                    this.am.openport3();
-                    Thread.Sleep(50);
+                    Thread threadA = new Thread(openLights);
+                    threadA.Start("3");
 
                 }
 
@@ -281,6 +273,12 @@ namespace WinForm
                 this.labCartonN.BackColor = System.Drawing.Color.DarkRed;
                 this.labCartonNumber.ForeColor = System.Drawing.Color.Yellow;
                 this.labCartonN.ForeColor = System.Drawing.Color.Yellow;
+
+                this.labRFIDNumber.BackColor = System.Drawing.Color.DarkRed;
+                this.labRFIDNumber.ForeColor = System.Drawing.Color.Yellow;
+                this.labMsg.ForeColor = Color.Red;
+                this.setWrong();
+
                 return;
             }
             // 截取箱号 并去掉前面的0
@@ -288,7 +286,8 @@ namespace WinForm
             scanno = scanno.TrimStart('0');
             // scanno = Convert.ToString(Convert.ToInt32(scanno));
 
-            this.dgvScanLogs.Rows.Clear(); //本箱已扫描的LOG每一件记录
+            // this.dgvScanLogs.Rows.Clear(); //本箱已扫描的LOG每一件记录
+            this.dgvScanLogs.DataSource = null;
             cleanAllText();
             this.setDefault();
             if (results != null && results > 0)
@@ -302,12 +301,8 @@ namespace WinForm
                     }
                     if (strOpenAlarm == "1")
                     {
-                        am.closeportall();
-                        Thread.Sleep(50);
-                        am.openport1();
-                        Thread.Sleep(300);
-                        am.closeport1();
-                        Thread.Sleep(50);
+                        Thread threadA = new Thread(openLights);
+                        threadA.Start("3");
                     }
 
 
@@ -332,6 +327,34 @@ namespace WinForm
 
             if (dpllist != null)//如果没有外箱数据，返回值为null 需要导入订单号
             {
+                string SKUNO = dpllist[0].SKU.ToString();
+                if (SKUNO == "0" || SKUNO == "")
+                {
+                    this.labMsg.ForeColor = Color.Red;
+                    this.labMsg.Text = "没有RFID资料";
+                    this.txtPolybagNumber.BackColor = SystemColors.Control;
+                    this.txtPolybagNumber.ForeColor = SystemColors.ControlText;
+                    this.txtPolybagNumber.Text = "";
+                    //错误
+                    this.labRFIDNumber.BackColor = System.Drawing.Color.DarkRed;
+                    this.labRFIDNumber.ForeColor = System.Drawing.Color.Yellow;
+                    this.labMsg.ForeColor = Color.Red;
+                    this.setWrong();
+                    if (strOpenMedia == "1")
+                    {
+                        am.palyMedia(false);
+                    }
+                    if (strOpenAlarm == "1")
+                    {
+                        Thread threadA = new Thread(openLights);
+                        threadA.Start("3");
+                    }
+
+
+
+                    return;
+                }
+
                 this.setDefault();
                 this.dgvScanLogs.DataSource = null;
 
@@ -351,12 +374,9 @@ namespace WinForm
                 }
                 if (strOpenAlarm == "1")
                 {
-                    am.closeportall();
-                    Thread.Sleep(50);
-                    am.openport1();
-                    Thread.Sleep(300);
-                    am.closeport1();
-                    Thread.Sleep(50);
+                    Thread threadA = new Thread(openLights);
+                    threadA.Start("2");
+
                 }
 
 
@@ -398,16 +418,19 @@ namespace WinForm
                     this.txtPolybagNumber.ForeColor = SystemColors.ControlText;
                     this.txtPolybagNumber.Text = "";
                     //错误
+                    this.labRFIDNumber.BackColor = System.Drawing.Color.DarkRed;
+                    this.labRFIDNumber.ForeColor = System.Drawing.Color.Yellow;
+                    this.labMsg.ForeColor = Color.Red;
+                    this.setWrong();
                     if (strOpenMedia == "1")
                     {
                         am.palyMedia(false);
                     }
                     if (strOpenAlarm == "1")
                     {
-                        am.closeportall();
-                        Thread.Sleep(50);
-                        am.openport3();
-                        Thread.Sleep(50);
+                        Thread threadA = new Thread(openLights);
+                        threadA.Start("3");
+
                     }
 
                     return;
@@ -443,6 +466,7 @@ namespace WinForm
                 this.labCartonN.Text = dpllist[0].Con_no;
                 this.txtCartonNoscanQty.Text = this.txtCartonQty.Text;
                 this.labCartonNumber.Text = tscanno;
+                // this.txtWwmtNumber.Text = dpllist[0].SKU;
                 this.txtScanSizeQtys.Text = ScanSQ;
 
                 for (int i = 0; i < dpllist.Count; i++)
@@ -471,40 +495,6 @@ namespace WinForm
                     dr["Seanson"] = dpllist[i].Seanson;
                     newCarton.Rows.Add(dr);
                 }
-
-
-
-
-                /*
-
-                //判断是否有上次错误未处理
-                //如果有  显示出错误
-                for (int i = 0; i < dpllist.Count; i++)
-                {
-                    if (dpllist[i].SizeNo != null)
-                    {
-                        if (strOpenAlarm == "1")
-                        {
-                            closeportall();
-                            openport2();
-                        }
-
-                        txtError.PasswordChar = '#';
-                        txtPwd.Enabled = false;
-                        labinfo.Text = "请解锁后再刷，注意是否已替换掉错误内盒";
-                        laberrorbarcode.Text = dpllist[i].SizeNo;
-                        btntempsavebox.Visible = false;
-                        gbError.BackColor = System.Drawing.Color.LightBlue;
-
-                        changColor(System.Drawing.Color.LightBlue);  //锁定
-
-                        gbError.Visible = true;
-                        txtError.Focus();
-
-                        break;
-                    }
-                }
-                */
             }
             else
             {
@@ -515,12 +505,10 @@ namespace WinForm
 
                 if (strOpenAlarm == "1")
                 {
-                    am.closeportall();
-                    Thread.Sleep(50);
-                    am.openport2();
-                    Thread.Sleep(300);
-                    am.closeport2();
-                    Thread.Sleep(50);
+
+                    Thread threadA = new Thread(openLights);
+                    threadA.Start("3");
+
                 }
 
                 this.labMsg.ForeColor = Color.Red;
@@ -538,14 +526,10 @@ namespace WinForm
 
         private void PolybagCheck(string PolybagNumber)
         {
-            /*
-            DataGridViewRow row = (DataGridViewRow)this.dgvScanLogs.Rows[0].Clone();
-            row.Cells[0].Value = PolybagNumber;
-            this.dgvScanLogs.Rows.Add(row);
-            */
 
             if (PolybagNumber == "") { return; }
-            PolybagNumber = PolybagNumber.TrimStart('0');
+            PolybagNumber = PolybagNumber.Trim();
+            //  PolybagNumber = PolybagNumber.TrimStart('0');
             // PolybagNumber = Convert.ToString(Convert.ToInt32(PolybagNumber));
             // 1、本件内包装袋是不是与本箱SKU相等
             if (newCarton != null && newCarton.Rows.Count > 0)
@@ -554,6 +538,7 @@ namespace WinForm
                 int SizeIndex = -1;
                 for (int i = 0; i < newCarton.Rows.Count; i++)
                 {
+                    // string cartonSKU = newCarton.Rows[i]["SKU"].ToString().TrimStart('0');
                     if (PolybagNumber == newCarton.Rows[i]["SKU"].ToString())
                     {
                         isTrue = true;
@@ -563,49 +548,136 @@ namespace WinForm
                 }
                 if (isTrue)
                 {
-                    this.setDefault();
-                    this.labMsg.ForeColor = Color.DarkGreen;
-                    this.labMsg.Text = "包装内袋正确，请扫描 RFID";
-                    this.labRFIDNumber.Text = "";
-                    this.txtPolybagNumber.BackColor = SystemColors.Control;
-                    this.txtPolybagNumber.ForeColor = SystemColors.ControlText;
-                    this.txtPolybagNumber.Text = PolybagNumber;
-                    this.labPolybagNumber.BackColor = System.Drawing.Color.DarkGreen;
-                    this.labPolybagNumber.ForeColor = System.Drawing.Color.White;
-                    this.labPolybagNumber.Text = PolybagNumber;
-                    this.labCartonNumber.BackColor = System.Drawing.Color.DarkGreen;
-                    this.labCartonNumber.ForeColor = System.Drawing.Color.White;
-                    this.labCartonN.BackColor = System.Drawing.Color.DarkGreen;
-                    this.labCartonN.ForeColor = System.Drawing.Color.White;
-                    this.labPolySize.BackColor = System.Drawing.Color.DarkGreen;
-                    this.labSizeQty.BackColor = System.Drawing.Color.DarkGreen;
-                    this.labPolySize.ForeColor = System.Drawing.Color.White;
-                    this.labSizeQty.ForeColor = System.Drawing.Color.White;
-
-                    this.labPolySize.Text = newCarton.Rows[SizeIndex]["Size1"].ToString();
-                    this.labSizeQty.Text = newCarton.Rows[SizeIndex]["Qty"].ToString();
-
-                    if (strOpenMedia == "1")
+                    if (this.txtWwmtNumber.Text == "")
                     {
-                        am.palyMedia(true);
+                        this.labMsg.ForeColor = Color.Red;
+                        this.labMsg.Text = "请先感应 RFID标签";
+                        this.txtPolybagNumber.BackColor = SystemColors.Control;
+                        this.txtPolybagNumber.ForeColor = SystemColors.ControlText;
+                        this.txtPolybagNumber.Text = "";
+                        //错误
+                        if (strOpenMedia == "1")
+                        {
+                            am.palyMedia(false);
+                        }
+                        if (strOpenAlarm == "1")
+                        {
+                            Thread threadA = new Thread(openLights);
+                            threadA.Start("2");
+                        }
+                        return;
                     }
 
-                    // 正确
-                    if (strOpenAlarm == "1")
+                    //    "包装内袋正确"  比较RFID
+                    bool SKUIsTrue = this.CheckSKU(PolybagNumber);
+
+
+
+                    if (SKUIsTrue && this.doubleScan)
                     {
-                        am.closeportall();
-                        Thread.Sleep(50);
-                        am.openport1();
-                        Thread.Sleep(300);
-                        am.closeport1();
-                        Thread.Sleep(50);
+                        this.setAlarm();
+                        this.labMsg.ForeColor = Color.Red;
+                        this.labMsg.Text = "本件已扫描过";
+                        this.txtPolybagNumber.BackColor = SystemColors.Control;
+                        this.txtPolybagNumber.ForeColor = SystemColors.ControlText;
+                        this.txtPolybagNumber.Text = "";
+                        //错误
+                        if (strOpenMedia == "1")
+                        {
+                            am.palyMedia(false);
+                        }
+                        if (strOpenAlarm == "1")
+                        {
+                            Thread threadA = new Thread(openLights);
+                            threadA.Start("2");
+
+
+                        }
+                        return;
 
                     }
+                    else
+                    {
+                        if (SKUIsTrue && !this.doubleScan)
+                        {
+                            this.setAllright();
+                            if (strOpenMedia == "1")
+                            {
+                                am.palyMedia(true);
+
+                            }
+
+                            if (strOpenAlarm == "1")
+                            {
+                                Thread threadA = new Thread(openLights);
+                                threadA.Start("2");
+                            }
+
+                          //  this.setDefault();
+                            this.labMsg.ForeColor = Color.White;
+                            this.labMsg.Text = "包装内袋正确";
+                            this.labRFIDNumber.Text = "";
+                            this.txtPolybagNumber.BackColor = SystemColors.Control;
+                            this.txtPolybagNumber.ForeColor = SystemColors.ControlText;
+                            this.txtPolybagNumber.Text = PolybagNumber;
+                            this.labPolybagNumber.BackColor = System.Drawing.Color.DarkGreen;
+                            this.labPolybagNumber.ForeColor = System.Drawing.Color.White;
+                            this.labPolybagNumber.Text = PolybagNumber;
+                            this.labCartonNumber.BackColor = System.Drawing.Color.DarkGreen;
+                            this.labCartonNumber.ForeColor = System.Drawing.Color.White;
+                            this.labCartonN.BackColor = System.Drawing.Color.DarkGreen;
+                            this.labCartonN.ForeColor = System.Drawing.Color.White;
+                            this.labPolySize.BackColor = System.Drawing.Color.DarkGreen;
+                            this.labSizeQty.BackColor = System.Drawing.Color.DarkGreen;
+                            this.labPolySize.ForeColor = System.Drawing.Color.White;
+                            this.labSizeQty.ForeColor = System.Drawing.Color.White;
+
+                            this.labPolySize.Text = newCarton.Rows[SizeIndex]["Size1"].ToString();
+                            this.labSizeQty.Text = newCarton.Rows[SizeIndex]["Qty"].ToString();
+
+
+
+                            return;
+                        }
+                        else
+                        {
+                            this.labRFIDNumber.BackColor = System.Drawing.Color.DarkRed;
+                            this.labRFIDNumber.ForeColor = System.Drawing.Color.Yellow;
+                            this.labMsg.ForeColor = Color.Red;
+                            this.setWrong();
+
+                            this.labMsg.ForeColor = Color.Red;
+                            this.labMsg.Text = "本件不是本箱的衣服 或本箱本SIZE 已满,请检查";
+                            this.txtPolybagNumber.BackColor = SystemColors.Control;
+                            this.txtPolybagNumber.ForeColor = SystemColors.ControlText;
+                            this.txtPolybagNumber.Text = "";
+                            //错误
+                            if (strOpenMedia == "1")
+                            {
+                                am.palyMedia(false);
+                            }
+                            if (strOpenAlarm == "1")
+                            {
+                                Thread threadA = new Thread(openLights);
+                                threadA.Start("3");
+                            }
+
+                            return;
+                        }
+
+
+                    }
+
+
 
 
                 }
                 else
                 {
+                    this.labRFIDNumber.BackColor = System.Drawing.Color.DarkRed;
+                    this.labRFIDNumber.ForeColor = System.Drawing.Color.Yellow;
+                    this.labMsg.ForeColor = Color.Red;
+                    this.setWrong();
                     this.labMsg.ForeColor = Color.Red;
                     this.labMsg.Text = "包装内袋错语，请检查";
                     this.txtPolybagNumber.BackColor = SystemColors.Control;
@@ -631,10 +703,8 @@ namespace WinForm
                     }
                     if (strOpenAlarm == "1")
                     {
-                        am.closeportall();
-                        Thread.Sleep(50);
-                        am.openport3();
-                        Thread.Sleep(50);
+                        Thread threadA = new Thread(openLights);
+                        threadA.Start("3");
 
                     }
 
@@ -643,6 +713,10 @@ namespace WinForm
             }
             else
             {
+                this.labRFIDNumber.BackColor = System.Drawing.Color.DarkRed;
+                this.labRFIDNumber.ForeColor = System.Drawing.Color.Yellow;
+                this.labMsg.ForeColor = Color.Red;
+                this.setWrong();
                 this.labMsg.ForeColor = Color.Red;
                 this.labMsg.Text = "请先扫描外箱贴纸，谢谢";
                 this.txtPolybagNumber.BackColor = SystemColors.Control;
@@ -655,134 +729,22 @@ namespace WinForm
                 }
                 if (strOpenAlarm == "1")
                 {
-                    am.closeportall();
-                    Thread.Sleep(50);
-                    am.openport3();
-                    Thread.Sleep(50);
+                    Thread threadA = new Thread(openLights);
+                    threadA.Start("3");
                 }
 
                 return;
 
             }
-
-
-
         }
-        private void RFIDCheck(string RFIDNumber)
+        public bool CheckSKU(string PolyBagsku)
         {
-            if (newCarton == null || newCarton.Rows.Count <= 0)
-            {
-                this.labMsg.ForeColor = Color.Red;
-                this.labMsg.Text = "请先扫描外箱贴纸，谢谢";
-
-                this.txtPolybagNumber.BackColor = SystemColors.Control;
-                this.txtPolybagNumber.ForeColor = SystemColors.ControlText;
-                this.txtPolybagNumber.Text = "";
-                //错误
-                if (strOpenMedia == "1")
-                {
-                    am.palyMedia(false);
-                }
-                if (strOpenAlarm == "1")
-                {
-                    am.closeportall();
-                    Thread.Sleep(50);
-                    am.openport3();
-                    Thread.Sleep(50);
-                }
-
-                return;
-            }
-            if (this.labPolybagNumber.Text == "")
-            {
-                this.labMsg.ForeColor = Color.Red;
-                this.labMsg.Text = "请先扫描 Polybag 条码，谢谢";
-                this.labPolybagNumber.BackColor = Color.DarkRed;
-                this.labPolybagNumber.ForeColor = Color.Yellow;
-                this.labPolybagNumber.Text = "";
-                this.labPolySize.Text = "";
-                this.labSizeQty.Text = "";
-
-                this.labPolySize.BackColor = System.Drawing.Color.DarkRed;
-                this.labSizeQty.BackColor = System.Drawing.Color.DarkRed;
-                this.labPolySize.ForeColor = System.Drawing.Color.Yellow;
-                this.labSizeQty.ForeColor = System.Drawing.Color.Yellow;
-                //错误
-                if (strOpenMedia == "1")
-                {
-                    am.palyMedia(false);
-                }
-                if (strOpenAlarm == "1")
-                {
-                    am.closeportall();
-                    Thread.Sleep(50);
-                    am.openport3();
-                    Thread.Sleep(50);
-                }
-
-                return;
-            }
-            // 2、解析本件 RFID号码为 SKU
-            string SKUNumber = "";
-            // 解析RFID号码到SKU
-            if (!lscm.IsHexadecimal(RFIDNumber))
-            {
-                // 本件已扫描过
-                this.labMsg.ForeColor = Color.Red;
-                this.labMsg.Text = "不是有效的RFID号码，请检查。";
-                this.labRFIDNumber.BackColor = System.Drawing.Color.DarkRed;
-                this.labRFIDNumber.ForeColor = System.Drawing.Color.Yellow;
-                if (strOpenMedia == "1")
-                {
-                    am.palyMedia(false);
-                }
-                if (strOpenAlarm == "1")
-                {
-                    am.closeportall();
-                    Thread.Sleep(50);
-                    am.openport3();
-                    Thread.Sleep(50);
-
-                }
-
-                return;
-            }
-
-            if (this.txtCustID.Text == "LULU")
-            {
-                SKUNumber = this.getLuluSKUByRFID(RFIDNumber);
-            }
-            else if (this.txtCustID.Text == "NIKE")
-            {
-                SKUNumber = this.getNikeSKUByRFID(RFIDNumber);
-            }
-            else
-            {
-                // 包装袋与吊卡不一样
-                this.labMsg.ForeColor = Color.Red;
-                this.labMsg.Text = "非 LULU , NIKE 品牌， 暂时不能进行单件扫描。谢谢";
-                this.labRFIDNumber.BackColor = System.Drawing.Color.DarkRed;
-                this.labRFIDNumber.ForeColor = System.Drawing.Color.Yellow;
-                if (strOpenMedia == "1")
-                {
-                    am.palyMedia(false);
-                }
-                if (strOpenAlarm == "1")
-                {
-                    am.closeportall();
-                    Thread.Sleep(50);
-                    am.openport3();
-                    Thread.Sleep(50);
-
-                }
-
-                return;
-            }
-
+            //比较是不是正确的衣服了了  RFIDSKUNumber
             int qty = 0;
             int SizeIndex = -1;
             bool skuIsTrue = false;
-            bool doubleScan = true;
+            this.isFullBox = false;
+
             bool bagSureWWMT = false;
             for (int i = 0; i < newCarton.Rows.Count; i++)
             {
@@ -791,10 +753,10 @@ namespace WinForm
 
             for (int i = 0; i < newCarton.Rows.Count; i++)
             {
-                if (SKUNumber == newCarton.Rows[i]["SKU"].ToString())
+                if (PolyBagsku == newCarton.Rows[i]["SKU"].ToString())
                 {
                     skuIsTrue = true;
-                    if (this.labPolybagNumber.Text != "" && SKUNumber == this.labPolybagNumber.Text)
+                    if (this.txtWwmtNumber.Text != "" && PolyBagsku == this.txtWwmtNumber.Text)
                     {
                         bagSureWWMT = true;
                     }
@@ -802,15 +764,18 @@ namespace WinForm
                     {
                         bagSureWWMT = false;
                     }
-                    if (!lscm.checkRfids(rfids, RFIDNumber))
+                    //  SizeIndex = i;
+                    if (!lscm.checkRfids(rfids, NewRFIDNumber))
                     {
                         SizeIndex = i;
-                        doubleScan = false;
+                        this.doubleScan = false;
                         break;
                     }
                     else
                     {
-                        doubleScan = true;
+
+                        this.doubleScan = true;
+
                         break;
                     }
                 }
@@ -818,39 +783,43 @@ namespace WinForm
                 {
                     skuIsTrue = false;
                 }
-
             }
-
 
             if (skuIsTrue)
             {
-                if (!bagSureWWMT)
+                if (!this.doubleScan)
                 {
-                    // 包装袋与吊卡不一样
-                    this.labMsg.ForeColor = Color.Red;
-                    this.labMsg.Text = "包装袋与吊卡一不至";
-                    this.labRFIDNumber.BackColor = System.Drawing.Color.DarkRed;
-                    this.labRFIDNumber.ForeColor = System.Drawing.Color.Yellow;
-                    if (strOpenMedia == "1")
-                    {
-                        am.palyMedia(false);
-                    }
-                    if (strOpenAlarm == "1")
-                    {
-                        am.closeportall();
-                        Thread.Sleep(50);
-                        am.openport3();
-                        Thread.Sleep(50);
 
-                    }
-
-                    return;
-                }
-                if (!doubleScan)
-                {
-                    if ((ScanSQtys[SizeIndex] + 1) > sizesQtys[SizeIndex])
+                    if (!bagSureWWMT && this.labPolybagNumber.Text != "")
                     {
                         // 包装袋与吊卡不一样
+                        this.labRFIDNumber.BackColor = System.Drawing.Color.DarkRed;
+                        this.labRFIDNumber.ForeColor = System.Drawing.Color.Yellow;
+                        this.labMsg.ForeColor = Color.Red;
+                        this.setWrong();
+
+                        this.labMsg.ForeColor = Color.Red;
+                        this.labMsg.Text = "包装袋与吊卡不一致";
+                        this.labRFIDNumber.BackColor = System.Drawing.Color.DarkRed;
+                        this.labRFIDNumber.ForeColor = System.Drawing.Color.Yellow;
+                        if (strOpenMedia == "1")
+                        {
+                            am.palyMedia(false);
+                        }
+                        if (strOpenAlarm == "1")
+                        {
+                            Thread threadA = new Thread(openLights);
+                            threadA.Start("3");
+                        }
+                        return false;
+                    }
+                    if ((ScanSQtys[SizeIndex] + 1) > sizesQtys[SizeIndex])
+                    {
+                        // Sizi 数量已满
+                        this.labRFIDNumber.BackColor = System.Drawing.Color.DarkRed;
+                        this.labRFIDNumber.ForeColor = System.Drawing.Color.Yellow;
+                        this.labMsg.ForeColor = Color.Red;
+                        this.setWrong();
                         this.labMsg.ForeColor = Color.Red;
                         this.labMsg.Text = "本箱此 SIZE 【" + newCarton.Rows[SizeIndex]["Size1"].ToString() + "】 已满，请检查！";
                         this.labRFIDNumber.BackColor = System.Drawing.Color.DarkRed;
@@ -861,133 +830,163 @@ namespace WinForm
                         }
                         if (strOpenAlarm == "1")
                         {
-                            am.closeportall();
-                            Thread.Sleep(50);
-                            am.openport2();
-                            Thread.Sleep(300);
-                            am.closeport2();
-                            Thread.Sleep(50);
+                            Thread threadA = new Thread(openLights);
+                            threadA.Start("2");
                         }
-                        return;
+                        return false;
                     }
 
 
 
-
-                    rfids.Add(RFIDNumber);
-                    this.setDefault();
-                    this.txtCartonScanQty.BackColor = SystemColors.Control;
-                    this.txtCartonScanQty.ForeColor = SystemColors.ControlText;
-                    this.txtRFIDNumber.BackColor = SystemColors.Control;
-                    this.txtRFIDNumber.ForeColor = SystemColors.ControlText;
-                    this.txtWwmtNumber.BackColor = SystemColors.Control;
-                    this.txtWwmtNumber.ForeColor = SystemColors.ControlText;
-
-
-
-
-                    this.labMsg.ForeColor = Color.DarkGreen;
-                    this.labMsg.Text = "正确，请扫描下一件";
-                    this.labPolybagNumber.Text = "";
-                    this.labPolySize.Text = "";
-                    this.labSizeQty.Text = "";
-                    this.txtCartonScanQty.Text = rfids.Count.ToString();
-                    this.labQtys.Text = rfids.Count.ToString();
-                    this.txtRFIDNumber.Text = RFIDNumber;
-                    this.txtWwmtNumber.Text = SKUNumber;
-                    this.txtCartonNoscanQty.Text = Convert.ToString(Convert.ToInt32(this.txtCartonQty.Text) - rfids.Count);
-
-                    this.labRFIDNumber.BackColor = System.Drawing.Color.DarkGreen;
-                    this.labRFIDNumber.ForeColor = System.Drawing.Color.White;
-                    this.labRFIDNumber.Text = RFIDNumber;
-
-                    this.labCartonNumber.BackColor = System.Drawing.Color.DarkGreen;
-                    this.labCartonNumber.ForeColor = System.Drawing.Color.White;
-                    this.labCartonN.BackColor = System.Drawing.Color.DarkGreen;
-                    this.labCartonN.ForeColor = System.Drawing.Color.White;
-                    this.labPolybagNumber.BackColor = System.Drawing.Color.DarkGreen;
-                    this.labPolybagNumber.ForeColor = System.Drawing.Color.White;
-
-                    this.labPolySize.BackColor = System.Drawing.Color.DarkGreen;
-                    this.labSizeQty.BackColor = System.Drawing.Color.DarkGreen;
-                    this.labPolySize.ForeColor = System.Drawing.Color.White;
-                    this.labSizeQty.ForeColor = System.Drawing.Color.White;
-
-
-                    string ScanSQ = "";
-                    ScanSQtys[SizeIndex] = ScanSQtys[SizeIndex] + 1;
-                    for (int i = 0; i < ScanSQtys.Count; i++)
+                    if (RFIDSKUNumber == PolyBagsku)
                     {
-                        ScanSQ = ScanSQ + "   " + ScanSQtys[i].ToString();
-                    }
-                    ScanSQ = ScanSQ.Substring(3, ScanSQ.Length - 3);
-                    this.txtScanSizeQtys.Text = ScanSQ;
+                        rfids.Add(NewRFIDNumber);
+                        this.setDefault();
+                        this.txtCartonScanQty.BackColor = SystemColors.Control;
+                        this.txtCartonScanQty.ForeColor = SystemColors.ControlText;
+                        this.txtRFIDNumber.BackColor = SystemColors.Control;
+                        this.txtRFIDNumber.ForeColor = SystemColors.ControlText;
+                        this.txtWwmtNumber.BackColor = SystemColors.Control;
+                        this.txtWwmtNumber.ForeColor = SystemColors.ControlText;
 
 
-                    // 添加日志
-                    DataRow dr = ScanLogDB.NewRow();
-                    dr["CustID"] = this.txtCustID.Text;
-                    dr["CartonNumber"] = this.labCartonNumber.Text;
-                    dr["PolyBagNumber"] = SKUNumber;
-                    dr["RFIDNumber"] = RFIDNumber;
-                    dr["WWMTNumber"] = this.txtWwmtNumber.Text;
-                    dr["Buyer_item"] = newCarton.Rows[0]["Buyer_Item"].ToString();
-                    dr["Color_code"] = newCarton.Rows[0]["color_code"].ToString();
-                    dr["Size1"] = newCarton.Rows[SizeIndex]["Size1"].ToString();
-                    dr["Qty"] = "1";// newCarton.Rows[SizeIndex]["qty"].ToString();
-                    dr["Org"] = newCarton.Rows[0]["org"].ToString();
-                    dr["PO"] = newCarton.Rows[0]["PO"].ToString();
-                    dr["ScanTime"] = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                    dr["ScanHost"] = Dns.GetHostName().ToUpper();
-                    ScanLogDB.Rows.Add(dr);
-                    this.dgvScanLogs.DataSource = ScanLogDB;
+                        this.labMsg.ForeColor = Color.DarkGreen;
+                        this.labMsg.Text = "正确，请扫描下一件";
+                        this.labPolybagNumber.Text = "";
+                        this.labPolySize.Text = "";
+                        this.labSizeQty.Text = "";
+                        this.txtCartonScanQty.Text = rfids.Count.ToString();
+                        this.labQtys.Text = rfids.Count.ToString();
+                        // this.txtRFIDNumber.Text = NewRFIDNumber;
+                        this.txtWwmtNumber.Text = RFIDSKUNumber;
+                        this.txtCartonNoscanQty.Text = Convert.ToString(Convert.ToInt32(this.txtCartonQty.Text) - rfids.Count);
+
+                        this.labRFIDNumber.BackColor = System.Drawing.Color.DarkGreen;
+                        this.labRFIDNumber.ForeColor = System.Drawing.Color.White;
+                        this.labRFIDNumber.Text = RFIDSKUNumber;
+
+                        this.labCartonNumber.BackColor = System.Drawing.Color.DarkGreen;
+                        this.labCartonNumber.ForeColor = System.Drawing.Color.White;
+                        this.labCartonN.BackColor = System.Drawing.Color.DarkGreen;
+                        this.labCartonN.ForeColor = System.Drawing.Color.White;
+                        this.labPolybagNumber.BackColor = System.Drawing.Color.DarkGreen;
+                        this.labPolybagNumber.ForeColor = System.Drawing.Color.White;
+
+                        this.labPolySize.BackColor = System.Drawing.Color.DarkGreen;
+                        this.labSizeQty.BackColor = System.Drawing.Color.DarkGreen;
+                        this.labPolySize.ForeColor = System.Drawing.Color.White;
+                        this.labSizeQty.ForeColor = System.Drawing.Color.White;
+                        string ScanSQ = "";
+                        ScanSQtys[SizeIndex] = ScanSQtys[SizeIndex] + 1;
+                        for (int i = 0; i < ScanSQtys.Count; i++)
+                        {
+                            ScanSQ = ScanSQ + "   " + ScanSQtys[i].ToString();
+                        }
+                        ScanSQ = ScanSQ.Substring(3, ScanSQ.Length - 3);
+                        this.txtScanSizeQtys.Text = ScanSQ;
 
 
-                    // 确认是否满箱
-                    if (this.txtCartonQty.Text.ToString() == rfids.Count.ToString())
-                    {
-                        this.SaveScanLogs();
+                        // 添加日志
+                        DataRow dr = ScanLogDB.NewRow();
+                        dr["CustID"] = this.txtCustID.Text;
+                        dr["CartonNumber"] = this.labCartonNumber.Text;
+                        dr["PolyBagNumber"] = RFIDSKUNumber;
+                        dr["RFIDNumber"] = NewRFIDNumber;
+                        dr["WWMTNumber"] = this.txtWwmtNumber.Text;
+                        dr["Buyer_item"] = newCarton.Rows[0]["Buyer_Item"].ToString();
+                        dr["Color_code"] = newCarton.Rows[0]["color_code"].ToString();
+                        dr["Size1"] = newCarton.Rows[SizeIndex]["Size1"].ToString();
+                        dr["Qty"] = "1";// newCarton.Rows[SizeIndex]["qty"].ToString();
+                        dr["Org"] = newCarton.Rows[0]["org"].ToString();
+                        dr["PO"] = newCarton.Rows[0]["PO"].ToString();
+                        dr["ScanTime"] = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                        dr["ScanHost"] = Dns.GetHostName().ToUpper();
+                        ScanLogDB.Rows.Add(dr);
+                        this.dgvScanLogs.DataSource = ScanLogDB;
+
+                        // 确认是否满箱
+                        if (this.txtCartonQty.Text.ToString() == rfids.Count.ToString())  //
+                        {
+                            this.isFullBox = true;
+
+                            if (!this.SaveScanLogs())
+                            {
+                                this.setWrong();
+                                this.labMsg.ForeColor = Color.Red;
+                                this.labMsg.Text = "保存扫描记录失败，请重试保存";
+                                this.labRFIDNumber.BackColor = System.Drawing.Color.DarkRed;
+                                this.labRFIDNumber.ForeColor = System.Drawing.Color.Yellow;
+                                if (strOpenMedia == "1")
+                                {
+                                    am.palyMedia(false);
+                                }
+                                if (strOpenAlarm == "1")
+                                {
+                                    Thread threadA = new Thread(openLights);
+                                    threadA.Start("2");
+                                }
+
+                                this.butSaveLogs.Visible = true;
+                                this.isFullBox = false;
+                                return this.isFullBox;
+
+                            }
+                            else
+                            {
+                                this.butSaveLogs.Visible = false;
+                                this.ScanLogDB.Rows.Clear();
+                                this.ScanLogDB.Columns.Clear();
+                                this.labMsg.Text = "满箱，请扫描下一箱";
+                                this.labQtys.Text = "OK";
+                                this.setAllright();
+                                Thread.Sleep(0);
+                                this.Refresh();
+                                //保存扫描 LOG日志文件
+
+                                if (strOpenMedia == "1")
+                                {
+                                    am.palyMedia(true);
+                                }
+                                if (strOpenAlarm == "1")
+                                {
+                                    Thread threadA = new Thread(openLights);
+                                    threadA.Start("2");
+
+                                }
+                                this.isFullBox = true;
+                                return this.isFullBox;
+
+                            }
+                        }
+                        /*
+                        else
+                        {
+                            if (strOpenMedia == "1")
+                            {
+                                am.palyMedia(true);
+                            }
+                            if (strOpenAlarm == "1")
+                            {
+                                am.closeportall();
+                                Thread.Sleep(50);
+                                am.openport1();
+                                Thread.Sleep(300);
+                                am.closeport1();
+                                Thread.Sleep(50);
+                            }
+
+                        }
+                        */
+                        return true;
                     }
                     else
                     {
-                        if (strOpenMedia == "1")
-                        {
-                            am.palyMedia(true);
-                        }
-                        if (strOpenAlarm == "1")
-                        {
-                            am.closeportall();
-                            Thread.Sleep(50);
-                            am.openport1();
-                            Thread.Sleep(300);
-                            am.closeport1();
-                            Thread.Sleep(50);
-                        }
-
+                        return false;
                     }
                 }
                 else
                 {
-                    // 本件已扫描过
-                    this.labMsg.ForeColor = Color.Red;
-                    this.labMsg.Text = "本件已扫描过，请扫描下一件";
-                    this.labRFIDNumber.BackColor = System.Drawing.Color.DarkRed;
-                    this.labRFIDNumber.ForeColor = System.Drawing.Color.Yellow;
-                    if (strOpenMedia == "1")
-                    {
-                        am.palyMedia(false);
-                    }
-                    if (strOpenAlarm == "1")
-                    {
-                        am.closeportall();
-                        Thread.Sleep(50);
-                        am.openport2();
-                        Thread.Sleep(300);
-                        am.closeport2();
-                        Thread.Sleep(50);
-
-                    }
-
+                    return true;
                 }
 
             }
@@ -1006,13 +1005,157 @@ namespace WinForm
                 }
                 if (strOpenAlarm == "1")
                 {
-                    am.closeportall();
-                    Thread.Sleep(50);
-                    am.openport3();
-                    Thread.Sleep(50);
+                    Thread threadA = new Thread(openLights);
+                    threadA.Start("3");
 
                 }
+                return false;
 
+            }
+        }
+        private void RFIDCheck(string RFIDNumber)
+        {
+            this.RFIDSKUNumber = "";
+            this.NewRFIDNumber = RFIDNumber;
+            if (newCarton == null || newCarton.Rows.Count <= 0)
+            {
+                this.labRFIDNumber.BackColor = System.Drawing.Color.DarkRed;
+                this.labRFIDNumber.ForeColor = System.Drawing.Color.Yellow;
+                this.labMsg.ForeColor = Color.Red;
+                this.setWrong();
+                this.labMsg.ForeColor = Color.Red;
+                this.labMsg.Text = "请先扫描外箱贴纸，谢谢";
+                this.txtPolybagNumber.BackColor = SystemColors.Control;
+                this.txtPolybagNumber.ForeColor = SystemColors.ControlText;
+                this.txtPolybagNumber.Text = "";
+                //错误
+                if (strOpenMedia == "1")
+                {
+                    am.palyMedia(false);
+                }
+                if (strOpenAlarm == "1")
+                {
+                    Thread threadA = new Thread(openLights);
+                    threadA.Start("3");
+                }
+
+                return;
+            }
+            // 2、解析本件 RFID号码为 SKU
+            // string SKUNumber = "";
+            // 解析RFID号码到SKU
+            if (!lscm.IsHexadecimal(RFIDNumber))
+            {
+
+                // 不是有效的RFID号码
+
+                this.labMsg.ForeColor = Color.Red;
+                this.labMsg.Text = "不是有效的RFID号码，请检查。";
+                this.labRFIDNumber.BackColor = System.Drawing.Color.DarkRed;
+                this.labRFIDNumber.ForeColor = System.Drawing.Color.Yellow;
+                if (strOpenMedia == "1")
+                {
+                    am.palyMedia(false);
+                }
+                if (strOpenAlarm == "1")
+                {
+                    Thread threadA = new Thread(openLights);
+                    threadA.Start("3");
+                }
+
+                return;
+
+            }
+
+            if (this.txtCustID.Text == "LULU")
+            {
+                RFIDSKUNumber = this.getLuluSKUByRFID(RFIDNumber);
+                this.txtWwmtNumber.Text = RFIDSKUNumber;
+            }
+            else if (this.txtCustID.Text == "NIKE")
+            {
+                RFIDSKUNumber = this.getNikeSKUByRFID(RFIDNumber);
+                this.txtWwmtNumber.Text = RFIDSKUNumber;
+            }
+            else
+            {
+                this.labRFIDNumber.BackColor = System.Drawing.Color.DarkRed;
+                this.labRFIDNumber.ForeColor = System.Drawing.Color.Yellow;
+                this.labMsg.ForeColor = Color.Red;
+                this.setWrong();
+
+                this.txtWwmtNumber.Text = "";
+                // 非 LULU , NIKE 品牌
+                this.labMsg.ForeColor = Color.Red;
+                this.labMsg.Text = "非 LULU , NIKE 品牌， 暂时不能进行单件扫描。谢谢";
+                this.labRFIDNumber.BackColor = System.Drawing.Color.DarkRed;
+                this.labRFIDNumber.ForeColor = System.Drawing.Color.Yellow;
+                if (strOpenMedia == "1")
+                {
+                    am.palyMedia(false);
+                }
+                if (strOpenAlarm == "1")
+                {
+                    Thread threadA = new Thread(openLights);
+                    threadA.Start("3");
+
+                }
+                return;
+            }
+            // if(RFIDSKUNumber != "")
+            bool skuIsTrue = false;
+
+            for (int i = 0; i < newCarton.Rows.Count; i++)
+            {
+                if (RFIDSKUNumber == newCarton.Rows[i]["SKU"].ToString())
+                {
+                    skuIsTrue = true;
+                    this.txtWwmtNumber.Text = RFIDSKUNumber;
+                    this.labRFIDNumber.Text = RFIDNumber;
+                    this.labMsg.ForeColor = Color.White;
+                    this.labMsg.Text = "吊卡正确";
+
+                    this.setRFIDright();
+
+                    if (strOpenMedia == "1")
+                    {
+                        am.palyMediaBi();
+                    }
+                    if (strOpenAlarm == "1")
+                    {
+                        Thread threadA = new Thread(openLights);
+                        threadA.Start("2");
+                    }
+
+                    break;
+                }
+                else
+                {
+                    this.txtWwmtNumber.Text = "";
+                    skuIsTrue = false;
+                }
+            }
+            if (!skuIsTrue)
+            {
+                this.labRFIDNumber.BackColor = System.Drawing.Color.DarkRed;
+                this.labRFIDNumber.ForeColor = System.Drawing.Color.Yellow;
+                this.labMsg.ForeColor = Color.Red;
+                this.setWrong();
+                // 包装袋与吊卡不一样
+                this.labMsg.ForeColor = Color.Red;
+                this.labMsg.Text = "吊卡与外箱SKU不一致";
+                this.labRFIDNumber.BackColor = System.Drawing.Color.DarkRed;
+                this.labRFIDNumber.ForeColor = System.Drawing.Color.Yellow;
+                if (strOpenMedia == "1")
+                {
+                    am.palyMedia(false);
+                }
+                if (strOpenAlarm == "1")
+                {
+                    Thread threadA = new Thread(openLights);
+                    threadA.Start("3");
+                }
+                return;
             }
         }
 
@@ -1037,7 +1180,17 @@ namespace WinForm
             string BinString = (RFIDCode[0] + RFIDCode[1] + RFIDCode[2] + RFIDCode[3]);
             // 2 转 10
             SKUNumber = Convert.ToInt32(BinString, 2).ToString();
-            return SKUNumber;
+
+            if (SKUNumber.Length < 12)
+            {
+                string zore = "0";
+                for (int i = 1; i < 12 - SKUNumber.Length; i++)
+                {
+                    zore = zore + "0";
+                }
+                return zore + SKUNumber.ToString();
+            }
+            return SKUNumber.ToString();
         }
 
         public string getNikeSKUByRFID(string RFIDNumber)
@@ -1066,15 +1219,66 @@ namespace WinForm
 
             string SerialString = (RFIDCode[3] + RFIDCode[4] + RFIDCode[5]);
             string Serial = Convert.ToInt32(SerialString, 2).ToString();
+
+            if (Serial.Length < 5)
+            {
+                int zorelength = 5 - Serial.Length;
+                string zore = "0";
+                for (int i = 1; i < zorelength; i++)
+                {
+                    zore = zore + "0";
+                }
+                Serial = zore + Serial;
+            }
+
+
+
+
             SKUNumber = ItemReference + Serial;
-            return SKUNumber;
+            string digit = this.getDigit(SKUNumber);
+
+            return SKUNumber + digit;
         }
 
+        public string getDigit(string sku)
+        {
 
+            if (sku == "")
+            {
+                return "";
+            }
+            int CheckCode = -1; // 校验码
+            int sum = 0; // 权位与位数相乘之后全部相加
+                         // 从第3位开起算起 到 18位 第19位为校验码
+                         // int dd = Convert.ToInt32(carton.Substring(19, 1));
+            for (int i = 2; i < sku.Length; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    sum = sum + sku[i] * 3;
+                }
+                else
+                {
+                    sum = sum + sku[i];
+                }
+            }
+            if (sum % 10 == 0)
+            {
+                CheckCode = 0;
+            }
+            else
+            {
+                CheckCode = 10 - sum % 10;
+            }
+            return CheckCode.ToString();
+
+
+        }
 
         public void setDefault()
         {
             this.BackColor = SystemColors.Control;
+            this.labMsg.BackColor = SystemColors.Control;
             this.bgCartonInfo.BackColor = SystemColors.Control;
             this.bgScanNumbers.BackColor = SystemColors.Control;
             this.bgScaninfo.BackColor = SystemColors.Control;
@@ -1130,10 +1334,12 @@ namespace WinForm
             this.label3.ForeColor = SystemColors.ControlText;
             this.label4.ForeColor = SystemColors.ControlText;
             this.label6.ForeColor = SystemColors.ControlText;
+            this.labMsg.ForeColor = SystemColors.ControlText;
         }
         public void setAllright()
         {
             this.BackColor = System.Drawing.Color.Green;
+            this.labMsg.BackColor = System.Drawing.Color.Green;
             this.bgCartonInfo.BackColor = System.Drawing.Color.Green;
             this.bgScanNumbers.BackColor = System.Drawing.Color.Green;
             this.bgScaninfo.BackColor = System.Drawing.Color.Green;
@@ -1151,6 +1357,8 @@ namespace WinForm
             //this.txtSizeQtys.BackColor = System.Drawing.Color.Green;
             this.labScanSizeQtys.BackColor = System.Drawing.Color.Green;
             //this.txtScanSizeQtys.BackColor = System.Drawing.Color.Green;
+
+            this.dgvScanLogs.DefaultCellStyle.BackColor = System.Drawing.Color.Green;
 
             this.labPolySize.ForeColor = System.Drawing.Color.White;
             this.labSizeQty.ForeColor = System.Drawing.Color.White;
@@ -1188,6 +1396,75 @@ namespace WinForm
             this.label3.ForeColor = System.Drawing.Color.White;
             this.label4.ForeColor = System.Drawing.Color.White;
             this.label6.ForeColor = System.Drawing.Color.White;
+            this.labMsg.ForeColor = System.Drawing.Color.White;
+            this.dgvScanLogs.DefaultCellStyle.ForeColor = System.Drawing.Color.White;
+
+
+
+        }
+
+        public void setRFIDright()
+        {
+            this.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.labMsg.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.bgCartonInfo.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.bgScanNumbers.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.bgScaninfo.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.bgCartonLogs.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.labCartonNumber.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.labQtys.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.labCartonN.BackColor = System.Drawing.Color.MediumSeaGreen;
+            // this.dgvScanLogs.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.labPolybagNumber.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.labRFIDNumber.BackColor = System.Drawing.Color.MediumSeaGreen;
+
+            this.labPolySize.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.labSizeQty.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.labSizeQtys.BackColor = System.Drawing.Color.MediumSeaGreen;
+            //this.txtSizeQtys.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.labScanSizeQtys.BackColor = System.Drawing.Color.MediumSeaGreen;
+            //this.txtScanSizeQtys.BackColor = System.Drawing.Color.MediumSeaGreen;
+
+            this.dgvScanLogs.DefaultCellStyle.BackColor = System.Drawing.Color.MediumSeaGreen;
+
+            this.labPolySize.ForeColor = System.Drawing.Color.Black;
+            this.labSizeQty.ForeColor = System.Drawing.Color.Black;
+            this.labSizeQtys.ForeColor = System.Drawing.Color.Black;
+            //this.txtSizeQtys.ForeColor = System.Drawing.Color.Black;
+            this.labScanSizeQtys.ForeColor = System.Drawing.Color.Black;
+            //this.txtScanSizeQtys.ForeColor = System.Drawing.Color.Black;
+            this.bgScaninfo.ForeColor = System.Drawing.Color.Black;
+            this.bgScanNumbers.ForeColor = System.Drawing.Color.Black;
+            this.bgCartonInfo.ForeColor = System.Drawing.Color.Black;
+            this.bgCartonLogs.ForeColor = System.Drawing.Color.Black;
+            this.labColor.ForeColor = System.Drawing.Color.Black;
+            this.labSizes.ForeColor = System.Drawing.Color.Black;
+            this.labCartonQty.ForeColor = System.Drawing.Color.Black;
+            this.labCartonScanQty.ForeColor = System.Drawing.Color.Black;
+            this.labCartonNoscanQty.ForeColor = System.Drawing.Color.Black;
+            this.labCarton.ForeColor = System.Drawing.Color.Black;
+            this.labPolybag.ForeColor = System.Drawing.Color.Black;
+            this.labWWMT.ForeColor = System.Drawing.Color.Black;
+            this.labRFID.ForeColor = System.Drawing.Color.Black;
+
+            this.labCartonNumber.ForeColor = System.Drawing.Color.Black;
+            this.labCartonN.ForeColor = System.Drawing.Color.Black;
+            this.labQtys.ForeColor = System.Drawing.Color.Black;
+            this.labPO.ForeColor = System.Drawing.Color.Black;
+            this.labCantons.ForeColor = System.Drawing.Color.Black;
+            this.labStyle.ForeColor = System.Drawing.Color.Black;
+
+            this.labCartonNs.ForeColor = System.Drawing.Color.Black;
+            this.labPolybagNumber.ForeColor = System.Drawing.Color.Black;
+            this.labRFIDNumber.ForeColor = System.Drawing.Color.Black;
+
+            this.labCustID.ForeColor = System.Drawing.Color.Black;
+            this.label5.ForeColor = System.Drawing.Color.Black;
+            this.label3.ForeColor = System.Drawing.Color.Black;
+            this.label4.ForeColor = System.Drawing.Color.Black;
+            this.label6.ForeColor = System.Drawing.Color.Black;
+            this.labMsg.ForeColor = System.Drawing.Color.Black;
+            this.dgvScanLogs.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
 
 
 
@@ -1195,6 +1472,7 @@ namespace WinForm
         public void setWrong()
         {
             this.BackColor = System.Drawing.Color.DarkRed;
+            this.labMsg.BackColor = System.Drawing.Color.DarkRed;
             this.bgCartonInfo.BackColor = System.Drawing.Color.DarkRed;
             this.bgScanNumbers.BackColor = System.Drawing.Color.DarkRed;
             this.bgScaninfo.BackColor = System.Drawing.Color.DarkRed;
@@ -1249,6 +1527,70 @@ namespace WinForm
             this.label3.ForeColor = System.Drawing.Color.Yellow;
             this.label4.ForeColor = System.Drawing.Color.Yellow;
             this.label6.ForeColor = System.Drawing.Color.Yellow;
+            this.labMsg.ForeColor = System.Drawing.Color.Yellow;
+        }
+
+
+        public void setAlarm()
+        {
+            this.BackColor = System.Drawing.Color.DarkOrange;
+            this.labMsg.BackColor = System.Drawing.Color.DarkOrange;
+            this.bgCartonInfo.BackColor = System.Drawing.Color.DarkOrange;
+            this.bgScanNumbers.BackColor = System.Drawing.Color.DarkOrange;
+            this.bgScaninfo.BackColor = System.Drawing.Color.DarkOrange;
+            this.bgCartonLogs.BackColor = System.Drawing.Color.DarkOrange;
+            this.labCartonNumber.BackColor = System.Drawing.Color.DarkOrange;
+            this.labQtys.BackColor = System.Drawing.Color.DarkOrange;
+            this.labCartonN.BackColor = System.Drawing.Color.DarkOrange;
+            // this.dgvScanLogs.BackColor = System.Drawing.Color.DarkOrange;
+            this.labPolybagNumber.BackColor = System.Drawing.Color.DarkOrange;
+            this.labRFIDNumber.BackColor = System.Drawing.Color.DarkOrange;
+
+            this.labPolySize.BackColor = System.Drawing.Color.DarkOrange;
+            this.labSizeQty.BackColor = System.Drawing.Color.DarkOrange;
+            this.labSizeQtys.BackColor = System.Drawing.Color.DarkOrange;
+            //this.txtSizeQtys.BackColor = System.Drawing.Color.DarkOrange;
+            this.labScanSizeQtys.BackColor = System.Drawing.Color.DarkOrange;
+            //this.txtScanSizeQtys.BackColor = System.Drawing.Color.DarkOrange;
+
+            this.bgScaninfo.ForeColor = System.Drawing.Color.White;
+            this.bgScanNumbers.ForeColor = System.Drawing.Color.White;
+            this.bgCartonInfo.ForeColor = System.Drawing.Color.White;
+            this.bgCartonLogs.ForeColor = System.Drawing.Color.White;
+            this.labColor.ForeColor = System.Drawing.Color.White;
+            this.labSizes.ForeColor = System.Drawing.Color.White;
+            this.labCartonQty.ForeColor = System.Drawing.Color.White;
+            this.labCartonScanQty.ForeColor = System.Drawing.Color.White;
+            this.labCartonNoscanQty.ForeColor = System.Drawing.Color.White;
+            this.labCarton.ForeColor = System.Drawing.Color.White;
+            this.labPolybag.ForeColor = System.Drawing.Color.White;
+            this.labWWMT.ForeColor = System.Drawing.Color.White;
+            this.labRFID.ForeColor = System.Drawing.Color.White;
+
+            this.labCartonNumber.ForeColor = System.Drawing.Color.White;
+            this.labCartonN.ForeColor = System.Drawing.Color.White;
+            this.labQtys.ForeColor = System.Drawing.Color.White;
+            this.labPO.ForeColor = System.Drawing.Color.White;
+            this.labCantons.ForeColor = System.Drawing.Color.White;
+            this.labStyle.ForeColor = System.Drawing.Color.White;
+
+            this.labCartonNs.ForeColor = System.Drawing.Color.White;
+            this.labPolybagNumber.ForeColor = System.Drawing.Color.White;
+            this.labRFIDNumber.ForeColor = System.Drawing.Color.White;
+
+            this.labPolySize.ForeColor = System.Drawing.Color.White;
+            this.labSizeQty.ForeColor = System.Drawing.Color.White;
+            this.labSizeQtys.ForeColor = System.Drawing.Color.White;
+            //this.txtSizeQtys.ForeColor = System.Drawing.Color.White;
+            this.labScanSizeQtys.ForeColor = System.Drawing.Color.White;
+            //this.txtScanSizeQtys.ForeColor = System.Drawing.Color.White;
+
+            this.labCustID.ForeColor = System.Drawing.Color.White;
+            this.label5.ForeColor = System.Drawing.Color.White;
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label4.ForeColor = System.Drawing.Color.White;
+            this.label6.ForeColor = System.Drawing.Color.White;
+            this.labMsg.ForeColor = System.Drawing.Color.White;
         }
 
         private void cleanAllText()
@@ -1468,6 +1810,8 @@ namespace WinForm
             if (ScanLogDB.Rows.Count <= 0)
             {
                 this.setAllright();
+                Thread.Sleep(0);
+                this.Refresh();
                 return;
 
             }
@@ -1475,12 +1819,13 @@ namespace WinForm
 
         }
 
-        public void SaveScanLogs()
+        public bool SaveScanLogs()
         {
             int insetLogs = this.lscm.saveScanLog(ScanLogDB);
 
             if (insetLogs <= 0)
             {
+                /*
                 this.setWrong();
                 // 本件已扫描过
                 this.labMsg.ForeColor = Color.Red;
@@ -1502,17 +1847,22 @@ namespace WinForm
                 }
 
                 this.butSaveLogs.Visible = true;
+                */
+                return false;
 
             }
             else
             {
+                /*
                 this.butSaveLogs.Visible = false;
-                this.setAllright();
+
                 this.ScanLogDB.Rows.Clear();
                 this.ScanLogDB.Columns.Clear();
                 this.labMsg.Text = "满箱，请扫描下一箱";
                 this.labQtys.Text = "OK";
-
+                this.setAllright();
+                Thread.Sleep(0);
+                this.Refresh();
                 //保存扫描 LOG日志文件
 
                 if (strOpenMedia == "1")
@@ -1526,7 +1876,9 @@ namespace WinForm
                     am.openport1();
                     Thread.Sleep(300);
 
-                }
+                }  */
+                return true;
+
 
             }
         }
@@ -1611,12 +1963,13 @@ namespace WinForm
         private void CloseRfidReader()
         {
             string PortName = SingleRFIDCOM;
-            int dd = WyuanHelper.CloseRfidReader(PortName );
+            int dd = WyuanHelper.CloseRfidReader(PortName);
             if (dd == 0)
             {
                 MessageBox.Show("断开连接", "Information");
 
-            } else if(dd == -1)
+            }
+            else if (dd == -1)
             {
                 MessageBox.Show("Serial Communication Error", "Information");
             }
@@ -1667,8 +2020,10 @@ namespace WinForm
                     am.openportall();
                     Thread.Sleep(500);
                     am.closeportall();
-                     Thread.Sleep(50);
+                    Thread.Sleep(50);
                     labAlarmStatus.BackColor = Color.LightGreen;
+                    am.openport1();
+
                     if (strOpenMedia == "1")
                     {
                         am.palyMedia(true);
@@ -1746,8 +2101,8 @@ namespace WinForm
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-          String RfidStr =   WyuanHelper.GetData();
-            if(RfidStr != "")
+            String RfidStr = WyuanHelper.GetData();
+            if (RfidStr != "")
             {
                 RfidStr = RfidStr + "\r\n";
                 this.txtRFIDNumber.Text = RfidStr;
@@ -1755,6 +2110,68 @@ namespace WinForm
 
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.setAllright();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.setWrong();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            this.setDefault();
+        }
+
+        public void openLights(object port)
+        {
+            string p = port.ToString();
+            switch (p)
+            {
+                case "1":
+                    am.closeport3();
+                    Thread.Sleep(50);
+                    am.openport1();
+                    Thread.Sleep(500);
+                    am.closeport1();
+                    Thread.Sleep(50);
+                    break;
+
+                case "2":
+                    am.closeport3();
+                    Thread.Sleep(50);
+                    am.openport2();
+                    Thread.Sleep(500);
+                    am.closeport2();
+                    Thread.Sleep(50);
+                    break;
+
+                case "3":
+                  //  am.closeportall();
+                //    Thread.Sleep(50);
+                    am.openport3();
+                    Thread.Sleep(500);
+                  //  am.closeport3();
+                  //  Thread.Sleep(50);
+                    break ;
+
+                case "4":
+                 //   am.closeportall();
+                 //   Thread.Sleep(50);
+                  //  am.openport4();
+                  //  Thread.Sleep(500);
+                  //  am.closeport4();
+                  //  Thread.Sleep(50);
+                    break;
+
+                default:
+                    break;
+            }
+
+
+        }
     }
 
 }
